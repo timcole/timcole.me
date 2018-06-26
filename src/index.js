@@ -23,6 +23,7 @@ Vue.component("Footer", Footer);
 
 const store = new Vuex.Store({
 	state: {
+		cdn: "https://cdn.tcole.me",
 		_CLIENT_ID: "xbxtltofdtemb8hkchrsc1ijukifp0",
 		gqlCache: []
 	},
@@ -52,6 +53,9 @@ const store = new Vuex.Store({
 			return state.gqlCache.find(e => {
 				return e.key === key;
 			});
+		},
+		cdn: (state) => (file) => {
+			return `${state.cdn}/${file}`
 		}
 	}
 });
@@ -59,12 +63,14 @@ const store = new Vuex.Store({
 import HomePage from './pages/HomePage.vue';
 import Videos from './pages/Videos.vue';
 import Stream from './pages/Stream.vue';
+import Screenshot from './pages/Screenshot.vue';
 const router = new VueRouter({
 	routes: [
 		{ name: "Home", path: '/', component: HomePage },
 		{ name: "Videos", path: '/videos', component: Videos },
 		{ name: "Stream", path: '/stream', component: Stream },
-		{ name: "ModestStream", path: '/stream/:streamer', component: Stream }
+		{ name: "ModestStream", path: '/stream/:streamer', component: Stream },
+		{ name: "Screenshot", path: '/ss/:screenshot', component: Screenshot }
 	],
 	mode: 'history'
 })
