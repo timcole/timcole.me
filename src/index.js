@@ -64,13 +64,15 @@ import HomePage from './pages/HomePage.vue';
 import Videos from './pages/Videos.vue';
 import Stream from './pages/Stream.vue';
 import Screenshot from './pages/Screenshot.vue';
+import NotFound from './pages/NotFound.vue';
 const router = new VueRouter({
 	routes: [
 		{ name: "Home", path: '/', component: HomePage },
 		{ name: "Videos", path: '/videos', component: Videos },
 		{ name: "Stream", path: '/stream', component: Stream },
 		{ name: "ModestStream", path: '/stream/:streamer', component: Stream },
-		{ name: "Screenshot", path: '/ss/:screenshot', component: Screenshot }
+		{ name: "Screenshot", path: '/ss/:screenshot', component: Screenshot },
+		{ name: "NotFound", path: '*', component: NotFound }
 	],
 	mode: 'history'
 })
