@@ -22,6 +22,10 @@ export default {
 		embeds.onload = this.loadStream;
 		document.body.appendChild(embeds);
 	},
+	destroyed () {
+		var embed = document.querySelector("script[src='https://embed.twitch.tv/embed/v1.js']");
+		if (embed) return embed.remove();
+	},
 	watch: {
 		$route (to, from) { this.loadStream() }
 	},
