@@ -1,6 +1,9 @@
 <template>
 	<div id="Videos">
 		<div class="header"><Header class="container"></Header></div>
+		<div class="container">
+			<h2>I still need to finish this page lol</h2>
+		</div>
 		<div class="videos container" v-if="twitch && twitch.data.user.videos.totalCount > 0">
 			<div class="video" v-for="stream in twitch.data.user.videos.edges" v-bind:key="stream.node.id">
 				<img class="thumbnail" :src="stream.node.previewThumbnailURL.replace('{width}', '1280').replace('{height}', '720')" alt="" />
