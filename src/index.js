@@ -58,10 +58,13 @@ const store = new Vuex.Store({
 
 import HomePage from './pages/HomePage.vue';
 import Videos from './pages/Videos.vue';
+import Stream from './pages/Stream.vue';
 const router = new VueRouter({
 	routes: [
-		{ path: '/', component: HomePage },
-		{ path: '/videos', component: Videos }
+		{ name: "Home", path: '/', component: HomePage },
+		{ name: "Videos", path: '/videos', component: Videos },
+		{ name: "Stream", path: '/stream', component: Stream },
+		{ name: "ModestStream", path: '/stream/:streamer', component: Stream }
 	],
 	mode: 'history'
 })

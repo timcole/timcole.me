@@ -8,7 +8,7 @@
 		</div>
 		<div class="broadcasts">
 			<p>Live</p>
-			<div class="broadcast ToolTipContainer" v-for="broadcast in broadcasters.data.community.streams.edges" v-bind:key="broadcast.id">
+			<div class="broadcast ToolTipContainer" v-for="broadcast in broadcasters.data.community.streams.edges" v-bind:key="broadcast.id" v-on:click="openStream(broadcast.node.broadcaster.login, true)" @click.middle="openStream(broadcast.node.broadcaster.login, false)">
 				<img class="avi" draggable="false" :src="broadcast.node.broadcaster.profileImageURL" :alt="broadcast.node.broadcaster.displayName">
 				<div class="indicator">
 					<span></span>
@@ -37,6 +37,14 @@ export default {
 	created () {
 		const query = {"query":"query {\n\tcommunity(name: \"programming\") {\n\t\tdisplayName\n\t\tdescription\n\t\trules\n\t\tfollowersCount\n\t\tviewersCount\n\t\tstreams {\n\t\t\tedges {\n\t\t\t\tnode {\n\t\t\t\t\tbroadcaster {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tlogin\n\t\t\t\t\t\tprofileImageURL(width: 50)\n\t\t\t\t\t\tbroadcastSettings {\n\t\t\t\t\t\t\tgame {\n\t\t\t\t\t\t\t\tboxArtURL\n\t\t\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\ttitle\n\t\t\t\t\t\t\tlanguage\n\t\t\t\t\t\t\tisMature\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t\tviewersCount\n\t\t\t\t\tpreviewImageURL\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n "}
 		this.$store.commit('gql', { key: "modest_streams", query })
+	},
+	methods: {
+		openStream(streamer, current) {
+			this.$router.push({
+				name: 'ModestStream',
+				params: { streamer }
+			});
+		}
 	},
 	computed: {
 		broadcasters () {
