@@ -10,7 +10,6 @@
 					</div>
 
 					<div class="modal-body">
-
 						<div class="left">
 							<h4>Subscription benefits</h4>
 							<ul>
@@ -27,7 +26,11 @@
 								<ToolTip direction="badges"><p>{{ badge.description }}</p></ToolTip>
 							</div>
 
-							<h5>{{ product.emotes.length }} Subscriber Emote:</h5>
+							<h5>{{ emotes.length }} Subscriber Emote:</h5>
+							<div v-for="emote in emotes" v-bind:key="emote.id" class="ToolTipContainer">
+								<img :src="`https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/4.0`" :alt="emote.token" />
+								<ToolTip direction="badges"><p>{{ emote.token }}</p></ToolTip>
+							</div>
 						</div>
 					</div>
 
@@ -64,6 +67,16 @@ export default {
 	computed: {
 		twitch () {
 			return this.$store.getters.getCache("twitch")
+		},
+		emotes () {
+			var emotes = []
+
+			for (const [i, tier] of this.twitch.data.user.subscriptionProducts.entries()) {
+				if (i > this.selected) break;
+				emotes.push(...tier.emotes)
+			}
+
+			return emotes
 		}
 	}
 }
@@ -160,7 +173,8 @@ export default {
 					display: inline-block;
 
 					img {
-						height: 20px;
+						height: 22px;
+						padding-right: 5px;
 					}
 
 					p {
