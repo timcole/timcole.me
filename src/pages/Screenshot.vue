@@ -2,7 +2,7 @@
 	<div id="Screenshot">
 		<div class="header"><Header class="container"></Header></div>
 		<div class="body">
-			<a :href="this.$store.getters.cdn(ss)">
+			<a :href="this.$store.getters.cdn(ss)" target="_blank">
 				<img :src="this.$store.getters.cdn(ss)" alt="Screen Shot" @error="NotFound()" />
 			</a>
 		</div>
@@ -15,8 +15,7 @@ export default {
 	name: "Screenshot",
 	computed: {
 		ss () {
-			return "4sq138ex6s.png"
-			// return this.$route.params.screenshot
+			return this.$route.params.screenshot
 		}
 	},
 	created () {
