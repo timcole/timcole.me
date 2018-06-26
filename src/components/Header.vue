@@ -1,9 +1,9 @@
 <template>
 	<div id="Header">
-		<router-link to="/" tag="div" class="left">
-			<img src="https://cdn.tcole.me/logo.png" alt="Timothy Cole Logo" />
-			<h4>Timothy Cole</h4>
-		</router-link>
+		<div class="left">
+			<router-link to="/" tag="img" src="https://cdn.tcole.me/logo.png" alt="Timothy Cole Logo"></router-link>
+			<router-link to="/" tag="h4" >Timothy Cole</router-link>
+		</div>
 		<div class="right">
 			<ul>
 				<li v-for="link in menu" v-bind:key="link.name"><router-link :to="link.to">{{ link.name }}</router-link></li>
