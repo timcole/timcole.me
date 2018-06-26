@@ -59,6 +59,10 @@ export default {
 			font-weight: 100;
 			text-transform: uppercase;
 			padding-left: 10px;
+
+			@media (max-width: 700px) {
+				& { display: none; }
+			}
 		}
 	}
 

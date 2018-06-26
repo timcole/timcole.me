@@ -119,6 +119,14 @@ export default {
 					user-select: none;
 				}
 			}
+			@media (max-width: 1445px) {
+				.right {
+					display: none;
+				}
+				.left {
+					padding: 20px;
+				}
+			}
 		}
 	}
 </style>

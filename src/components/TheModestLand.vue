@@ -75,6 +75,10 @@ export default {
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+
+		@media (max-width: 700px) {
+			& { display: none; }
+		}
 	}
 
 	img.avi {
