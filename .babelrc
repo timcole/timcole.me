@@ -1,10 +1,12 @@
 {
-	"plugins": [
-		"transform-runtime",
-		"transform-decorators"
-	],
 	"presets": [
-		"env",
-		"es2015"
+		[
+			"env",
+			{
+				"targets": {
+					"browsers": "last 1 Firefox versions"
+				}
+			}
+		]
 	]
 }

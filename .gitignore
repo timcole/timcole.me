@@ -8,3 +8,4 @@ jspm_packages/
 .yarn-integrity
 .cache/
 dist/
+build/

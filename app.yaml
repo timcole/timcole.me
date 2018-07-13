@@ -1,0 +1,17 @@
+runtime: go
+api_version: go1.10
+
+env: flex
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 5
+  cpu_utilization:
+    target_utilization: 0.75
+
+skip_files:
+- node_modules/
+- frontend/
+- .gitignore
+- .babeljs
+- package.json
+- LICENSE
