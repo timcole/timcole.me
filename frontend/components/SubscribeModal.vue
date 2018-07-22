@@ -76,10 +76,7 @@ export default {
 			].join(","));
 		},
 		order (name) {
-			for (const [ index, key ] of this.badges.entries()) {
-				if (key === name) return index;
-			}
-			return 0;
+			return this.badges.indexOf(name);
 		}
 	},
 	computed: {
