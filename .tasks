@@ -1,0 +1,19 @@
+General:
+	☐ Store/Get private data without storing it in git
+	☐ Screenshots need to add meta tags for twitter, slack, discord, etc. embeds
+	Stream:
+		☐ Connect to redis to display the commands from WeetBot V1
+		☐ Endpoint to get the global and subscription emotes for the commands page
+		☐ Make badges on Sub Modal in order
+		☐ Waiting message message GET endpoint
+		
+	Admin:
+		☐ Use app engine authentication to make this section private
+		☐ Waiting message message POST endpoint
+			Spotify:
+		☐ Authentication
+			https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L127
+		☐ Automatically refresh the token when it is expired
+			https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L26
+		☐ Playing endpoint to display the status of https://api.spotify.com/v1/me/player
+			https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L84

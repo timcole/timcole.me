@@ -39,7 +39,7 @@ export default {
 			this.player = new Twitch.Embed("stream", {
 				width: "100%",
 				height: "100%",
-				channel: this.$route.params.streamer || "monstercat"
+				channel: this.$route.params.streamer || "modesttim"
 			});
 		}
 	}
