@@ -1,5 +1,5 @@
 General:
-	☐ Store/Get private data without storing it in git
+	✔ Store/Get private data without storing it in git @done (2018-7-22 05:58:56)
 	☐ Screenshots need to add meta tags for twitter, slack, discord, etc. embeds
 	Stream:
 		☐ Connect to redis to display the commands from WeetBot V1
