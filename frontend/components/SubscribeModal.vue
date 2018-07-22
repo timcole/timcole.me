@@ -21,9 +21,12 @@
 						</div>
 						<div class="right">
 							<h5>Subscriber Badges:</h5>
-							<div v-for="badge in twitch.data.user.broadcastBadges" v-if="badge.setID == 'subscriber'" v-bind:key="badge.imageURL" class="ToolTipContainer">
-								<img :src="badge.imageURL.replace('/1', '/3')" :alt="badge.description" />
-								<ToolTip direction="badges"><p>{{ badge.description }}</p></ToolTip>
+							<div class="flex-parent">
+								<!-- <pre v-text="JSON.stringify(twitch.data.user.broadcastBadges, null, 4)"></pre> -->
+								<div v-for="badge in twitch.data.user.broadcastBadges" v-if="badge.setID == 'subscriber'" v-bind:key="badge.imageURL" class="ToolTipContainer" :style="`order: ${order(badge.description)}`">
+									<img :src="badge.imageURL.replace('/1', '/3')" :alt="badge.description" />
+									<ToolTip direction="badges"><p>{{ badge.description }}</p></ToolTip>
+								</div>
 							</div>
 
 							<h5>{{ emotes.length }} Subscriber Emote:</h5>
@@ -50,7 +53,16 @@ export default {
 	name: 'SubscribeModal',
 	data () {
 		return {
-			selected: 0
+			selected: 0,
+			badges: [
+				"Subscriber",
+				"3-Month Subscriber",
+				"6-Month Subscriber",
+				"1-Year Subscriber",
+				"2-Year Subscriber",
+				"3-Year Subscriber",
+				"4-Year Subscriber",
+			]
 		}
 	},
 	methods: {
@@ -62,6 +74,12 @@ export default {
 				"width=1200",
 				"height=870"
 			].join(","));
+		},
+		order (name) {
+			for (const [ index, key ] of this.badges.entries()) {
+				if (key === name) return index;
+			}
+			return 0;
 		}
 	},
 	computed: {
@@ -166,6 +184,10 @@ export default {
 				.right {
 					order: 2;
 					width: 40%;
+
+					.flex-parent {
+						display: flex;
+					}
 				}
 
 				.ToolTipContainer {
