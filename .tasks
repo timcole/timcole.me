@@ -1,6 +1,6 @@
 General:
 	✔ Store/Get private data without storing it in git @done (2018-7-22 05:58:56)
-	☐ Screenshots need to add meta tags for twitter, slack, discord, etc. embeds
+	✔ Screenshots need to add meta tags for twitter, slack, discord, etc. embeds @done (8/18/2018, 3:57:42 PM)
 	Stream:
 		☐ Connect to redis to display the commands from WeetBot V1
 		☐ Endpoint to get the global and subscription emotes for the commands page

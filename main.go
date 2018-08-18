@@ -1,8 +1,10 @@
 package main
 
 import (
+	"html/template"
 	"net/http"
 	"os"
+	"strings"
 
 	config "github.com/TimothyCole/timcole.me/settings"
 	"github.com/gorilla/handlers"
@@ -19,7 +21,17 @@ func main() {
 	router.PathPrefix("/assets").Handler(static)
 
 	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./build/index.html")
+		uri := strings.Split(r.RequestURI, "/")
+
+		var ss string
+		if len(uri) == 3 && uri[1] == "ss" {
+			ss = uri[2]
+		}
+
+		temp, _ := template.ParseFiles("./build/index.html")
+		temp.Execute(w, struct {
+			Screenshot string
+		}{Screenshot: ss})
 	})
 
 	router.HandleFunc("/123", func(w http.ResponseWriter, r *http.Request) {
