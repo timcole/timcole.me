@@ -7,6 +7,7 @@
 		<div class="right">
 			<ul>
 				<li v-for="link in menu" v-bind:key="link.name"><router-link :to="link.to">{{ link.name }}</router-link></li>
+				<li><a href="https://subs.modest.land/" target="_blank">Sub Perks</a></li>
 			</ul>
 			<div class="subscribe" id="show-modal" @click="showSubscribe = true">Subscribe</div>
 			<SubscribeModal v-if="showSubscribe" @close="showSubscribe = false"></SubscribeModal>
