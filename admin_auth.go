@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"cloud.google.com/go/datastore"
 	jwt "github.com/dgrijalva/jwt-go"
@@ -29,10 +30,21 @@ type Admin struct {
 	jwt.StandardClaims `json:"-"`
 }
 
+// Access checks if an admin has permission to access a key
+func (a *Admin) Access(key string) bool {
+	return a.Permissions[key]
+}
+
 // AdminMiddleWare makes sure they have a valid jwt before continueing
 func AdminMiddleWare(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorization := r.Header.Get("Authorization")
+		if len(strings.Split(authorization, ".")) != 3 {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
+			return
+		}
+
 		token, _ := jwt.ParseWithClaims(authorization, &Admin{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(settings.Get("SIGNING_KEY")), nil
 		})

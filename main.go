@@ -45,16 +45,17 @@ func main() {
 	})
 	api.HandleFunc("/login", AdminAuth).Methods("POST")
 
-	// Stream API Router
+	// Public Stream API Router
 	var stream = api.PathPrefix("/stream").Subrouter()
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
 	admin.Use(AdminMiddleWare)
-	admin.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("ok"))
-	}).Methods("GET")
+	admin.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
+	// Admin Stream API Router
+	var streamAdmin = admin.PathPrefix("/stream").Subrouter()
+	streamAdmin.HandleFunc("/message", SetStreamMessage).Methods("POST")
 
 	// API 404 Handler
 	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
