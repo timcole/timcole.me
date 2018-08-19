@@ -37,16 +37,20 @@ func main() {
 
 	// API Router
 	var api = router.PathPrefix("/api").Subrouter()
-	api.Use(mux.MiddlewareFunc(func(next http.Handler) http.Handler {
+	api.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			next.ServeHTTP(w, r)
 		})
-	}))
+	})
+	api.HandleFunc("/login", AdminAuth).Methods("POST")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
-	admin.HandleFunc("/auth", AdminAuth).Methods("POST")
+	admin.Use(AdminMiddleWare)
+	admin.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ok"))
+	}).Methods("GET")
 
 	// API 404 Handler
 	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

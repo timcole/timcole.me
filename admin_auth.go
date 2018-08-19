@@ -9,6 +9,7 @@ import (
 
 	"cloud.google.com/go/datastore"
 	jwt "github.com/dgrijalva/jwt-go"
+	gctx "github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -26,6 +27,25 @@ type Admin struct {
 	PermissionsString  string          `datastore:"permissions" json:"-"`
 	JWT                string          `json:"jwt,omitempty"`
 	jwt.StandardClaims `json:"-"`
+}
+
+// AdminMiddleWare makes sure they have a valid jwt before continueing
+func AdminMiddleWare(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authorization := r.Header.Get("Authorization")
+		token, _ := jwt.ParseWithClaims(authorization, &Admin{}, func(token *jwt.Token) (interface{}, error) {
+			return []byte(settings.Get("SIGNING_KEY")), nil
+		})
+
+		if claims, ok := token.Claims.(*Admin); ok && token.Valid {
+			gctx.Set(r, "Admin", claims)
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
+	})
 }
 
 // AdminAuth checks the login and creates a session
