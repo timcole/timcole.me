@@ -56,3 +56,27 @@ func (s *Settings) Load() map[string]string {
 func (s *Settings) Get(key string) string {
 	return s.kvs[key]
 }
+
+// Set sets the value from a key
+func (s *Settings) Set(key string, value []byte) string {
+	ctx := context.Background()
+
+	client, err := datastore.NewClient(ctx, "timcole-me")
+	if err != nil {
+		panic(err)
+	}
+
+	testKey := datastore.IncompleteKey("Settings", nil)
+	entry := rawKVS{
+		Key:   key,
+		Value: string(value),
+	}
+
+	client.Put(ctx, testKey, &entry)
+
+	s.mutex.Lock()
+	s.kvs[key] = string(value)
+	s.mutex.Unlock()
+
+	return s.Get(key)
+}
