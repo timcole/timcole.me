@@ -13,7 +13,7 @@ General:
 
 	Admin:
 		✔ Require password to match datastore @done (8/19/2018, 2:01:01 AM)
-		☐ Waiting message POST endpoint
+		✔ Waiting message POST endpoint @done (8/19/2018, 6:06:48 PM)
 			Spotify:
 				☐ Authentication
 					https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L127
