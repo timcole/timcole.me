@@ -12,11 +12,12 @@ import (
 	"google.golang.org/appengine"
 )
 
+var (
+	router   = mux.NewRouter()
+	settings = config.InitSettings()
+)
+
 func main() {
-	router := mux.NewRouter()
-
-	settings := config.InitSettings()
-
 	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
 	router.PathPrefix("/assets").Handler(static)
 
@@ -34,9 +35,25 @@ func main() {
 		}{Screenshot: ss})
 	})
 
-	router.HandleFunc("/123", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(settings.Get("GAMER_BOY")))
-	}).Methods("GET")
+	// API Router
+	var api = router.PathPrefix("/api").Subrouter()
+	api.Use(mux.MiddlewareFunc(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			next.ServeHTTP(w, r)
+		})
+	}))
+
+	// Admin API Router
+	var admin = api.PathPrefix("/admin").Subrouter()
+	admin.HandleFunc("/auth", AdminAuth).Methods("POST")
+
+	// API 404 Handler
+	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte(`{"status": 404, "error": "StatusNotFound"}`))
+	})
 
 	// Respond to App Engine and Compute Engine health checks.
 	// Indicate the server is healthy.

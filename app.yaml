@@ -15,3 +15,6 @@ skip_files:
 - .babeljs
 - package.json
 - LICENSE
+- README.md
+- .tasks
+- yarn.lock
