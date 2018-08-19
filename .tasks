@@ -9,7 +9,7 @@ General:
 		☐ Endpoint to DELETE a command
 		☐ Endpoint to GET the global and subscription emotes for the commands page
 		✔ Make badges on Sub Modal in order @done (2018-7-22 07:47:04)
-		☐ Waiting message GET endpoint
+		✔ Waiting message GET endpoint @done (8/19/2018, 5:26:40 PM)
 
 	Admin:
 		✔ Require password to match datastore @done (8/19/2018, 2:01:01 AM)

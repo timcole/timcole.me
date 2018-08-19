@@ -45,6 +45,10 @@ func main() {
 	})
 	api.HandleFunc("/login", AdminAuth).Methods("POST")
 
+	// Stream API Router
+	var stream = api.PathPrefix("/stream").Subrouter()
+	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
+
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
 	admin.Use(AdminMiddleWare)
