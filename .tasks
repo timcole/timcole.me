@@ -2,14 +2,18 @@ General:
 	✔ Store/Get private data without storing it in git @done (2018-7-22 05:58:56)
 	✔ Screenshots need to add meta tags for twitter, slack, discord, etc. embeds @done (8/18/2018, 3:57:42 PM)
 	Stream:
-		☐ Connect to redis to display the commands from WeetBot V1
-		☐ Endpoint to get the global and subscription emotes for the commands page
+		✘ Connect to redis to display the commands from WeetBot V1 @cancelled (8/19/2018, 2:01:18 AM)
+		☐ Endpoint to GET all commands
+		☐ Endpoint to GET a command
+		☐ Endpoint to POST a command
+		☐ Endpoint to DELETE a command
+		☐ Endpoint to GET the global and subscription emotes for the commands page
 		✔ Make badges on Sub Modal in order @done (2018-7-22 07:47:04)
-		☐ Waiting message message GET endpoint
+		☐ Waiting message GET endpoint
 
 	Admin:
-		☐ Require password to match datastore
-		☐ Waiting message message POST endpoint
+		✔ Require password to match datastore @done (8/19/2018, 2:01:01 AM)
+		☐ Waiting message POST endpoint
 			Spotify:
 				☐ Authentication
 					https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L127
