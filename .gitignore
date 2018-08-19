@@ -10,3 +10,4 @@ jspm_packages/
 dist/
 build/
 yarn.lock
+service-account.json
