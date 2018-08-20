@@ -1,14 +1,17 @@
+notifications:
+  email: false
+
 jobs:
   include:
   - language: go
-    go:
-    - 1.9.x
-    - 1.10.x
+    go: 1.9.x
+    script:
+    - go install ./...
+  - language: go
+    go: 1.10.x
     script:
     - go install ./...
     - go test -v -race ./...
-    notifications:
-      email: false
   - stage: Deploy to Google App Engine
     language: node_js
     node_js: '10'

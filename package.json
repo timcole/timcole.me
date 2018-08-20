@@ -4,14 +4,14 @@
 	"dependencies": {
 		"parcel-bundler": "^1.9.3",
 		"vue": "^2.2.6",
-		"vue-awesome": "^2.3.8",
 		"vue-hot-reload-api": "^2.3.0",
 		"vue-router": "^3.0.1",
 		"vuex": "^3.0.1"
 	},
 	"scripts": {
 		"dev": "parcel watch frontend/index.html --no-cache --public-url /assets -d build",
-		"build": "parcel build frontend/index.html --no-cache --public-url /assets -d build"
+		"build": "parcel build frontend/index.html --no-cache --public-url /assets -d build",
+		"test": "#\"🔥 This is fine 🔥\""
 	},
 	"devDependencies": {
 		"@vue/component-compiler-utils": "^2.0.0",
