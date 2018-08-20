@@ -10,7 +10,8 @@
 		"vuex": "^3.0.1"
 	},
 	"scripts": {
-		"dev": "parcel watch frontend/index.html --no-cache --public-url /assets -d build"
+		"dev": "parcel watch frontend/index.html --no-cache --public-url /assets -d build",
+		"build": "parcel build frontend/index.html --no-cache --public-url /assets -d build"
 	},
 	"devDependencies": {
 		"@vue/component-compiler-utils": "^2.0.0",
