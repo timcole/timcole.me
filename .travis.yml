@@ -13,11 +13,15 @@ jobs:
     - go install ./...
     - go test -v -race ./...
   - stage: Deploy to Google App Engine
-    language: node_js
-    node_js: '10'
+    language: go
+    go: 1.10.x
     cache:
       yarn: true
     before_install:
+      - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_10.x" | sudo -E bash -
+      - sudo apt-get install -y nodejs
+      - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version version-number
+      - export PATH="$HOME/.yarn/bin:$PATH"
       - openssl aes-256-cbc -K $encrypted_f73069fb71a8_key -iv $encrypted_f73069fb71a8_iv -in service-account.json.enc -out service-account.json -d
       - yarn install
       - yarn build
