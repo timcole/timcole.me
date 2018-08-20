@@ -1,10 +1,10 @@
-language: go
-go:
-- 1.9.x
-- 1.10.x
 jobs:
   include:
-  - script:
+  - language: go
+    go:
+    - 1.9.x
+    - 1.10.x
+    script:
     - go install ./...
     - go test -v -race ./...
     notifications:
