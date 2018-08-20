@@ -8,7 +8,6 @@
 export default {
 	name: "ToolTip",
 	props: {
-		content: String,
 		direction: {
 			type: String,
 			default: "top",
