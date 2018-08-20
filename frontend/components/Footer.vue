@@ -1,5 +1,5 @@
 <template>
-	<p>Copyright &copy; {{ start }}-{{ end }} - Timothy Cole - All Rights Reserved.</p>
+	<p>Copyright &copy; {{ start }}-{{ end }} - Timothy Cole - All Rights Reserved. &mdash; <a href="https://github.com/TimothyCole/timcole.me" target="_blank">{{ odds ? "Fork" : "Star" }} on Github</a></p>
 </template>
 
 <script>
@@ -8,6 +8,7 @@ export default {
 	data () {
 		return {
 			start: "1997",
+			odds: Math.random() < 0.5,
 			end: (new Date()).getFullYear()
 		}
 	}
@@ -21,5 +22,10 @@ export default {
 		display: inline-block;
 		width: 100%;
 		text-align: center;
+
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
 	}
 </style>
