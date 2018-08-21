@@ -61,7 +61,7 @@ export default {
 			text-transform: uppercase;
 			padding-left: 10px;
 
-			@media (max-width: 700px) {
+			@media (max-width: 775px) {
 				& { display: none; }
 			}
 		}

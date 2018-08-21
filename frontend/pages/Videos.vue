@@ -42,6 +42,14 @@ export default {
 			grid-template-columns: 25% 25% 25% 25%;
 			grid-auto-flow: row;
 
+			@media only screen and (max-width: 1000px) {
+				grid-template-columns: 50% 50%;
+			}
+
+			@media only screen and (max-width: 550px) {
+				grid-template-columns: 100%;
+			}
+
 			.video {
 				margin: 10px;
 				-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
