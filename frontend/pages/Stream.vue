@@ -11,11 +11,6 @@ export default {
 	data () {
 		return { player: null }
 	},
-	computed: {
-		twitch () {
-			return this.$store.getters.getCache("twitch")
-		}
-	},
 	created () {
 		var embeds = document.createElement("script");
 		embeds.setAttribute("src", "https://embed.twitch.tv/embed/v1.js");

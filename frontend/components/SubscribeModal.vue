@@ -3,7 +3,7 @@
 		<div class="modal-mask" @click="$emit('close')">
 			<div class="modal-wrapper">
 				<div class="modal-container" @click.stop>
-					<p style="display: none;">{{ product = twitch.data.user.subscriptionProducts[selected] }}</p>
+					<p style="display: none;">{{ product = twitch.user.subscriptionProducts[selected] }}</p>
 					<div class="modal-header">
 						<h2>{{ product.displayName }}</h2>
 						<div v-on:click="popout(product.url)">Continue to Twitch</div>
@@ -22,8 +22,8 @@
 						<div class="right">
 							<h5>Subscriber Badges:</h5>
 							<div class="flex-parent">
-								<!-- <pre v-text="JSON.stringify(twitch.data.user.broadcastBadges, null, 4)"></pre> -->
-								<div v-for="badge in twitch.data.user.broadcastBadges" v-if="badge.setID == 'subscriber'" v-bind:key="badge.imageURL" class="ToolTipContainer" :style="`order: ${order(badge.description)}`">
+								<!-- <pre v-text="JSON.stringify(twitch.user.broadcastBadges, null, 4)"></pre> -->
+								<div v-for="badge in twitch.user.broadcastBadges" v-if="badge.setID == 'subscriber'" v-bind:key="badge.imageURL" class="ToolTipContainer" :style="`order: ${order(badge.description)}`">
 									<img :src="badge.imageURL.replace('/1', '/3')" :alt="badge.description" />
 									<ToolTip direction="badges"><p>{{ badge.description }}</p></ToolTip>
 								</div>
@@ -38,7 +38,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<div class="type" :class="{ active: selected == index }" v-for="(product, index) in twitch.data.user.subscriptionProducts" v-bind:key="index" v-on:click="selected = index">
+						<div class="type" :class="{ active: selected == index }" v-for="(product, index) in twitch.user.subscriptionProducts" v-bind:key="index" v-on:click="selected = index">
 							<p>Tier {{ index + 1 }} <span v-text="product.price"></span></p>
 						</div>
 					</div>
@@ -80,13 +80,11 @@ export default {
 		}
 	},
 	computed: {
-		twitch () {
-			return this.$store.getters.getCache("twitch")
-		},
+		twitch () { return this.$store.state.me },
 		emotes () {
 			var emotes = []
 
-			for (const [i, tier] of this.twitch.data.user.subscriptionProducts.entries()) {
+			for (const [i, tier] of this.twitch.user.subscriptionProducts.entries()) {
 				if (i > this.selected) break;
 				emotes.push(...tier.emotes)
 			}

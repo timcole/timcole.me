@@ -1,8 +1,8 @@
 <template>
 	<div id="Videos">
 		<div class="header"><Header class="container"></Header></div>
-		<div class="videos container" v-if="twitch && twitch.data.user.videos.totalCount > 0">
-			<div class="video" v-for="stream in twitch.data.user.videos.edges" v-bind:key="stream.node.id">
+		<div class="videos container" v-if="twitch && twitch.user.videos.totalCount > 0">
+			<div class="video" v-for="stream in twitch.user.videos.edges" v-bind:key="stream.node.id">
 				<a :href="`https://www.twitch.tv/videos/${stream.node.id}`" target="_blank">
 					<img class="thumbnail" :src="stream.node.previewThumbnailURL.replace('{width}', '1280').replace('{height}', '720')" alt="" />
 					<div class="meta">
@@ -20,9 +20,7 @@
 export default {
 	name: "Videos",
 	computed: {
-		twitch () {
-			return this.$store.getters.getCache("twitch")
-		}
+		twitch () { return this.$store.state.me }
 	}
 }
 </script>

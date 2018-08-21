@@ -22,36 +22,9 @@ Vue.component("Footer", Footer);
 const store = new Vuex.Store({
 	state: {
 		cdn: "https://cdn.tcole.me",
-		_CLIENT_ID: "xbxtltofdtemb8hkchrsc1ijukifp0",
-		gqlCache: []
-	},
-	mutations: {
-		async gql(state, { key, query }) {
-			if (!key) throw new Error("Missing GQL Cache Key");
-			var body = JSON.stringify(query);
-
-			var data = await fetch(`https://gql.twitch.tv/gql`, {
-				method: "POST",
-				headers: {
-					"Client-ID": state._CLIENT_ID
-				},
-				body
-			}).then(resp => resp.json());
-
-			var update = state.gqlCache.findIndex(e => {
-				return e.key === key;
-			});
-			var index = (update != -1 ? update : state.gqlCache.length);
-
-			Vue.set(state.gqlCache, index, { key, query, data: data.data })
-		}
+		me: null,
 	},
 	getters: {
-		getCache: (state) => (key) => {
-			return state.gqlCache.find(e => {
-				return e.key === key;
-			});
-		},
 		cdn: (state) => (file) => {
 			return `${state.cdn}/${file}`
 		}
@@ -74,6 +47,9 @@ const router = new VueRouter({
 	],
 	mode: 'history'
 })
+
+import client from './graphql-client';
+Vue.mixin({ data: client })
 
 new Vue({
 	el: '#app',

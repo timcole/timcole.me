@@ -6,11 +6,13 @@
 </template>
 
 <script>
+import { print } from 'graphql/language/printer';
+import meQuery from "./queries/me.gql"
+
 export default {
 	name: 'Main',
 	async created () {
-		const twitch = {"query":"query {\n\tuser(login: \"modesttim\") {\n\t\tid\n\t\tlogin\n\t\tdisplayName\n\t\tfollowers {\n\t\t\ttotalCount\n\t\t}\n\t\tbroadcastSettings {\n\t\t\tgame {\n\t\t\t\tid\n\t\t\t\tname\n\t\t\t\tdisplayName\n\t\t\t\tboxArtURL\n\t\t\t}\n\t\t\ttitle\n\t\t}\n\t\tstream {\n\t\t\tid\n\t\t\tpreviewImageURL\n\t\t\tviewersCount\n\t\t}\n\t\tbroadcastBadges {\n\t\t\tsetID\n\t\t\tdescription\n\t\t\timageURL\n\t\t}\n\t\tsubscriptionProducts {\n\t\t\tdisplayName\n\t\t\temotes {\n\t\t\t\tid\n\t\t\t\tsetID\n\t\t\t\ttoken\n\t\t\t}\n\t\t\tprice\n\t\t\turl\n\t\t\thasAdFree\n\t\t\thasFastChat\n\t\t}\n\t\tvideos {\n\t\t\ttotalCount\n\t\t\tedges {\n\t\t\t\tnode {\n\t\t\t\t\tid\n\t\t\t\t\ttitle\n\t\t\t\t\tdescription\n\t\t\t\t\tcreatedAt\n\t\t\t\t\tlengthSeconds\n\t\t\t\t\tpreviewThumbnailURL\n\t\t\t\t\tanimatedPreviewURL\n\t\t\t\t\tupvotes\n\t\t\t\t\ttags\n\t\t\t\t\tgame {\n\t\t\t\t\t\tid\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tboxArtURL\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n "}
-		this.$store.commit('gql', { key: "twitch", query: twitch })
+		this.$store.state.me = await this.graphql(print(meQuery)).then(data => data)
 	}
 }
 </script>

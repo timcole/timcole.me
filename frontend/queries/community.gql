@@ -1,0 +1,32 @@
+query {
+	community(name: "programming") {
+		displayName
+		description
+		rules
+		followersCount
+		viewersCount
+		streams {
+			edges {
+				node {
+					broadcaster {
+						displayName
+						login
+						profileImageURL(width: 50)
+						broadcastSettings {
+							game {
+								boxArtURL
+								displayName
+								
+							}
+							title
+							language
+							isMature
+						}
+					}
+					viewersCount
+					previewImageURL
+				}
+			}
+		}
+	}
+}

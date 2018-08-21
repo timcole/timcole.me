@@ -1,0 +1,62 @@
+query {
+	user(login: "modesttim") {
+		id
+		login
+		displayName
+		followers {
+			totalCount
+		}
+		broadcastSettings {
+			game {
+				id
+				name
+				displayName
+				boxArtURL
+			}
+			title
+		}
+		stream {
+			id
+			previewImageURL
+			viewersCount
+		}
+		broadcastBadges {
+			setID
+			description
+			imageURL
+		}
+		subscriptionProducts {
+			displayName
+			emotes {
+				id
+				setID
+				token
+			}
+			price
+			url
+			hasAdFree
+			hasFastChat
+		}
+		videos {
+			totalCount
+			edges {
+				node {
+					id
+					title
+					description
+					createdAt
+					lengthSeconds
+					previewThumbnailURL
+					animatedPreviewURL
+					upvotes
+					tags
+					game {
+						id
+						displayName
+						boxArtURL
+					}
+				}
+			}
+		}
+	}
+}

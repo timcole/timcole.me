@@ -13,7 +13,7 @@
 					After hating school for my entire life, when I was 17 in freshmen year, I decided to drop out to pursue my career as a web developer.<br><br>
 					Now I'm fluent in CSS, HTML, JS, Golang, NodeJS, and PHP with a touch of Python and Java (Android Development), currently working as QA and Development at <a href="https://socialblade.com/info/team" target="_blank">SocialBlade</a>.</p>
 
-					<a href="https://www.twitch.tv/modesttim" target="_blank"><div class="twitch">Follow me on Twitch <span v-if="twitch" v-text="twitch.data.user.followers.totalCount.toLocaleString()"></span></div></a>
+					<a href="https://www.twitch.tv/modesttim" target="_blank"><div class="twitch">Follow me on Twitch <span v-if="twitch" v-text="twitch.user.followers.totalCount.toLocaleString()"></span></div></a>
 				</div>
 				<div class="right">
 					<img src="https://cdn.tcole.me/themodestland-dark.png" alt="">
@@ -28,9 +28,7 @@
 export default {
 	name: 'HomePage',
 	computed: {
-		twitch () {
-			return this.$store.getters.getCache("twitch")
-		}
+		twitch () { return this.$store.state.me }
 	}
 }
 </script>
