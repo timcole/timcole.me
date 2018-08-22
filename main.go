@@ -9,12 +9,14 @@ import (
 	config "github.com/TimothyCole/timcole.me/settings"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/machinebox/graphql"
 	"google.golang.org/appengine"
 )
 
 var (
 	router   = mux.NewRouter()
 	settings = config.InitSettings()
+	gql      = graphql.NewClient("https://gql.twitch.tv/gql")
 )
 
 func main() {
@@ -48,6 +50,7 @@ func main() {
 	// Public Stream API Router
 	var stream = api.PathPrefix("/stream").Subrouter()
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
+	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
