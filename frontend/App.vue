@@ -1,7 +1,6 @@
 <template>
 	<div id="app">
 		<router-view class="page"></router-view>
-		<TheModestLand></TheModestLand>
 	</div>
 </template>
 

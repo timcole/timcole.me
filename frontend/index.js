@@ -9,13 +9,11 @@ Vue.use(Vuex);
 
 import Header from './components/Header.vue';
 import SubscribeModal from './components/SubscribeModal.vue';
-import TheModestLand from './components/TheModestLand.vue';
 import ToolTip from './components/ToolTip.vue';
 import Footer from './components/Footer.vue';
 
 Vue.component("Header", Header);
 Vue.component("SubscribeModal", SubscribeModal);
-Vue.component("TheModestLand", TheModestLand);
 Vue.component("ToolTip", ToolTip);
 Vue.component("Footer", Footer);
 
