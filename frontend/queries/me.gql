@@ -1,4 +1,4 @@
-{
+query {
 	user(login: "modesttim") {
 		id
 		login
@@ -40,7 +40,7 @@
 			hasAdFree
 			hasFastChat
 		}
-		videos {
+		videos(first: 100) {
 			totalCount
 			edges {
 				node {
