@@ -37,6 +37,6 @@ func SetStreamMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	settings.Set("STREAM_MESSAGE", []byte(body.Message))
+	settings.Set("STREAM_MESSAGE", body.Message)
 	GetStreamMessage(w, r)
 }

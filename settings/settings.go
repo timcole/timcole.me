@@ -14,7 +14,7 @@ type Settings struct {
 }
 
 type rawKVS struct {
-	Key   string `datastore:"key"`
+	Key   string
 	Value string `datastore:"value"`
 }
 
@@ -39,10 +39,10 @@ func (s *Settings) Load() map[string]string {
 	}
 
 	query := datastore.NewQuery("Settings")
-	_, err = client.GetAll(ctx, query, &rawkvs)
+	keys, err := client.GetAll(ctx, query, &rawkvs)
 
-	for _, r := range rawkvs {
-		kvs[r.Key] = r.Value
+	for i, r := range keys {
+		kvs[r.Name] = rawkvs[i].Value
 	}
 
 	s.mutex.Lock()
@@ -58,7 +58,7 @@ func (s *Settings) Get(key string) string {
 }
 
 // Set sets the value from a key
-func (s *Settings) Set(key string, value []byte) string {
+func (s *Settings) Set(key, value string) string {
 	ctx := context.Background()
 
 	client, err := datastore.NewClient(ctx, "timcole-me")
@@ -66,16 +66,13 @@ func (s *Settings) Set(key string, value []byte) string {
 		panic(err)
 	}
 
-	testKey := datastore.IncompleteKey("Settings", nil)
-	entry := rawKVS{
-		Key:   key,
-		Value: string(value),
-	}
-
-	client.Put(ctx, testKey, &entry)
+	nameKey := datastore.NameKey("Settings", key, nil)
+	client.Put(ctx, nameKey, &struct {
+		Value string `datastore:"value"`
+	}{Value: value})
 
 	s.mutex.Lock()
-	s.kvs[key] = string(value)
+	s.kvs[key] = value
 	s.mutex.Unlock()
 
 	return s.Get(key)
