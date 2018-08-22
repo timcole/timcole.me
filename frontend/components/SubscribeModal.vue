@@ -22,7 +22,6 @@
 						<div class="right">
 							<h5>Subscriber Badges:</h5>
 							<div class="flex-parent">
-								<!-- <pre v-text="JSON.stringify(twitch.user.broadcastBadges, null, 4)"></pre> -->
 								<div v-for="badge in twitch.user.broadcastBadges" v-if="badge.setID == 'subscriber'" v-bind:key="badge.imageURL" class="ToolTipContainer" :style="`order: ${order(badge.description)}`">
 									<img :src="badge.imageURL.replace('/1', '/3')" :alt="badge.description" />
 									<ToolTip direction="badges"><p>{{ badge.description }}</p></ToolTip>
@@ -39,7 +38,7 @@
 
 					<div class="modal-footer">
 						<div class="type" :class="{ active: selected == index }" v-for="(product, index) in twitch.user.subscriptionProducts" v-bind:key="index" v-on:click="selected = index">
-							<p>Tier {{ index + 1 }} <span v-text="product.price"></span></p>
+							<p>Tier {{ index + 1 }} <span v-text="`$${(product.priceInfo.total / 100).toFixed(2)}`"></span></p>
 						</div>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-query {
+{
 	user(login: "modesttim") {
 		id
 		login
@@ -32,7 +32,10 @@ query {
 				setID
 				token
 			}
-			price
+			priceInfo {
+				currency
+				total
+			}
 			url
 			hasAdFree
 			hasFastChat
@@ -48,7 +51,6 @@ query {
 					lengthSeconds
 					previewThumbnailURL
 					animatedPreviewURL
-					upvotes
 					tags
 					game {
 						id
