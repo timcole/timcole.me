@@ -44,6 +44,7 @@ export default {
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
+		overflow: hidden;
 	}
 
 	.gradient {
@@ -53,13 +54,12 @@ export default {
 		background: linear-gradient(-55deg, rgba(36,39,48,0.9) 0%, rgba(50,59,72,0.9) 100%);
 		display: flex;
 		flex-direction: column;
-		overflow: hidden;
+		overflow: hidden auto;
 
 		.billboard {
 			display: flex;
 			flex: 2 0px;
 			align-items: center;
-			overflow: hidden auto;
 
 			@media only screen and (max-width: 845px), (max-height: 675px) {
 				align-items: top;
