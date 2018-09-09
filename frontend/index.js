@@ -7,6 +7,13 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTwitch, faTwitter, faGithub, faInstagram, faDiscord } from '@fortawesome/free-brands-svg-icons';
+library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord);
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+Vue.component('icon', FontAwesomeIcon);
+
 import Header from './components/Header.vue';
 import SubscribeModal from './components/SubscribeModal.vue';
 import ToolTip from './components/ToolTip.vue';

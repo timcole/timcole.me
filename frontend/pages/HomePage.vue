@@ -22,9 +22,12 @@
 
 				</div>
 				<div class="right">
-					<a href="https://www.twitch.tv/modesttim" target="_blank"><div class="button twitch">Follow me on Twitch <span v-if="twitch" v-text="twitch.user.followers.totalCount.toLocaleString()"></span></div></a>
 					<a v-for="social in socials" :href="social[1]" target="_blank" v-bind:key="social[2]+social[0]">
-						<div :class="`button ${social[2]}`">{{social[0]}} <span style="display: none;">{{social[2]}}</span></div>
+						<div :class="`button ${social[2]}`">
+							<icon :icon="['fab', social[2]]"></icon>
+							{{social[0]}}
+							<span v-if="social[3]" v-text="social[3]"></span>
+						</div>
 					</a>
 				</div>
 			</div>
@@ -36,18 +39,18 @@
 <script>
 export default {
 	name: 'HomePage',
-	data () {
-		return {
-			socials: [
+	computed: {
+		twitch () { return this.$store.state.me },
+		socials () {
+			return [
+				[ "Follow me on Twitch", "https://www.twitch.tv/modesttim", "twitch",
+					this.twitch ? this.twitch.user.followers.totalCount.toLocaleString() : null ],
 				[ "Follow on Twitter", "https://twitter.com/modesttim", "twitter" ],
-				[ "Check out my GitHub", "https://twitter.com/modesttim", "github" ],
-				[ "View my Instagram", "https://twitter.com/modesttim", "instagram" ],
-				[ "Join us on Discord", "https://twitter.com/modesttim", "discord" ],
+				[ "Check out my GitHub", "https://github.com/TimothyCole", "github" ],
+				[ "View my Instagram", "https://instagram.com/modesttim", "instagram" ],
+				[ "Join us on Discord", "https://modest.land/discord", "discord" ],
 			]
 		}
-	},
-	computed: {
-		twitch () { return this.$store.state.me }
 	}
 }
 </script>
@@ -129,6 +132,8 @@ export default {
 						vertical-align: middle;
 						background: rgba(0, 0, 0, 0.15);
 						border: 1px solid rgba(0, 0, 0, 0.2);
+
+						svg { padding-right: 9px; }
 
 						span {
 							float: right;
