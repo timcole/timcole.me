@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/datastore"
 	jwt "github.com/dgrijalva/jwt-go"
@@ -22,12 +23,12 @@ type Login struct {
 
 // Admin is the struction of an admin
 type Admin struct {
-	Name               string          `datastore:"name" json:"username"`
-	PasswordHash       string          `datastore:"password" json:"-"`
-	Permissions        map[string]bool `json:"permissions"`
-	PermissionsString  string          `datastore:"permissions" json:"-"`
-	JWT                string          `json:"jwt,omitempty"`
-	jwt.StandardClaims `json:"-"`
+	Name              string          `datastore:"name" json:"username"`
+	PasswordHash      string          `datastore:"password" json:"-"`
+	Permissions       map[string]bool `json:"permissions"`
+	PermissionsString string          `datastore:"permissions" json:"-"`
+	JWT               string          `json:"jwt,omitempty"`
+	jwt.StandardClaims
 }
 
 // Access checks if an admin has permission to access a key
@@ -112,6 +113,8 @@ func AdminAuth(w http.ResponseWriter, r *http.Request) {
 		admin.Permissions[v] = true
 	}
 
+	// Expire in a week
+	admin.ExpiresAt = time.Now().UTC().Add((24 * time.Hour) * 7).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, admin)
 
 	// Sign and get the complete encoded token as a string using the secret
