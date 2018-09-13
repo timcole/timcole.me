@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/TimothyCole/timcole.me/commands"
 	config "github.com/TimothyCole/timcole.me/settings"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -16,6 +17,7 @@ import (
 var (
 	router   = mux.NewRouter()
 	settings = config.InitSettings()
+	weetbot  = commands.InitCommands()
 	gql      = graphql.NewClient("https://gql.twitch.tv/gql")
 )
 
@@ -51,11 +53,12 @@ func main() {
 	var stream = api.PathPrefix("/stream").Subrouter()
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
 	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
+	stream.HandleFunc("/{channel:[0-9]+}/commands", GetCommands).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
 	admin.Use(AdminMiddleWare)
-	admin.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
+	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
 	// Admin Stream API Router
 	var streamAdmin = admin.PathPrefix("/stream").Subrouter()
 	streamAdmin.HandleFunc("/message", SetStreamMessage).Methods("POST")
