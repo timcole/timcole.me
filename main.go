@@ -54,6 +54,7 @@ func main() {
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
 	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
 	stream.HandleFunc("/{channel:[0-9]+}/commands", GetCommands).Methods("GET")
+	stream.HandleFunc("/{channel:[0-9]+}/commands/{command}", GetChannelCommand).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
