@@ -16,6 +16,7 @@ import (
 
 var (
 	router   = mux.NewRouter()
+	tcoleme  = router.Host("tcole.me").Subrouter()
 	settings = config.InitSettings()
 	weetbot  = commands.InitCommands()
 	gql      = graphql.NewClient("https://gql.twitch.tv/gql")
@@ -64,6 +65,9 @@ func main() {
 	// Admin Stream API Router
 	var streamAdmin = admin.PathPrefix("/stream").Subrouter()
 	streamAdmin.HandleFunc("/message", SetStreamMessage).Methods("POST")
+
+	// tcole.me Handlers
+	tcoleme.HandleFunc("/twitch-stats", TwitchStats).Methods("GET")
 
 	// API 404 Handler
 	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
