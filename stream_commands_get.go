@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/TimothyCole/timcole.me/commands"
+	"github.com/TimothyCole/timcole.me/pkg/commands"
 
 	"github.com/gorilla/mux"
 )

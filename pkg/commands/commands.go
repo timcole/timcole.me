@@ -2,6 +2,7 @@ package commands
 
 import (
 	"context"
+	"fmt"
 	"sync"
 
 	"cloud.google.com/go/datastore"
@@ -21,7 +22,7 @@ type Command struct {
 	Response  string `json:"response" datastore:"response"`
 	Cooldown  int    `json:"cooldown" datastore:"cooldown"`
 	Userlevel int    `json:"userlevel" datastore:"userlevel"`
-	Point     int    `json:"point" datastore:"point"`
+	Points    int    `json:"points" datastore:"points"`
 	Hidden    bool   `json:"hidden" datastore:"hidden"`
 }
 
@@ -71,4 +72,29 @@ func (c *Commands) GetChannel(channel int) []Command {
 	}
 
 	return commands
+}
+
+// SetChannel sets a command for a given channel
+func (c *Commands) SetChannel(command Command) Command {
+	ctx := context.Background()
+
+	client, err := datastore.NewClient(ctx, "timcole-me")
+	if err != nil {
+		panic(err)
+	}
+
+	key := datastore.IncompleteKey("WeetBot::Commands", nil)
+	_, err = client.Put(ctx, key, &command)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println(err)
+		fmt.Println(err)
+		fmt.Println(err)
+	}
+
+	c.mutex.Lock()
+	c.commands[command.Channel] = append(c.commands[command.Channel], command)
+	c.mutex.Unlock()
+
+	return command
 }

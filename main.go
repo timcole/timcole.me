@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/TimothyCole/timcole.me/commands"
-	config "github.com/TimothyCole/timcole.me/settings"
+	"github.com/TimothyCole/timcole.me/pkg/commands"
+	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/machinebox/graphql"
@@ -54,6 +54,7 @@ func main() {
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
 	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
 	stream.HandleFunc("/{channel:[0-9]+}/commands", GetCommands).Methods("GET")
+	stream.Handle("/{channel:[0-9]+}/commands", AdminMiddleWare(http.HandlerFunc(SetChannelCommand))).Methods("POST")
 	stream.HandleFunc("/{channel:[0-9]+}/commands/{command}", GetChannelCommand).Methods("GET")
 
 	// Admin API Router
