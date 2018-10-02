@@ -67,6 +67,12 @@ func main() {
 	streamAdmin.HandleFunc("/message", SetStreamMessage).Methods("POST")
 
 	// tcole.me Handlers
+	tcoleme.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			r.Header.Set("Access-Control-Allow-Origin", "*")
+			next.ServeHTTP(w, r)
+		})
+	})
 	tcoleme.HandleFunc("/twitch-stats", TwitchStats).Methods("GET")
 
 	// API 404 Handler
