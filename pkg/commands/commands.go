@@ -17,6 +17,7 @@ type Commands struct {
 
 // Command is a weetbot command
 type Command struct {
+	DBKey     int64  `json:"-" datastore:"-"`
 	Channel   int    `json:"channel" datastore:"channel"`
 	Command   string `json:"command" datastore:"command"`
 	Response  string `json:"response" datastore:"response"`
@@ -46,10 +47,11 @@ func (c *Commands) Load() map[int][]Command {
 	}
 
 	query := datastore.NewQuery("WeetBot::Commands")
-	_, err = client.GetAll(c.ctx, query, &rawCommands)
+	keys, err := client.GetAll(c.ctx, query, &rawCommands)
 
-	for _, command := range rawCommands {
-		commands[command.Channel] = append(commands[command.Channel], command)
+	for i, r := range keys {
+		rawCommands[i].DBKey = r.ID
+		commands[rawCommands[i].Channel] = append(commands[rawCommands[i].Channel], rawCommands[i])
 	}
 
 	c.mutex.Lock()
@@ -84,17 +86,47 @@ func (c *Commands) SetChannel(command Command) Command {
 	}
 
 	key := datastore.IncompleteKey("WeetBot::Commands", nil)
-	_, err = client.Put(ctx, key, &command)
+	key, err = client.Put(ctx, key, &command)
 	if err != nil {
-		fmt.Println(err)
-		fmt.Println(err)
-		fmt.Println(err)
-		fmt.Println(err)
+		fmt.Println(`Error Creating Command`, command, err)
+		return Command{}
 	}
 
 	c.mutex.Lock()
+	command.DBKey = key.ID
 	c.commands[command.Channel] = append(c.commands[command.Channel], command)
 	c.mutex.Unlock()
 
 	return command
+}
+
+// DeleteCommand a command for a given channel
+func (c *Commands) DeleteCommand(command Command) bool {
+	ctx := context.Background()
+
+	client, err := datastore.NewClient(ctx, "timcole-me")
+	if err != nil {
+		panic(err)
+	}
+
+	key := datastore.IDKey("WeetBot::Commands", command.DBKey, nil)
+	err = client.Delete(ctx, key)
+	if err != nil {
+		fmt.Println(`Error Deleting Command`, command, err)
+		return false
+	}
+
+	var tempCommands []Command
+	var commands = c.commands[command.Channel]
+	for i := range commands {
+		if commands[i] == command {
+			tempCommands = append(commands[:i], commands[i+1:]...)
+			break
+		}
+	}
+	c.mutex.Lock()
+	c.commands[command.Channel] = tempCommands
+	c.mutex.Unlock()
+
+	return true
 }

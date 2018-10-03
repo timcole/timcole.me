@@ -56,6 +56,7 @@ func main() {
 	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
 	stream.HandleFunc("/{channel:[0-9]+}/commands", GetCommands).Methods("GET")
 	stream.Handle("/{channel:[0-9]+}/commands", AdminMiddleWare(http.HandlerFunc(SetChannelCommand))).Methods("POST")
+	stream.Handle("/{channel:[0-9]+}/commands/{command}", AdminMiddleWare(http.HandlerFunc(DeleteChannelCommand))).Methods("DELETE")
 	stream.HandleFunc("/{channel:[0-9]+}/commands/{command}", GetChannelCommand).Methods("GET")
 
 	// Admin API Router
