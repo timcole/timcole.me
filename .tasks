@@ -6,7 +6,7 @@ General:
 		✔ Endpoint to GET all commands @done (10/2/2018, 4:51:19 PM)
 		✔ Endpoint to GET a command @done (10/2/2018, 4:51:18 PM)
 		✔ Endpoint to POST a command @done (10/2/2018, 5:39:05 PM)
-		☐ Endpoint to DELETE a command
+		✔ Endpoint to DELETE a command @done (10/3/2018, 3:00:46 PM)
 		✔ Endpoint to GET the global and subscription emotes for the commands page @done (8/21/2018, 9:25:29 PM)
 		✔ Make badges on Sub Modal in order @done (2018-7-22 07:47:04)
 		✔ Waiting message GET endpoint @done (8/19/2018, 5:26:40 PM)
