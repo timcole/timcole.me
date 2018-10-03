@@ -8,6 +8,7 @@ import (
 
 	"github.com/TimothyCole/timcole.me/pkg/commands"
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
+	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/machinebox/graphql"
@@ -50,7 +51,7 @@ func main() {
 	})
 	api.HandleFunc("/login", AdminAuth).Methods("POST")
 
-	// Public Stream API Router
+	// Stream API Router
 	var stream = api.PathPrefix("/stream").Subrouter()
 	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
 	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
@@ -58,6 +59,11 @@ func main() {
 	stream.Handle("/{channel:[0-9]+}/commands", AdminMiddleWare(http.HandlerFunc(SetChannelCommand))).Methods("POST")
 	stream.Handle("/{channel:[0-9]+}/commands/{command}", AdminMiddleWare(http.HandlerFunc(DeleteChannelCommand))).Methods("DELETE")
 	stream.HandleFunc("/{channel:[0-9]+}/commands/{command}", GetChannelCommand).Methods("GET")
+
+	// Spotify API Router
+	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
+	var spotify = spotifypkg.NewSpotify(settings)
+	spotifyAPI.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()

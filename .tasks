@@ -17,7 +17,7 @@ General:
 			Spotify:
 				☐ Authentication
 					https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L127
-				☐ Automatically refresh the token when it is expired
+				✔ Automatically refresh the token when it is expired @done (10/3/2018, 5:04:01 PM)
 					https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L26
-				☐ Playing endpoint to display the status of https://api.spotify.com/v1/me/player
+				✔ Playing endpoint to display the status of https://api.spotify.com/v1/me/player @done (10/3/2018, 5:04:03 PM)
 					https://github.com/TimothyCole/timcole.me-OLD/blob/master/routes/api/spotify.js#L84
