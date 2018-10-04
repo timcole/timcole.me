@@ -6,9 +6,11 @@ import (
 	"os"
 	"strings"
 
+	"github.com/TimothyCole/timcole.me/pkg"
 	"github.com/TimothyCole/timcole.me/pkg/commands"
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
+	streampkg "github.com/TimothyCole/timcole.me/pkg/stream"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/machinebox/graphql"
@@ -25,6 +27,8 @@ var (
 )
 
 func main() {
+	pkg.SetSettings(settings)
+
 	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
 	router.PathPrefix("/assets").Handler(static)
 
@@ -51,16 +55,17 @@ func main() {
 			next.ServeHTTP(w, r)
 		})
 	})
-	api.HandleFunc("/login", AdminAuth).Methods("POST")
+	api.HandleFunc("/login", pkg.AdminAuth).Methods("POST")
 
 	// Stream API Router
-	var stream = api.PathPrefix("/stream").Subrouter()
-	stream.HandleFunc("/message", GetStreamMessage).Methods("GET")
-	stream.HandleFunc("/emotes", GetEmotes).Methods("GET")
-	stream.HandleFunc("/{channel:[0-9]+}/commands", GetCommands).Methods("GET")
-	stream.Handle("/{channel:[0-9]+}/commands", AdminMiddleWare(http.HandlerFunc(SetChannelCommand))).Methods("POST")
-	stream.Handle("/{channel:[0-9]+}/commands/{command}", AdminMiddleWare(http.HandlerFunc(DeleteChannelCommand))).Methods("DELETE")
-	stream.HandleFunc("/{channel:[0-9]+}/commands/{command}", GetChannelCommand).Methods("GET")
+	var streamAPI = api.PathPrefix("/stream").Subrouter()
+	stream := streampkg.NewStream(settings, gql, weetbot)
+	streamAPI.HandleFunc("/message", stream.GetStreamMessage).Methods("GET")
+	streamAPI.HandleFunc("/emotes", stream.GetEmotes).Methods("GET")
+	streamAPI.HandleFunc("/{channel:[0-9]+}/commands", stream.GetCommands).Methods("GET")
+	streamAPI.Handle("/{channel:[0-9]+}/commands", pkg.AdminMiddleWare(http.HandlerFunc(stream.SetChannelCommand))).Methods("POST")
+	streamAPI.Handle("/{channel:[0-9]+}/commands/{command}", pkg.AdminMiddleWare(http.HandlerFunc(stream.DeleteChannelCommand))).Methods("DELETE")
+	streamAPI.HandleFunc("/{channel:[0-9]+}/commands/{command}", stream.GetChannelCommand).Methods("GET")
 
 	// Spotify API Router
 	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
@@ -69,11 +74,11 @@ func main() {
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
-	admin.Use(AdminMiddleWare)
+	admin.Use(pkg.AdminMiddleWare)
 	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
 	// Admin Stream API Router
 	var streamAdmin = admin.PathPrefix("/stream").Subrouter()
-	streamAdmin.HandleFunc("/message", SetStreamMessage).Methods("POST")
+	streamAdmin.HandleFunc("/message", stream.SetStreamMessage).Methods("POST")
 
 	// tcole.me Handlers
 	tcoleme.HandleFunc("/twitch-stats", TwitchStats).Methods("GET")

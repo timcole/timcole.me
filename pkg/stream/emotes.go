@@ -1,4 +1,4 @@
-package main
+package stream
 
 import (
 	"context"
@@ -30,7 +30,7 @@ type GQLEmotes struct {
 }
 
 // GetEmotes returns WeetBot's Twitch emotes
-func GetEmotes(w http.ResponseWriter, r *http.Request) {
+func (c *Client) GetEmotes(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.BackgroundContext()
 	cacheKey := "WeetBot::Emotes"
 	var data GQLEmotes
@@ -67,9 +67,9 @@ func GetEmotes(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	`)
-	req.Header.Set("Authorization", "OAuth "+settings.Get("TWITCH_OAUTH_TOKEN"))
+	req.Header.Set("Authorization", "OAuth "+c.Settings.Get("TWITCH_OAUTH_TOKEN"))
 
-	if err := gql.Run(context.Background(), req, &data); err != nil {
+	if err := c.GraphQL.Run(context.Background(), req, &data); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"status": 500, "error": "StatusInternalServerError"}`))
 		log.Fatal(err)

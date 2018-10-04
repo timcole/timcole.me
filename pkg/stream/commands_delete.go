@@ -1,21 +1,22 @@
-package main
+package stream
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/TimothyCole/timcole.me/pkg"
 	gctx "github.com/gorilla/context"
 	"github.com/gorilla/mux"
 )
 
 // DeleteChannelCommand allows an auth'ed admin/app create/update a command
-func DeleteChannelCommand(w http.ResponseWriter, r *http.Request) {
+func (c *Client) DeleteChannelCommand(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	channel, _ := strconv.Atoi(vars["channel"])
 	command, _ := vars["command"]
 
-	var admin = gctx.Get(r, "Admin").(*Admin)
+	var admin = gctx.Get(r, "Admin").(*pkg.Admin)
 	// Do they have permissions to manage stream commands for either all channels or the selected one?
 	if !admin.Access("MANAGE_STREAM_COMMANDS::*") && !admin.Access("MANAGE_STREAM_COMMANDS::"+vars["channel"]) {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -30,14 +31,14 @@ func DeleteChannelCommand(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var commands = weetbot.GetChannel(channel)
+	var commands = c.WeetBot.GetChannel(channel)
 	var removed = 0
 	for _, channelCommand := range commands {
 		if command != channelCommand.Command {
 			continue
 		}
 
-		weetbot.DeleteCommand(channelCommand)
+		c.WeetBot.DeleteCommand(channelCommand)
 		removed++
 	}
 

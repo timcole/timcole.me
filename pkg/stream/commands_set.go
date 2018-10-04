@@ -1,4 +1,4 @@
-package main
+package stream
 
 import (
 	"encoding/json"
@@ -6,17 +6,18 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/TimothyCole/timcole.me/pkg"
 	"github.com/TimothyCole/timcole.me/pkg/commands"
 	gctx "github.com/gorilla/context"
 	"github.com/gorilla/mux"
 )
 
 // SetChannelCommand allows an auth'ed admin/app create/update a command
-func SetChannelCommand(w http.ResponseWriter, r *http.Request) {
+func (c *Client) SetChannelCommand(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	channel, _ := strconv.Atoi(vars["channel"])
 
-	var admin = gctx.Get(r, "Admin").(*Admin)
+	var admin = gctx.Get(r, "Admin").(*pkg.Admin)
 	// Do they have permissions to manage stream commands for either all channels or the selected one?
 	if !admin.Access("MANAGE_STREAM_COMMANDS::*") && !admin.Access("MANAGE_STREAM_COMMANDS::"+vars["channel"]) {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -37,7 +38,7 @@ func SetChannelCommand(w http.ResponseWriter, r *http.Request) {
 
 	resp, _ := json.Marshal(struct {
 		Data commands.Command `json:"data"`
-	}{Data: weetbot.SetChannel(command)})
+	}{Data: c.WeetBot.SetChannel(command)})
 
 	w.Write(resp)
 }

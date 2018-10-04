@@ -1,24 +1,25 @@
-package main
+package stream
 
 import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/TimothyCole/timcole.me/pkg"
 	gctx "github.com/gorilla/context"
 )
 
 // GetStreamMessage is used to get the waiting message that is displayed on stream
-func GetStreamMessage(w http.ResponseWriter, r *http.Request) {
+func (c *Client) GetStreamMessage(w http.ResponseWriter, r *http.Request) {
 	resp, _ := json.Marshal(struct {
 		Message string `json:"messsage"`
-	}{Message: settings.Get("STREAM_MESSAGE")})
+	}{Message: c.Settings.Get("STREAM_MESSAGE")})
 	w.Write(resp)
 }
 
 // SetStreamMessage is used to set the waiting message that is displayed on stream
-func SetStreamMessage(w http.ResponseWriter, r *http.Request) {
-	var admin = gctx.Get(r, "Admin").(*Admin)
+func (c *Client) SetStreamMessage(w http.ResponseWriter, r *http.Request) {
+	var admin = gctx.Get(r, "Admin").(*pkg.Admin)
 	if !admin.Access("SET_STREAM_MESSAGE") {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
@@ -37,6 +38,6 @@ func SetStreamMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	settings.Set("STREAM_MESSAGE", body.Message)
-	GetStreamMessage(w, r)
+	c.Settings.Set("STREAM_MESSAGE", body.Message)
+	c.GetStreamMessage(w, r)
 }
