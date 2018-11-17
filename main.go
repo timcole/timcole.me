@@ -89,6 +89,9 @@ func main() {
 		})
 	})
 	tcoleme.HandleFunc("/twitch-stats", TwitchStats).Methods("GET")
+	tcoleme.HandleFunc("/ref/xsplit-vcam", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "https://www.xsplit.com/vcam?utm_medium=referral&utm_source=modesttim", 301)
+	}).Methods("GET")
 
 	// modest.land Handlers
 	modestland.HandleFunc("/discord", DiscordInvite).Methods("GET")
