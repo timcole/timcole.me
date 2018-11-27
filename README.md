@@ -1,4 +1,4 @@
-# Personal Website [<img align="right" src="https://cdn.tcole.me/logo.png" height="35">](https://github.com/TimothyCole/timcole.me)
+# Personal Website [<img align="right" src="https://storage.googleapis.com/cdn.tcole.me/logo.png" height="35">](https://github.com/TimothyCole/timcole.me)
 
 [![Build Status](https://travis-ci.com/TimothyCole/timcole.me.svg?branch=master)](https://travis-ci.com/TimothyCole/timcole.me)
 [![Discord](https://img.shields.io/discord/313591755180081153.svg?label=Personal%20Discord&colorB=308bcd&maxAge=3600)](https://discordapp.com/invite/YFtfGwq)
