@@ -1,7 +1,7 @@
 <template>
 	<div id="Header">
 		<div class="left">
-			<router-link to="/" tag="img" src="https://cdn.tcole.me/logo.png" alt="Timothy Cole Logo"></router-link>
+			<router-link to="/" tag="img" src="https://storage.googleapis.com/cdn.tcole.me/logo.png" alt="Timothy Cole Logo"></router-link>
 			<router-link to="/" tag="h4" >Timothy Cole</router-link>
 		</div>
 		<div class="right">

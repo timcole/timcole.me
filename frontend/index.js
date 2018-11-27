@@ -26,7 +26,7 @@ Vue.component("Footer", Footer);
 
 const store = new Vuex.Store({
 	state: {
-		cdn: "https://cdn.tcole.me",
+		cdn: "https://storage.googleapis.com/cdn.tcole.me",
 		me: null,
 	},
 	getters: {

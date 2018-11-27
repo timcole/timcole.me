@@ -1,9 +1,10 @@
 package main
 
 import (
+	"crypto/tls"
 	"html/template"
+	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/TimothyCole/timcole.me/pkg"
@@ -11,10 +12,10 @@ import (
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	streampkg "github.com/TimothyCole/timcole.me/pkg/stream"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/kelseyhightower/gcscache"
 	"github.com/machinebox/graphql"
-	"google.golang.org/appengine"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 var (
@@ -24,6 +25,7 @@ var (
 	settings   = config.InitSettings()
 	weetbot    = commands.InitCommands()
 	gql        = graphql.NewClient("https://gql.twitch.tv/gql")
+	err        error
 )
 
 func main() {
@@ -103,14 +105,30 @@ func main() {
 		w.Write([]byte(`{"status": 404, "error": "StatusNotFound"}`))
 	})
 
-	// Respond to App Engine and Compute Engine health checks.
-	// Indicate the server is healthy.
-	router.HandleFunc("/_ah/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("ok"))
-	}).Methods("GET")
+	// Run HTTP server secondly just in case
+	go func() {
+		err := http.ListenAndServe(":80", router)
+		if err != nil {
+			log.Fatal("[HTTP ListenAndServe Error] ", err)
+		}
+	}()
 
-	// Delegate all of the HTTP routing and serving to the gorilla/mux router.
-	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, router))
+	// Create new Google Cloud Storage Cache
+	var acCache *gcscache.Cache
+	if acCache, err = gcscache.New("timcole-me-autocert"); err != nil {
+		log.Fatal(err)
+	}
+	// Run Autocert for HTTPS Certificate
+	var acManager = autocert.Manager{
+		Cache:      acCache,
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("timcole.me", "tcole.me", "modest.land"),
+	}
 
-	appengine.Main()
+	// Start HTTPS Server
+	panic((&http.Server{
+		Addr:      ":443",
+		Handler:   router,
+		TLSConfig: &tls.Config{GetCertificate: acManager.GetCertificate},
+	}).ListenAndServeTLS("", ""))
 }
