@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"html/template"
 	"log"
 	"net/http"
@@ -13,9 +12,7 @@ import (
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	streampkg "github.com/TimothyCole/timcole.me/pkg/stream"
 	"github.com/gorilla/mux"
-	"github.com/kelseyhightower/gcscache"
 	"github.com/machinebox/graphql"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 var (
@@ -106,29 +103,29 @@ func main() {
 	})
 
 	// Run HTTP server secondly just in case
-	go func() {
-		err := http.ListenAndServe(":80", router)
-		if err != nil {
-			log.Fatal("[HTTP ListenAndServe Error] ", err)
-		}
-	}()
-
-	// Create new Google Cloud Storage Cache
-	var acCache *gcscache.Cache
-	if acCache, err = gcscache.New("timcole-me-autocert"); err != nil {
-		log.Fatal(err)
+	// go func() {
+	err := http.ListenAndServe(":80", router)
+	if err != nil {
+		log.Fatal("[HTTP ListenAndServe Error] ", err)
 	}
-	// Run Autocert for HTTPS Certificate
-	var acManager = autocert.Manager{
-		Cache:      acCache,
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("timcole.me", "tcole.me", "modest.land"),
-	}
+	// }()
 
-	// Start HTTPS Server
-	panic((&http.Server{
-		Addr:      ":443",
-		Handler:   router,
-		TLSConfig: &tls.Config{GetCertificate: acManager.GetCertificate},
-	}).ListenAndServeTLS("", ""))
+	// // Create new Google Cloud Storage Cache
+	// var acCache *gcscache.Cache
+	// if acCache, err = gcscache.New("timcole-me-autocert"); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// // Run Autocert for HTTPS Certificate
+	// var acManager = autocert.Manager{
+	// 	Cache:      acCache,
+	// 	Prompt:     autocert.AcceptTOS,
+	// 	HostPolicy: autocert.HostWhitelist("timcole.me", "tcole.me", "modest.land"),
+	// }
+
+	// // Start HTTPS Server
+	// panic((&http.Server{
+	// 	Addr:      ":443",
+	// 	Handler:   router,
+	// 	TLSConfig: &tls.Config{GetCertificate: acManager.GetCertificate},
+	// }).ListenAndServeTLS("", ""))
 }
