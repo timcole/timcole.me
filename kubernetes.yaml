@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: modest-website-data
+  name: modest-website
   labels:
-    app: modest-website-data
+    app: modest-website
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: modest-website-data
+      app: modest-website
   template:
     metadata:
       labels:
-        app: modest-website-data
+        app: modest-website
     spec:
       containers:
-      - name: modest-website-data
+      - name: modest-website
         image: gcr.io/timcole-me/modest-website:latest
         ports:
         - containerPort: 80
