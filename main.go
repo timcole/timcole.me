@@ -3,7 +3,6 @@ package main
 import (
 	"html/template"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/TimothyCole/timcole.me/pkg"
@@ -11,10 +10,8 @@ import (
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	streampkg "github.com/TimothyCole/timcole.me/pkg/stream"
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/machinebox/graphql"
-	"google.golang.org/appengine"
 )
 
 var (
@@ -103,14 +100,5 @@ func main() {
 		w.Write([]byte(`{"status": 404, "error": "StatusNotFound"}`))
 	})
 
-	// Respond to App Engine and Compute Engine health checks.
-	// Indicate the server is healthy.
-	router.HandleFunc("/_ah/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("ok"))
-	}).Methods("GET")
-
-	// Delegate all of the HTTP routing and serving to the gorilla/mux router.
-	http.Handle("/", handlers.CombinedLoggingHandler(os.Stderr, router))
-
-	appengine.Main()
+	panic(http.ListenAndServe(":80", router))
 }
