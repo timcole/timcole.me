@@ -10,7 +10,7 @@ export default {
 			start: "1997",
 			odds: Math.random() < 0.5,
 			end: (new Date()).getFullYear(),
-			version: Version.substring(0, 7)
+			version: window.Version.substring(0, 7)
 		}
 	}
 }

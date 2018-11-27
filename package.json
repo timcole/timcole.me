@@ -23,6 +23,7 @@
 		"@vue/component-compiler-utils": "^2.3.0",
 		"babel-core": "^6.26.3",
 		"babel-preset-env": "^1.7.0",
+		"cssnano": "^4.1.7",
 		"graphql": "^14.0.2",
 		"graphql-tag": "^2.10.0",
 		"node-sass": "^4.9.0",

@@ -47,6 +47,7 @@
 
 		ga('create', 'UA-35805236-4', 'auto');
 		ga('send', 'pageview');
+		window.Version = "{{ .Version }}";
 	</script>
 
 	<link rel="dns-prefetch" href="https://storage.googleapis.com/cdn.tcole.me/">
@@ -58,7 +59,6 @@
 </head>
 <body>
 	<div id="app"></div>
-	<script>const Version = "{{ .Version }}"</script>
 	<script src="index.js"></script>
 </body>
 </html>
