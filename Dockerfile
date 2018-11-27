@@ -8,7 +8,7 @@ ADD . /go/src/app
 
 # Build Backend
 RUN go get ./...
-RUN go build -o website
+RUN GIT_COMMIT=$(git rev-list -1 HEAD) && go build -ldflags "-X main.Version=$GIT_COMMIT" -o website
 
 # Build Frontend
 RUN apk add nodejs npm
