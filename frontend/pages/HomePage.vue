@@ -86,6 +86,13 @@ export default {
 			@media only screen and (max-width: 845px), (max-height: 675px) {
 				align-items: top;
 				margin: 25px 0;
+
+
+				& > div {
+					flex: 1;
+					height: 100%;
+					width: 100%;
+				}
 			}
 
 			.left {
