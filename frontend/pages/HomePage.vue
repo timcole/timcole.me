@@ -87,7 +87,6 @@ export default {
 				align-items: top;
 				margin: 25px 0;
 
-
 				& > div {
 					flex: 1;
 					height: 100%;
