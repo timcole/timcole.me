@@ -12,3 +12,4 @@ build/
 yarn.lock
 service-account.json
 debug
+.vscode/
