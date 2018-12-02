@@ -11,10 +11,8 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
-	"github.com/TimothyCole/timcole.me/pkg/commands"
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
-	streampkg "github.com/TimothyCole/timcole.me/pkg/stream"
 	"github.com/gorilla/mux"
 	"github.com/machinebox/graphql"
 	"golang.org/x/crypto/acme/autocert"
@@ -25,7 +23,6 @@ var (
 	tcoleme    = router.Host("tcole.me").Subrouter()
 	modestland = router.Host("modest.land").Subrouter()
 	settings   = config.InitSettings()
-	weetbot    = commands.InitCommands()
 	gql        = graphql.NewClient("https://gql.twitch.tv/gql")
 	err        error
 )
@@ -62,16 +59,6 @@ func main() {
 	})
 	api.HandleFunc("/login", pkg.AdminAuth).Methods("POST")
 
-	// Stream API Router
-	var streamAPI = api.PathPrefix("/stream").Subrouter()
-	stream := streampkg.NewStream(settings, gql, weetbot)
-	streamAPI.HandleFunc("/message", stream.GetStreamMessage).Methods("GET")
-	streamAPI.HandleFunc("/emotes", stream.GetEmotes).Methods("GET")
-	streamAPI.HandleFunc("/{channel:[0-9]+}/commands", stream.GetCommands).Methods("GET")
-	streamAPI.Handle("/{channel:[0-9]+}/commands", pkg.AdminMiddleWare(http.HandlerFunc(stream.SetChannelCommand))).Methods("POST")
-	streamAPI.Handle("/{channel:[0-9]+}/commands/{command}", pkg.AdminMiddleWare(http.HandlerFunc(stream.DeleteChannelCommand))).Methods("DELETE")
-	streamAPI.HandleFunc("/{channel:[0-9]+}/commands/{command}", stream.GetChannelCommand).Methods("GET")
-
 	// Spotify API Router
 	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
 	var spotify = spotifypkg.NewSpotify(settings)
@@ -81,9 +68,6 @@ func main() {
 	var admin = api.PathPrefix("/admin").Subrouter()
 	admin.Use(pkg.AdminMiddleWare)
 	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
-	// Admin Stream API Router
-	var streamAdmin = admin.PathPrefix("/stream").Subrouter()
-	streamAdmin.HandleFunc("/message", stream.SetStreamMessage).Methods("POST")
 
 	// tcole.me Handlers
 	tcoleme.Use(func(next http.Handler) http.Handler {
