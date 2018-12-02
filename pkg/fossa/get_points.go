@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"cloud.google.com/go/datastore"
 	gctx "github.com/gorilla/context"
@@ -14,7 +15,7 @@ import (
 func GetPoints(w http.ResponseWriter, r *http.Request) {
 	var channel = gctx.Get(r, "Channel").(string)
 	var vars = mux.Vars(r)
-	var user = vars["user"]
+	var user = strings.ToLower(vars["user"])
 
 	anc := datastore.NameKey("Channels", channel, nil)
 	anc.Namespace = ns

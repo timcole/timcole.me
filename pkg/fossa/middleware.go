@@ -21,7 +21,7 @@ func Middleware(next http.Handler) http.Handler {
 
 		channel := r.Header.Get(channelHeader)
 		if strings.Contains(r.UserAgent(), botUA) && channel != "" {
-			gctx.Set(r, "Channel", channel)
+			gctx.Set(r, "Channel", strings.ToLower(channel))
 
 			next.ServeHTTP(w, r)
 			return
