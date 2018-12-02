@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
+	"github.com/TimothyCole/timcole.me/pkg/fossa"
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/gorilla/mux"
@@ -63,6 +64,11 @@ func main() {
 	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
 	var spotify = spotifypkg.NewSpotify(settings)
 	spotifyAPI.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
+
+	// FossaBot APIs Router
+	var fossaAPI = api.PathPrefix("/fossa").Subrouter()
+	fossaAPI.Use(fossa.Middleware)
+	fossaAPI.HandleFunc("/points/{user}", fossa.GetPoints).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
