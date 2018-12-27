@@ -9,8 +9,8 @@ Vue.use(Vuex);
 
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTwitch, faTwitter, faGithub, faInstagram, faDiscord } from '@fortawesome/free-brands-svg-icons';
-library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord);
+import { faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons';
+library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 Vue.component('icon', FontAwesomeIcon);
 

@@ -39,16 +39,38 @@
 <script>
 export default {
 	name: 'HomePage',
+	data () {
+		return { discord: null, socialblade: { youtube: -1, twitter: -1, instagram: -1 }, github: null }
+	},
+	async created () {
+		// Get Discord Member Count
+		this.discord = await fetch("https://discordapp.com/api/v6/invite/YFtfGwq?with_counts=true").then(data => data.json());
+		// Get Github Follower Count
+		this.github = await fetch("https://api.github.com/users/timothycole").then(data => data.json());
+
+		// Get YouTube, Twitter, and Instagram Follower/Subscriber Counts
+		const socialblade = (await fetch("/api/stats").then(data => data.json())).results;
+		socialblade.map(result => {
+			if (result.username != "modesttim" && result.channelid != "UCLvM67Ey6kNCasyEV2dvrbA") return;
+			this.socialblade[result.type.toLowerCase()] = Number(`${result.followers || result.subscribers}`.replace(/,/g, ''));
+		});
+	},
 	computed: {
 		twitch () { return this.$store.state.me },
 		socials () {
 			return [
 				[ "Follow me on Twitch", "https://www.twitch.tv/modesttim", "twitch",
 					this.twitch ? this.twitch.user.followers.totalCount.toLocaleString() : null ],
-				[ "Follow on Twitter", "https://twitter.com/modesttim", "twitter" ],
-				[ "Check out my GitHub", "https://github.com/TimothyCole", "github" ],
-				[ "View my Instagram", "https://instagram.com/modesttim", "instagram" ],
-				[ "Join us on Discord", "https://modest.land/discord", "discord" ],
+				[ "Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube",
+					this.socialblade.youtube != -1 ? this.socialblade.youtube.toLocaleString() : null ],
+				[ "Follow on Twitter", "https://twitter.com/modesttim", "twitter",
+					this.socialblade.twitter != -1 ? this.socialblade.twitter.toLocaleString() : null ],
+				[ "Check out my GitHub", "https://github.com/TimothyCole", "github",
+					this.github ? this.github.followers.toLocaleString() : null ],
+				[ "View my Instagram", "https://instagram.com/modesttim", "instagram",
+					this.socialblade.instagram != -1 ? this.socialblade.instagram.toLocaleString() : null ],
+				[ "Join us on Discord", "https://discordapp.com/invite/YFtfGwq", "discord",
+					this.discord ? this.discord.approximate_member_count.toLocaleString() : null ],
 			]
 		}
 	}
@@ -158,7 +180,11 @@ export default {
 
 							&.twitch {
 								background: rgb(108, 36, 167);
-								background: linear-gradient(49deg, rgb(108, 36, 167) 0%, rgba(163,81,181,1) 100%);
+								background: linear-gradient(49deg, rgb(108, 36, 167) 0%, rgb(163, 81, 181) 100%);
+							}
+							&.youtube {
+								background: rgb(255, 75, 75);
+								background: linear-gradient(49deg, rgb(255, 75, 75) 0%, rgb(155, 75, 75) 100%);
 							}
 							&.twitter {
 								background: rgb(81, 104, 181);

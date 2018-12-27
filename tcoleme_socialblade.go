@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-// TwitchStats Returns socialblade twitch stats for modesttim
-func TwitchStats(w http.ResponseWriter, r *http.Request) {
-	url := "https://api.socialblade.com/v2/twitch/statistics?query=statistics&username=modesttim&api=" + settings.Get("SOCIALBLADE_API")
+// SBStats returns socialblade search results for modesttim
+func SBStats(w http.ResponseWriter, r *http.Request) {
+	url := "https://api.socialblade.com/v2/search?query=modesttim&api=" + settings.Get("SOCIALBLADE_API")
 
 	res, err := http.Get(url)
 	if err != nil {
