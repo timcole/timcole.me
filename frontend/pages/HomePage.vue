@@ -146,6 +146,7 @@ export default {
 				a {
 					width: 275px;
 					display: block;
+					padding-right: 45px;
 
 					.button {
 						width: 100%;
@@ -208,10 +209,33 @@ export default {
 			}
 
 			@media (max-width: 1445px) {
+				& {
+					flex-direction: column;
+					overflow-y: auto;
+				}
 				.right {
-					display: none;
+					padding: 0;
+					display: grid;
+					width: 100%;
+					grid-gap: 0 20px;
+					grid-template-columns: repeat(auto-fill, minmax(314px, 1fr));
+					grid-auto-flow: row;
+					padding-bottom: 20px;
+
+					a {
+						margin: 0 auto;
+					}
+
+					@media (max-width: 650px) {
+						& {
+							grid-template-columns: 100%;
+						}
+
+						a { width: calc(100% - 100px) !important; }
+					}
 				}
 				.left {
+					max-width: calc(100% - 40px) !important;
 					padding: 20px;
 				}
 			}
