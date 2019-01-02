@@ -66,10 +66,11 @@ func main() {
 	var spotify = spotifypkg.NewSpotify(settings)
 	spotifyAPI.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
 
-	// FossaBot APIs Router
+	// Fossabot APIs Router
 	var fossaAPI = api.PathPrefix("/fossa").Subrouter()
 	fossaAPI.Use(fossa.Middleware)
 	fossaAPI.HandleFunc("/points/{user}", fossa.GetPoints).Methods("GET")
+	fossaAPI.HandleFunc("/incr/{password}", fossa.IncrPoints).Methods("POST")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()

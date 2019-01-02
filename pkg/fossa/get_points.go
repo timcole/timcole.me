@@ -29,14 +29,14 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
 
 	if err := client.Get(ctx, anc, &uChannel); err != nil {
 		fmt.Println(err)
-		w.Write([]byte("@" + user + " doesn't have any points :("))
+		w.Write([]byte("0 " + uChannel.CurrencyName + " :("))
 		return
 	}
 	if err := client.Get(ctx, uKey, &uChatter); err != nil {
 		fmt.Println(err)
-		w.Write([]byte("@" + user + " doesn't have any points :("))
+		w.Write([]byte("0 " + uChannel.CurrencyName + " BibleThump"))
 		return
 	}
 
-	w.Write([]byte("@" + user + ", Currently has " + strconv.Itoa(uChatter.Currency) + " " + uChannel.CurrencyName))
+	w.Write([]byte(strconv.Itoa(uChatter.Currency) + " " + uChannel.CurrencyName))
 }
