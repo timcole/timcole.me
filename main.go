@@ -70,7 +70,7 @@ func main() {
 	var fossaAPI = api.PathPrefix("/fossa").Subrouter()
 	fossaAPI.Use(fossa.Middleware)
 	fossaAPI.HandleFunc("/points/{user}", fossa.GetPoints).Methods("GET")
-	fossaAPI.HandleFunc("/incr/{password}", fossa.IncrPoints).Methods("POST")
+	fossaAPI.HandleFunc("/incr/{password}", fossa.IncrPoints).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
