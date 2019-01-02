@@ -39,7 +39,7 @@ func IncrPoints(w http.ResponseWriter, r *http.Request) {
 	// Get channel information from datastore
 	var uChannel Channel
 	if err := client.Get(ctx, anc, &uChannel); err != nil {
-		fmt.Println(2, err)
+		fmt.Println(1, err)
 		w.Write([]byte("Failed to give everyone points this time BibleThump - Better luck next time."))
 		return
 	}
@@ -51,7 +51,7 @@ func IncrPoints(w http.ResponseWriter, r *http.Request) {
 	// Get all stored users from Datastore
 	users, err := getPoints(anc)
 	if err != nil {
-		log.Println(1, err)
+		log.Println(2, err)
 		w.Write([]byte("Failed to give everyone points this time BibleThump - Better luck next time."))
 		return
 	}
@@ -65,6 +65,12 @@ func IncrPoints(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = client.PutMulti(ctx, keys, keyData)
+	if err != nil {
+		log.Println(3, err)
+		w.Write([]byte("Failed to give everyone points this time BibleThump - Better luck next time."))
+		return
+	}
+	w.Write([]byte(""))
 }
 
 type currentChatters map[string]ChannelChatter
