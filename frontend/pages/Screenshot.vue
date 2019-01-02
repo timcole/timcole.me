@@ -18,10 +18,6 @@ export default {
 			return this.$route.params.screenshot
 		}
 	},
-	created () {
-		const ss = this.ss
-	},
-
 	methods: {
 		NotFound () {
 			return this.$router.push('/404');

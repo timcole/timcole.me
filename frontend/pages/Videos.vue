@@ -1,13 +1,14 @@
 <template>
 	<div id="Videos">
 		<div class="header"><Header class="container"></Header></div>
-		<div class="videos container" v-if="twitch && twitch.user.videos.totalCount > 0">
-			<div class="video" v-for="stream in twitch.user.videos.edges" v-bind:key="stream.node.id">
-				<a :href="`https://www.twitch.tv/videos/${stream.node.id}`" target="_blank">
-					<img class="thumbnail" :src="stream.node.previewThumbnailURL.replace('{width}', '1280').replace('{height}', '720')" alt="" />
+		<div class="videos container" v-if="videos">
+			<div class="video" v-for="video in videos" v-bind:key="video.id">
+				<a :href="video.platform == 'twitch' ? `https://www.twitch.tv/videos/${video.id}` : `https://youtu.be/${video.id}`" target="_blank">
+					<icon :class="['platform', video.platform]" :icon="['fab', video.platform]"></icon>
+					<img class="thumbnail" :src="video.thumbnail" v-on:error="liveThumbnail(video)" alt="" />
 					<div class="meta">
-						<h2>{{ stream.node.title }}</h2>
-						<p>{{ new Date(stream.node.createdAt).toLocaleString() }}</p>
+						<h2>{{ video.title }}</h2>
+						<p>{{ new Date(video.uploaded).toLocaleString() }}</p>
 					</div>
 				</a>
 			</div>
@@ -19,8 +20,69 @@
 <script>
 export default {
 	name: "Videos",
+	data () {
+		return {
+			youtube_key: "AIzaSyACVkll8lU0-hN2kcwqCM1BZrX_S6RFkPM",
+			youtube_uploads_playlist: "UULvM67Ey6kNCasyEV2dvrbA",
+			youtube_uploads: []
+		}
+	},
+	async created () {
+		const api_url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${this.youtube_uploads_playlist}&key=${this.youtube_key}&maxResults=50`;
+		this.youtube_uploads = (await fetch(api_url).then(data => data.json())).items;
+	},
+	methods: {
+		liveThumbnail (video) {
+			this.twitch.user.videos.edges[video.index].node.previewThumbnailURL = "https://static-cdn.jtvnw.net/previews-ttv/live_user_modesttim-1280x720.jpg";
+			console.log(index)
+		}
+	},
 	computed: {
-		twitch () { return this.$store.state.me }
+		twitch () { return this.$store.state.me },
+		videos () {
+			// Create a list of videos
+			let v = [];
+
+			// Serialize YouTube Videos
+			for (let i = 0; i < this.youtube_uploads.length; i++) {
+				if (!this.youtube_uploads[i].snippet) continue;
+				const vid = this.youtube_uploads[i].snippet;
+
+				v.push({
+					uploaded: vid.publishedAt,
+					platform: "youtube",
+					index: i,
+					id: vid.resourceId.videoId,
+					title: vid.title,
+					// thumbnail: vid.thumbnails.high.url
+					thumbnail: `http://img.youtube.com/vi/${vid.resourceId.videoId}/mqdefault.jpg`
+				});
+			}
+
+			// Serialize Twitch Videos
+			if (!this.twitch) return v;
+			for (let i = 0; i < this.twitch.user.videos.edges.length; i++) {
+				if (!this.twitch.user.videos.edges[i].node) continue;
+				const vid = this.twitch.user.videos.edges[i].node;
+
+				v.push({
+					uploaded: vid.createdAt,
+					platform: "twitch",
+					index: i,
+					id: vid.id,
+					title: vid.title,
+					thumbnail: vid.previewThumbnailURL.replace("{width}", "1280").replace("{height}", "720")
+				});
+			}
+
+			// Sort the array newest to oldest
+			v.sort((a, b) => {
+				return new Date(b.uploaded) - new Date(a.uploaded);
+			});
+
+			// Return our sorted set
+			return v;
+		}
 	}
 }
 </script>
@@ -55,6 +117,7 @@ export default {
 				-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
 				-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
 				box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
+				position: relative;
 
 				a {
 					color: inherit;
@@ -68,6 +131,18 @@ export default {
 					-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
 					-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
 					box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
+				}
+
+				svg.platform {
+					position: absolute;
+					font-size: 1.75em;
+					top: 8px;
+					right: 10px;
+					-webkit-filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
+					filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
+
+					&.youtube { color: #ff0000; }
+					&.twitch { color: #6441A4; }
 				}
 
 				img.thumbnail {
