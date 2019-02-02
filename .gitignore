@@ -3,7 +3,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-node_modules/*
+node_modules/
 jspm_packages/
 .yarn-integrity
 .cache/
@@ -13,3 +13,4 @@ yarn.lock
 service-account.json
 debug
 .vscode/
+.env
