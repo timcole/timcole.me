@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -47,7 +48,7 @@ func AdminMiddleWare(next http.Handler) http.Handler {
 		}
 
 		token, _ := jwt.ParseWithClaims(authorization, &Admin{}, func(token *jwt.Token) (interface{}, error) {
-			return []byte(settings.Get("SIGNING_KEY")), nil
+			return []byte(os.Getenv("SIGNING_KEY")), nil
 		})
 
 		if claims, ok := token.Claims.(*Admin); ok && token.Valid {
@@ -118,7 +119,7 @@ func AdminAuth(w http.ResponseWriter, r *http.Request) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, admin)
 
 	// Sign and get the complete encoded token as a string using the secret
-	tokenString, err := token.SignedString([]byte(settings.Get("SIGNING_KEY")))
+	tokenString, err := token.SignedString([]byte(os.Getenv("SIGNING_KEY")))
 	if err != nil {
 		// Failed to sign token
 		w.WriteHeader(http.StatusInternalServerError)

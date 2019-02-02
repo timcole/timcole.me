@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
-	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/acme/autocert"
@@ -21,13 +20,10 @@ var (
 	router     = mux.NewRouter()
 	tcoleme    = router.Host("tcole.me").Subrouter()
 	modestland = router.Host("modest.land").Subrouter()
-	settings   = config.InitSettings()
 	err        error
 )
 
 func main() {
-	pkg.SetSettings(settings)
-
 	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
 	router.PathPrefix("/assets").Handler(static)
 
@@ -60,7 +56,7 @@ func main() {
 
 	// Spotify API Router
 	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
-	var spotify = spotifypkg.NewSpotify(settings)
+	var spotify = spotifypkg.NewSpotify()
 	spotifyAPI.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
 
 	// Admin API Router

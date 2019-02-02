@@ -3,6 +3,7 @@ package spotify
 import (
 	"encoding/base64"
 	"encoding/json"
+	"os"
 	"strings"
 )
 
@@ -24,7 +25,7 @@ func (c *Client) getAuth() string {
 	var tokenResp *tokenResponse
 
 	var auth = authJSON{}
-	json.Unmarshal([]byte(c.Settings.Get("SPOTIFY_AUTH")), &auth)
+	json.Unmarshal([]byte(os.Getenv("SPOTIFY_AUTH")), &auth)
 
 	resp, _ := c.request(V1, "GET", "/me", nil, nil, struct {
 		Authorization string `url:"authorization"`
@@ -42,15 +43,16 @@ func (c *Client) getAuth() string {
 		Authorization string `url:"authorization"`
 		ContentType   string `url:"content-type"`
 	}{
-		Authorization: "Basic " + base64.StdEncoding.EncodeToString([]byte(c.Settings.Get("SPOTIFY_CLIENT_ID")+":"+c.Settings.Get("SPOTIFY_CLIENT_SECRET"))),
+		Authorization: "Basic " + base64.StdEncoding.EncodeToString([]byte(os.Getenv("SPOTIFY_CLIENT_ID")+":"+os.Getenv("SPOTIFY_CLIENT_SECRET"))),
 		ContentType:   "application/x-www-form-urlencoded",
 	})
 	json.Unmarshal(resp, &tokenResp)
 
 	if tokenResp.AccessToken != "" {
 		auth.Token = tokenResp.AccessToken
-		j, _ := json.Marshal(auth)
-		c.Settings.Set("SPOTIFY_AUTH", string(j))
+		// j, _ := json.Marshal(auth)
+		// TODO: Move to redis
+		// c.Settings.Set("SPOTIFY_AUTH", string(j))
 
 		token = "Bearer " + auth.Token
 	}
