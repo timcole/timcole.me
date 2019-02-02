@@ -14,7 +14,6 @@ import (
 	config "github.com/TimothyCole/timcole.me/pkg/settings"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/gorilla/mux"
-	"github.com/machinebox/graphql"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -23,7 +22,6 @@ var (
 	tcoleme    = router.Host("tcole.me").Subrouter()
 	modestland = router.Host("modest.land").Subrouter()
 	settings   = config.InitSettings()
-	gql        = graphql.NewClient("https://gql.twitch.tv/gql")
 	err        error
 )
 
