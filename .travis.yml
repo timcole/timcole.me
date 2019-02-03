@@ -7,8 +7,6 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_f73069fb71a8_key -iv $encrypted_f73069fb71a8_iv
   -in deploy_key.enc -out ./deploy_key -d
 - docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
-- openssl aes-256-cbc -K $encrypted_ced0c438de4d_key -iv $encrypted_ced0c438de4d_iv
-  -in deploy_key.enc -out ./deploy_key -d
 - docker build -t timcole.me .
 - docker run -d --name app timcole.me
 - docker ps -a
