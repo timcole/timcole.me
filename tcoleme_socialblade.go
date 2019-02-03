@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 // SBStats returns socialblade search results for modesttim
 func SBStats(w http.ResponseWriter, r *http.Request) {
-	url := "https://api.socialblade.com/v2/search?query=modesttim&api=" + settings.Get("SOCIALBLADE_API")
+	url := "https://api.socialblade.com/v2/search?query=modesttim&api=" + os.Getenv("SOCIALBLADE_API")
 
 	res, err := http.Get(url)
 	if err != nil {

@@ -3,13 +3,18 @@ package spotify
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/go-redis/redis"
+	"github.com/gorilla/context"
 )
 
 // GetPlaying returns the currently playing some over http
-func (c *Client) GetPlaying(w http.ResponseWriter, r *http.Request) {
-	resp, _ := c.request(V1, "GET", "/me/player", nil, nil, struct {
+func GetPlaying(w http.ResponseWriter, r *http.Request) {
+	store := context.Get(r, "redis").(*redis.Client)
+
+	resp, _ := request(V1, "GET", "/me/player", nil, nil, struct {
 		Authorization string `url:"authorization"`
-	}{Authorization: c.getAuth()})
+	}{Authorization: getAuth(store)})
 
 	var player interface{}
 	json.Unmarshal(resp, &player)

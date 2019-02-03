@@ -18,7 +18,7 @@ const (
 	Accounts = BaseURL("https://accounts.spotify.com/api")
 )
 
-func (c *Client) request(base BaseURL, method, uri string, q, b, h interface{}) ([]byte, error) {
+func request(base BaseURL, method, uri string, q, b, h interface{}) ([]byte, error) {
 	var qs = ""
 	if q != nil {
 		q, err := query.Values(q)
