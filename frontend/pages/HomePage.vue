@@ -84,7 +84,7 @@ export default {
 	#HomePage {
 		width: 100%;
 		min-height: 100%;
-		background-image: url('https://storage.googleapis.com/cdn.tcole.me/setup-compressed.jpg');
+		background-image: url('https://cdn.tcole.me/setup-compressed.jpg');
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
