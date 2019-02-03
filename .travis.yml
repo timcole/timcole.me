@@ -21,7 +21,7 @@ deploy:
   script: chmod 600 deploy_key && ssh -o StrictHostKeyChecking=no -i ./deploy_key
     tim@pepega.tcole.me './deploy.sh'
   on:
-    branch: testing/travis
+    branch: master
 env:
   global:
   - secure: FWwjKvCuakUCxGAvTDVV3qb5HSmV6hUMTZR63aH4lXUAF2fWf+96qUmoaCVFSyq7dnX7ybcNdM8W55liCruBcdrfTVpN4OKC+hir+7s/2tr8SDVrPT0xBnvg88bdMUPzYt66tBxDCCRiXCJS7PXlt+q71FYWvAQCGkrFUPh+bFANgh14GcRS9REcS3sqXSg4xQ048Uc4duiR4EU/AKWaRSGnrP8LLIBxwfoci/08/XJCfUv3neiysZwbPIF6fanM09XTzRIDsl4I8DdlSRhObcNQTeVCYLxSKC6+4VcO+jebZX6mW6L9WG2zpsJmpIMSgGOnehPdKGvXmk5x1QcGmoKbr5az2ihrcZCzXLc49/dU5G/oUH/3CyjXdXx8Ks+VwbXz+t9tp865DPi4JsfZpGaFNU5jBRudmTo52a1zLZzj+GeJs/8+TnHDmRLMKDtnGl5SOEo6wIcfiSBHtrOJ0W5/zaWPbc9hGXM6WxQB7GnEczEWdT5bdo/X97TWCEz8TlLP0qHqhetPp1+c+6Uh6yS/QVEpsitH3LnhzT6qASsjVQUf/0THs5Diseabikkg4Qn05gHjhvWm8BlZbElFDDMNkueiGP4Z9HXs/VUL01xY+a+NqtkzY5h7rPHLmFAutFlIY80dB8pItO1V2PTeVIJpOHIJwQ6IFHflE19h0Rs=
