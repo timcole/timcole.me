@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
-	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
+	"github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/go-redis/redis"
 	"github.com/gorilla/context"
 	"github.com/gorilla/handlers"
@@ -72,9 +72,8 @@ func main() {
 	api.HandleFunc("/stats", SBStats).Methods("GET")
 
 	// Spotify API Router
-	var spotifyAPI = api.PathPrefix("/spotify").Subrouter()
-	var spotify = spotifypkg.NewSpotify()
-	spotifyAPI.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
+	var spotifyRouter = api.PathPrefix("/spotify").Subrouter()
+	spotifyRouter.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
