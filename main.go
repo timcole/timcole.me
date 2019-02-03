@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/tls"
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,6 +11,9 @@ import (
 
 	"github.com/TimothyCole/timcole.me/pkg"
 	spotifypkg "github.com/TimothyCole/timcole.me/pkg/spotify"
+	"github.com/go-redis/redis"
+	"github.com/gorilla/context"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -21,7 +23,21 @@ var (
 	tcoleme    = router.Host("tcole.me").Subrouter()
 	modestland = router.Host("modest.land").Subrouter()
 	err        error
+	store      *redis.Client
 )
+
+func init() {
+	store = redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("REDIS_ADDR"),
+		Password: os.Getenv("REDIS_AUTH"),
+	})
+
+	if _, err := store.Ping().Result(); err != nil {
+		panic(err)
+	}
+
+	log.Printf("Connected to Redis [%s]\n", store.Options().Addr)
+}
 
 func main() {
 	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
@@ -46,6 +62,7 @@ func main() {
 	var api = router.PathPrefix("/api").Subrouter()
 	api.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			context.Set(r, "redis", store)
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			next.ServeHTTP(w, r)
@@ -61,7 +78,7 @@ func main() {
 
 	// Admin API Router
 	var admin = api.PathPrefix("/admin").Subrouter()
-	admin.Use(pkg.AdminMiddleWare)
+	admin.Use(pkg.UserMiddleWare)
 	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
 
 	// tcole.me Handlers
@@ -86,25 +103,27 @@ func main() {
 		w.Write([]byte(`{"status": 404, "error": "StatusNotFound"}`))
 	})
 
+	r := handlers.CombinedLoggingHandler(os.Stdout, router)
+	r = handlers.ProxyHeaders(r)
 	var httpServer = &http.Server{
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		Handler:      router,
+		Handler:      r,
 		Addr:         ":8080",
 	}
 
 	// If mode is dev listen on 8080
 	if os.Getenv("MODE") == "DEV" {
 		httpServer.Addr = ":8080"
-		fmt.Println("Starting server on " + httpServer.Addr)
+		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
 		panic(httpServer.ListenAndServe())
 	}
 
 	// Run HTTP server secondly just in case
 	go func() {
 		httpServer.Addr = ":80"
-		fmt.Println("Starting server on " + httpServer.Addr)
+		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
 		if err := httpServer.ListenAndServe(); err != nil {
 			log.Fatal(err)
 		}
@@ -118,8 +137,8 @@ func main() {
 	}
 
 	// Start HTTPS Server
-	fmt.Println("Starting server on :443")
 	httpServer.Addr = ":443"
 	httpServer.TLSConfig = &tls.Config{GetCertificate: acManager.GetCertificate}
+	log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
 	panic(httpServer.ListenAndServeTLS("", ""))
 }

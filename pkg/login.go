@@ -1,18 +1,18 @@
 package pkg
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
-	"cloud.google.com/go/datastore"
 	jwt "github.com/dgrijalva/jwt-go"
-	gctx "github.com/gorilla/context"
+	"github.com/go-redis/redis"
+	"github.com/gorilla/context"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -22,23 +22,28 @@ type Login struct {
 	Password string `json:"password"`
 }
 
-// Admin is the struction of an admin
-type Admin struct {
-	Name              string          `datastore:"name" json:"username"`
-	PasswordHash      string          `datastore:"password" json:"-"`
-	Permissions       map[string]bool `json:"permissions"`
-	PermissionsString string          `datastore:"permissions" json:"-"`
-	JWT               string          `json:"jwt,omitempty"`
+// User is the redis struction of an user
+type User struct {
 	jwt.StandardClaims
+	Username    string   `json:"username"`
+	Password    string   `json:"password,omitempty"`
+	Permissions []string `json:"permissions"`
+	JWT         string   `json:"jwt,omitempty"`
 }
 
 // Access checks if an admin has permission to access a key
-func (a *Admin) Access(key string) bool {
-	return a.Permissions[key]
+func (u *User) Access(key string) bool {
+	a := false
+	for _, v := range u.Permissions {
+		if v == key {
+			a = true
+		}
+	}
+	return a
 }
 
-// AdminMiddleWare makes sure they have a valid jwt before continueing
-func AdminMiddleWare(next http.Handler) http.Handler {
+// UserMiddleWare makes sure they have a valid jwt before continueing
+func UserMiddleWare(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorization := r.Header.Get("Authorization")
 		if len(strings.Split(authorization, ".")) != 3 {
@@ -47,12 +52,12 @@ func AdminMiddleWare(next http.Handler) http.Handler {
 			return
 		}
 
-		token, _ := jwt.ParseWithClaims(authorization, &Admin{}, func(token *jwt.Token) (interface{}, error) {
+		token, _ := jwt.ParseWithClaims(authorization, &User{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("SIGNING_KEY")), nil
 		})
 
-		if claims, ok := token.Claims.(*Admin); ok && token.Valid {
-			gctx.Set(r, "Admin", claims)
+		if claims, ok := token.Claims.(*User); ok && token.Valid {
+			context.Set(r, "User", claims)
 			next.ServeHTTP(w, r)
 			return
 		}
@@ -68,73 +73,70 @@ func AdminAuth(w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(body, &login)
 	if err != nil || len(login.Username) < 3 || len(login.Password) < 3 {
-		// Didn't meet the reqs to even be an admin.
+		// Didn't meet the reqs to even be a user.
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
 		return
 	}
 
-	var ctx = context.Background()
-	client, err := datastore.NewClient(ctx, "timcole-me")
-	if err != nil {
-		panic(err)
-	}
+	store := context.Get(r, "redis").(*redis.Client)
 
-	key := datastore.NameKey("Admins", login.Username, nil)
-	admin := Admin{Permissions: make(map[string]bool)}
-	err = client.Get(ctx, key, &admin)
+	redisKey := fmt.Sprintf("user.%s", login.Username)
+	adminRaw, err := store.Get(redisKey).Result()
 	if err != nil {
-		// Not an admin.
+		// Not a user.
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(admin.PasswordHash), []byte(login.Password))
-	if err != nil {
+	var user *User
+	if err := json.Unmarshal([]byte(adminRaw), &user); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"status": 500, "error": "StatusInternalServerError"}`))
+	}
+
+	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(login.Password)); err != nil {
 		// Invalid Login
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
+		log.Println(err)
 		return
 	}
+	// We're done with the password, remove it for security
+	user.Password = ""
 
-	admin.Name = login.Username
+	// Populate StandardClaims
+	currentTime := time.Now().UTC()
+	user.IssuedAt = currentTime.Unix()
+	user.ExpiresAt = currentTime.Add((24 * time.Hour) * 7).Unix()
+	user.Subject = redisKey
+	user.Issuer = "timcole.me-login"
+	user.Audience = "user"
 
-	type perms []string
-	var permission = perms{}
-	fmt.Println(admin.PermissionsString)
-	err = json.Unmarshal([]byte(admin.PermissionsString), &permission)
-	if err != nil {
-		// Can't get perms
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"status": 500, "error": "StatusInternalServerError"}`))
-		return
-	}
-	for _, v := range permission {
-		admin.Permissions[v] = true
-	}
-
-	// Expire in a week
-	admin.ExpiresAt = time.Now().UTC().Add((24 * time.Hour) * 7).Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, admin)
+	// Generate JWT
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, user)
 
 	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString([]byte(os.Getenv("SIGNING_KEY")))
 	if err != nil {
 		// Failed to sign token
+		log.Printf("Failed to sign JWT for %s.\n", user.Username)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"status": 500, "error": "StatusInternalServerError"}`))
 		return
 	}
 
-	admin.JWT = tokenString
-	resp, err := json.Marshal(admin)
+	user.JWT = tokenString
+	resp, err := json.Marshal(user)
 	if err != nil {
 		// Failed to encode return
+		log.Printf("Failed to send JWT back to %s.\n", user.Username)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"status": 500, "error": "StatusInternalServerError"}`))
 		return
 	}
 
+	log.Printf("%s logged in.\n", user.Username)
 	w.Write(resp)
 }
