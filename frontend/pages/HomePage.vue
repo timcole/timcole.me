@@ -61,16 +61,16 @@ export default {
 			return [
 				[ "Follow me on Twitch", "https://www.twitch.tv/modesttim", "twitch",
 					this.twitch ? this.twitch.user.followers.totalCount.toLocaleString() : null ],
-				[ "Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube",
-					this.socialblade.youtube != -1 ? this.socialblade.youtube.toLocaleString() : null ],
-				[ "Follow on Twitter", "https://twitter.com/modesttim", "twitter",
-					this.socialblade.twitter != -1 ? this.socialblade.twitter.toLocaleString() : null ],
 				[ "Check out my GitHub", "https://github.com/TimothyCole", "github",
 					this.github ? this.github.followers.toLocaleString() : null ],
-				[ "View my Instagram", "https://instagram.com/modesttim", "instagram",
-					this.socialblade.instagram != -1 ? this.socialblade.instagram.toLocaleString() : null ],
+				[ "Follow on Twitter", "https://twitter.com/modesttim", "twitter",
+					this.socialblade.twitter != -1 ? this.socialblade.twitter.toLocaleString() : null ],
 				[ "Join us on Discord", "https://discordapp.com/invite/YFtfGwq", "discord",
 					this.discord ? this.discord.approximate_member_count.toLocaleString() : null ],
+				[ "View my Instagram", "https://instagram.com/modesttim", "instagram",
+					this.socialblade.instagram != -1 ? this.socialblade.instagram.toLocaleString() : null ],
+				[ "Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube",
+					this.socialblade.youtube != -1 ? this.socialblade.youtube.toLocaleString() : null ],
 			]
 		}
 	}
