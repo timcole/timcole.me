@@ -1,14 +1,30 @@
+sudo: required
 notifications:
   email: false
-
-jobs:
-  include:
-  - language: go
-    go: 1.9.x
-    script:
-    - go install ./...
-  - language: go
-    go: 1.10.x
-    script:
-    - go install ./...
-    - go test -v -race ./...
+services:
+  - docker
+before_install:
+  - openssl aes-256-cbc -K $encrypted_f73069fb71a8_key -iv $encrypted_f73069fb71a8_iv
+    -in deploy_key.enc -out ./deploy_key -d
+  - docker login --email=$DOCKER_HUB_EMAIL --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
+  - openssl aes-256-cbc -K $encrypted_ced0c438de4d_key -iv $encrypted_ced0c438de4d_iv
+    -in deploy_key.enc -out ./deploy_key -d
+  - docker build -t timcole.me .
+  - docker run -d --name app timcole.me
+  - docker ps -a
+script:
+  - docker tag timcole.me:latest $DOCKER_HUB_USERNAME/timcole.me:production
+  - docker push $DOCKER_HUB_USERNAME/timcole.me:production
+after_script:
+  - docker rm -f app
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: chmod 600 deploy_key && ssh -o StrictHostKeyChecking=no -i ./deploy_key tim@pepega.tcole.me './deploy.sh'
+  on:
+    branch: testing/travis
+env:
+  global:
+    - secure: hu9k5HmwZwUJANCLRfOXXvMADMvaOel0+k51qiCr7H/F6+H8dvSQwIn5Vi4Co7/Ri6n7GJmA5QO8FpVPUmoglS19Zcvo3jocjmXgsvIUZG5nNZ2YEedr1OChbtDhz+HqO7ZlvuW1vhyc5mkKqu2qt5HUtUmMZmFOj/Us1AIwhkV/y7gCRLcoaFXYPrmbkwnl1KiadZhCsV+4JMv69HaOvWFogVzCmAFX4AhRXhNqtIR29IaFoa5ITm37WndoDOqHQ2Chhwpl/7x8s8pcICmaUZJjsfy0qyt+X/JhQ+19zF3f+EJWd4vpYdxV6iK9lx9BUOjAyfF4HPFDUv2IXbIxOHGhKD34pO7Lz4Oj0jmeQ0B3h+HNhQliqqxhQb6pYoMoRugRlq40oqGFifwGAnDVFaMwc3DHBuG+auj60JtPCB/4SnIcWpOe4epZ3+DmSg9Pk2i5UJ7+tktSm/+rhmqi7vd+aqQX901qkqWWSEZUqh7ZRkDDQWvzkpIRw5L8X5XeARpPsTBUN32U/QGyUgCZ1/rpJA9GewYjnzvr8xkSdAGJAl1bNQ9CPRKrXu0lIhG5kaU+0dt3Lz+7SjB6iBSOWdsJiDkNeD1hWPa3fwQxplmeCPSfDGAKGKaKF43f23yC+TIgamC0nl7YlFceXBVTLWOLe1Ha/ANGOfq0sbLB8us=
+    - secure: Dc7kvEzubzxoW20LbGyTC0zo/dtRLNSlDkuF1KvvAirkcA+mc7ChWN8vx3Qb96P29Cj7tuu6bqbtR/3xuKXGyC/pwybDfkiL5NKYP2KLjBvBnbvR2LeHU1HvLrOPbYxtm7QHoz9xciHGWt9r14cZNpB90RrqxnkS5vFGwIiiDFXPvCHtunBU80pRPDQZ5HEwYY26ow3LD++Xac+paaWxh+a/QnWO/We2od8T8GOo099fzTLcZ+Yo70f2cq5oXDP3poV63BojMhRpvnk5Et58OUeJd0magFbrTCJgz044F+GmZtwx4cQxScl/+loNmk3fBxqtzGIo08Tat6DIP/ukgxsYi+i2JevaRFIr5CW9VP9WNe6MkCeYNstvcWnwUQauMLPYU8d51v4HF2GgWRRs1VPkeGbygCBhPiS2jDYGZ2NM6/N4gqsRDFtDEbBcNP9nfWDl6sHNfLnSH19073BjFHg1A9ffSSg/2vPy2F5f68jTkzNEzjEG/9RzimxQBB4e7mXOX/Wk1zWuO6JiEs6POaKEIJf/mFux42jPx+a7dsyPaLAi49i76bFZuCBdycRR//0nZh2d0hdJ3Q/rocLxrzpcNa0P1NbDo5iTwxr2MQHO0aR/650zOj5yAq4JxW6kFyrMPRd8j0rl+iCyEwj3LhqFAwusFcJLV3FLjMesznA=
+    - secure: Lb23gBiVmuwhcH+xZQFerxoWZKzShb/BuCwsr1ZLDjLb5QXT8Lp8EPvfIhoaVk1KKmV3jx3zCjEk4EAEpmx6EXunXqRlolUfTNO7Umf/duqiX1+JfsMxvFR0yaXYejQ0nnkX3sIBkP8MSxrSNHCWjUbIaN6V3kZobxBAQcP/AhP5ZUPu5BoWlRh1XJJw9Pps0ACL6FCYBFBl5xNDOKAEY8wj0M9dj4Vtc338je9qK1Eq+K0d8U9avM955xwzgFIP7QCAxf5xd5f6n6aIjM9DsoixHkKVMmP2ewQgYQPTxEEJ2QFq2WSRSR7eQfimg24ZwOl1M5xMygekBH+YrwXuCzrx9vMfattr4hCZ+4ACdZhsGmEDvxZxY5+MfP0r7YuTt9o26bI6QNHAFJNvpRwLXYsz7AsU4asTKcCzXQdwHXda7liCO4s22idExyVcQIkJxkyFy7zCHYqIRcn7l8oLW2wjhgRNdTW9isQijXkQJ1tjTPs/wJfrG840eX+qpanOlLHqxEQ/A13+x8HaEReNVKTdYy+BzeFbw2Bv6Npb3XIsrvnQ+sZqI1qxHAPZaBe038QqDMGpq6VGcXOlWgTwLnPqBFgqjD1CrWGK3t7Dur+wShaouJ24RL1qqrCeinWtJnUQUjeifFebct9U1msxgZ5CpfbLqJbxhchrb2NZ7/M=
