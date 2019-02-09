@@ -1,0 +1,164 @@
+$white: #dfebf5;
+$whiteish: #aabccb;
+
+.homepage {
+	width: 100%;
+	min-height: 100%;
+	background-image: url('https://cdn.tcole.me/setup-compressed.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+
+	.gradient {
+		height: 100%;
+		width: 100%;
+		background: rgba(50,59,72, 0.9);
+		background: linear-gradient(-55deg, rgba(36,39,48,0.9) 0%, rgba(50,59,72,0.9) 100%);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden auto;
+
+		.billboard {
+			display: flex;
+			flex: 2 0px;
+			align-items: center;
+
+			@media only screen and (max-width: 845px), (max-height: 675px) {
+				align-items: top;
+				margin: 25px 0;
+				& > div {
+					flex: 1;
+					height: 100%;
+					width: 100%;
+				}
+			}
+
+			.left {
+				order: 1;
+				z-index: 1;
+
+				h1 {
+					font-weight: 400;
+					margin-bottom: 35px;
+				}
+
+				a {
+					color: $white;
+					text-decoration: none;
+					font-style: italic;
+					font-weight: 300;
+
+					&[href="https://socialblade.com/info/team"] {
+						font-weight: 500;
+						font-style: normal;
+						color: #b3382c;
+					}
+				}
+			}
+
+			.right {
+				order: 2;
+				padding-left: 100px;
+
+				a {
+					width: 275px;
+					display: block;
+					padding-right: 45px;
+
+					.button {
+						width: 100%;
+						display: inline-block;
+						margin: 10px 0;
+						border: 1px solid auto;
+						padding: 13px 20px;
+						border-radius: 4px;
+						font-weight: 400;
+						text-transform: uppercase;
+						color: #ffffff;
+						vertical-align: middle;
+						background: rgba(0, 0, 0, 0.15);
+						border: 1px solid rgba(0, 0, 0, 0.2);
+
+						svg { padding-right: 9px; }
+
+						span {
+							float: right;
+							background: rgba(255, 255, 255, 0.075);
+							padding: 2px 5px;
+							margin-left: 10px;
+							border-radius: 3px;
+							color: lighten($whiteish, 5%);
+							font-size: 0.9em;
+						}
+
+						&:hover {
+							cursor: pointer;
+							border: none;
+							padding: 14px 21px;
+
+							&.twitch {
+								background: rgb(108, 36, 167);
+								background: linear-gradient(49deg, rgb(108, 36, 167) 0%, rgb(163, 81, 181) 100%);
+							}
+
+							&.youtube {
+								background: rgb(255, 75, 75);
+								background: linear-gradient(49deg, rgb(255, 75, 75) 0%, rgb(155, 75, 75) 100%);
+							}
+
+							&.twitter {
+								background: rgb(81, 104, 181);
+								background: linear-gradient(49deg, rgb(81, 104, 181) 0%, rgb(81, 141, 181) 100%);
+							}
+
+							&.github {
+								background: rgb(50, 58, 83);
+								background: linear-gradient(49deg, rgb(63, 73, 104) 0%, rgb(99, 111, 146) 100%);
+							}
+
+							&.instagram {
+								background: rgb(181, 126, 81);
+								background: linear-gradient(49deg, rgb(181, 126, 81) 0%, rgb(158, 81, 181) 100%);
+							}
+
+							&.discord {
+								background: rgb(99, 81, 181);
+								background: linear-gradient(49deg, rgb(99, 81, 181) 0%, rgb(92, 103, 197) 100%);
+							}
+						}
+					}
+				}
+			}
+
+			@media (max-width: 1445px) {
+				& {
+					flex-direction: column;
+					overflow-y: auto;
+				}
+
+				.right {
+					padding: 0;
+					display: grid;
+					width: 100%;
+					grid-gap: 0 20px;
+					grid-template-columns: repeat(auto-fill, minmax(314px, 1fr));
+					grid-auto-flow: row;
+					padding-bottom: 20px;
+
+					a { margin: 0 auto; }
+
+					@media (max-width: 650px) {
+						& { grid-template-columns: 100%; }
+						a { width: calc(100% - 100px) !important; }
+					}
+				}
+
+				.left {
+					max-width: calc(100% - 40px) !important;
+					padding: 20px;
+				}
+			}
+		}
+	}
+}
