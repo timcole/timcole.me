@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 var (
@@ -109,35 +107,9 @@ func main() {
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  120 * time.Second,
 		Handler:      r,
-		Addr:         ":8080",
+		Addr:         ":6969",
 	}
 
-	// If mode is dev listen on 8080
-	if os.Getenv("MODE") == "DEV" {
-		httpServer.Addr = ":8080"
-		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-		panic(httpServer.ListenAndServe())
-	}
-
-	// Run HTTP server secondly just in case
-	go func() {
-		httpServer.Addr = ":80"
-		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-		if err := httpServer.ListenAndServe(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	// Run Autocert for HTTPS Certificate
-	var acManager = autocert.Manager{
-		Cache:      autocert.DirCache("./cache"),
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("timcole.me", "tcole.me", "modest.land"),
-	}
-
-	// Start HTTPS Server
-	httpServer.Addr = ":443"
-	httpServer.TLSConfig = &tls.Config{GetCertificate: acManager.GetCertificate}
 	log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-	panic(httpServer.ListenAndServeTLS("", ""))
+	panic(httpServer.ListenAndServe())
 }
