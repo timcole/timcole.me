@@ -1,0 +1,31 @@
+{
+  "name": "timcole.me-web",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimothyCole/timcole.me.git"
+  },
+  "author": "Timothy Cole <tim@timcole.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TimothyCole/timcole.me/issues"
+  },
+  "homepage": "https://github.com/TimothyCole/timcole.me#readme",
+  "dependencies": {
+    "@types/next": "^7.0.9",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "@zeit/next-sass": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "next": "^7.0.2",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  }
+}
