@@ -1,12 +1,9 @@
 package main
 
 import (
-	"crypto/tls"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
@@ -15,7 +12,6 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 var (
@@ -40,25 +36,6 @@ func init() {
 }
 
 func main() {
-	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
-	router.PathPrefix("/assets").Handler(static)
-
-	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		uri := strings.Split(r.RequestURI, "/")
-
-		var ss string
-		if len(uri) == 3 && uri[1] == "ss" {
-			ss = uri[2]
-		}
-
-		temp, _ := template.ParseFiles("./build/index.html")
-		temp.Execute(w, struct {
-			Screenshot string
-			Version    string
-		}{Screenshot: ss, Version: Version})
-	})
-
-	// API Router
 	var api = router.PathPrefix("/api").Subrouter()
 	api.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -109,35 +86,9 @@ func main() {
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  120 * time.Second,
 		Handler:      r,
-		Addr:         ":8080",
+		Addr:         ":6969",
 	}
 
-	// If mode is dev listen on 8080
-	if os.Getenv("MODE") == "DEV" {
-		httpServer.Addr = ":8080"
-		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-		panic(httpServer.ListenAndServe())
-	}
-
-	// Run HTTP server secondly just in case
-	go func() {
-		httpServer.Addr = ":80"
-		log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-		if err := httpServer.ListenAndServe(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	// Run Autocert for HTTPS Certificate
-	var acManager = autocert.Manager{
-		Cache:      autocert.DirCache("./cache"),
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist("timcole.me", "tcole.me", "modest.land"),
-	}
-
-	// Start HTTPS Server
-	httpServer.Addr = ":443"
-	httpServer.TLSConfig = &tls.Config{GetCertificate: acManager.GetCertificate}
 	log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
-	panic(httpServer.ListenAndServeTLS("", ""))
+	panic(httpServer.ListenAndServe())
 }

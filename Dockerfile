@@ -10,11 +10,6 @@ ADD . /go/src/app
 RUN go get ./...
 RUN GIT_COMMIT=$(git rev-list -1 HEAD) && go build -ldflags "-X main.Version=$GIT_COMMIT" -o website
 
-# Build Frontend
-RUN apk add nodejs npm
-RUN npm install
-RUN npm run build
-
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # Runner
@@ -24,7 +19,6 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /app
 COPY --from=builder /go/src/app/website /app/website
-COPY --from=builder /go/src/app/build/ /app/build/
 
-EXPOSE 80 443
+EXPOSE 6969
 ENTRYPOINT [ "./website" ]

@@ -1,0 +1,23 @@
+._error {
+	.header {
+		background: rgba(#242730, 0.8);
+	}
+
+	.error {
+		text-align: center;
+		padding: 40px;
+		flex: 2 0;
+
+		h1 {
+			font-size: 15em;
+			margin: -25px 0;
+			padding: 0;
+		}
+
+		h2 {
+			font-size: 3em;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}

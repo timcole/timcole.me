@@ -14,3 +14,4 @@ service-account.json
 debug
 .vscode/
 .env
+.next/
