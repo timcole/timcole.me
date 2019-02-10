@@ -9,8 +9,8 @@ before_install:
 - docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
 - docker build -t timcole.me-api .
 - docker build -t timcole.me web/
-- docker run -d --name app timcole.me-api
-- docker run -d --name app timcole.me
+- docker run -d --name api timcole.me-api
+- docker run -d --name web timcole.me
 - docker ps -a
 script:
 - docker tag timcole.me-api:latest $DOCKER_HUB_USERNAME/timcole.me-api:production
