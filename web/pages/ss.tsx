@@ -11,6 +11,13 @@ import Error from './_error';
 import '../styles/screenshot.scss'
 
 class Screenshot extends Component<any> {
+	private store: any
+	constructor (props: any) {
+		super(props)
+
+		this.store = props.store
+	}
+
 	imageLink (image: string): string {
 		return `https://cdn.tcole.me/${image}`;
 	}
@@ -30,9 +37,9 @@ class Screenshot extends Component<any> {
 		const { router, error } = this.props
 		if (error) return <Error />;
 		return (
-			<Layout screenshot={router.query.screenshot}>
+			<Layout title={`Timothy Cole - Screenshot: ${router.query.screenshot}`} screenshot={router.query.screenshot}>
 				<div className="screenshot">
-					<div className="header"><Header className="container" /></div>
+					<div className="header"><Header className="container" store={this.store} /></div>
 					<div className="body">
 						<a href={this.imageLink(router.query.screenshot)}>
 							<img src={this.imageLink(router.query.screenshot)} alt="Screenshot" />

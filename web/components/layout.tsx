@@ -46,9 +46,9 @@ class Layout extends Component<any> {
 						<meta property="og:site_name" content="Timothy Cole - Full Stack Developer" />
 						<meta property="og:description" content={`Screenshot - ${screenshot}`} />
 
-						<meta itemprop="name" content={`Screenshot - ${screenshot}`} />
-						<meta itemprop="description" content={`Screenshot - ${screenshot}`} />
-						<meta itemprop="image" content={`https://cdn.tcole.me/${screenshot}`} />
+						<meta itemProp="name" content={`Screenshot - ${screenshot}`} />
+						<meta itemProp="description" content={`Screenshot - ${screenshot}`} />
+						<meta itemProp="image" content={`https://cdn.tcole.me/${screenshot}`} />
 
 						<meta name="msapplication-starturl" content={`http://timcole.me/ss/${screenshot}`} />
 						<meta name="msapplication-TileImage" content={`https://cdn.tcole.me/${screenshot}`} />

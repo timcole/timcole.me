@@ -1,4 +1,4 @@
-import { Component, Children, cloneElement } from "react";
+import { Component, Children, cloneElement, DOMElement } from "react";
 import { withRouter } from "next/router";
 import Link from 'next/link'
 
@@ -19,6 +19,13 @@ const ActiveLink = withRouter(({ router, children, ...props }: any) => (
 ));
 
 class Header extends Component<any> {
+	private store: any
+	constructor (props: any) {
+		super(props)
+
+		this.store = props.store
+	}
+
 	private links: ILink[] = [
 		{href: "/", name: "Home"},
 		{href: "/videos", name: "VODs"},
@@ -35,7 +42,7 @@ class Header extends Component<any> {
 					<ul>
 						{this.links.map((link: ILink) => <li key={link.name}><ActiveLink prefetch href={link.href}><a>{link.name}</a></ActiveLink></li> )}
 					</ul>
-					<div className="subscribe" id="show-modal">Subscribe</div>
+					<div className="subscribe" id="show-modal" onClick={(): void => this.store.set({ showSubscribe: true })}>Subscribe</div>
 				</div>
 			</div>
 		)

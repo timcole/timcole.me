@@ -8,11 +8,18 @@ import Footer from '../components/footer'
 import "../styles/videos.scss"
 
 class Videos extends Component<any> {
+	private store: any
+	constructor (props: any) {
+		super(props)
+
+		this.store = props.store
+	}
+
 	render() {
 		return (
 			<Layout title="Timothy Cole - Stream VODs">
 				<div className="videos_page">
-					<div className="header"><Header className="container" /></div>
+					<div className="header"><Header className="container" store={this.store} /></div>
 						<Query
 							query={videosQuery}
 							variables={{ login: "modesttim", limit: 100 }}

@@ -54,6 +54,16 @@ $whiteish: #aabccb;
 						font-style: normal;
 						color: #b3382c;
 					}
+
+					&[href="https://link.twitch.tv/devchat"] {
+						font-weight: 500;
+						font-style: normal;
+						color: #8b70bd;
+					}
+
+					sup {
+						font-size: 0.6em;
+					}
 				}
 			}
 

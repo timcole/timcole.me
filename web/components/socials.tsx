@@ -17,14 +17,14 @@ class Stats extends React.Component<any, any> {
 		this.getStats();
 	}
 
-	async getStats () {
+	async getStats(): Promise<void> {
 		this.setState({
 			discord: (await fetch("https://discordapp.com/api/v6/invite/YFtfGwq?with_counts=true").then(data => data.json())).approximate_member_count.toLocaleString(),
 			github: (await fetch("https://api.github.com/users/timothycole").then(data => data.json())).followers.toLocaleString(),
 		});
 
 		const socialblade = (await fetch("https://timcole.me/api/stats").then(data => data.json())).results;
-		socialblade.map(result => {
+		socialblade.map((result: any): void => {
 			if (result.username != "modesttim" && result.channelid != "UCLvM67Ey6kNCasyEV2dvrbA") return;
 			this.setState({ [result.type.toLowerCase()]: Number(`${result.followers || result.subscribers}`.replace(/,/g, '')).toLocaleString() });
 		});
@@ -42,7 +42,7 @@ class Stats extends React.Component<any, any> {
 	render () {
 		return (
 			<div className={this.props.className}>
-				{this.socials.map(v => (
+				{this.socials.map((v: string[]) => (
 					<a href={v[1]} target="_blank" key={v[2]}>
 						<div className={`button ${v[2]}`}>
 							{/* Social Media Name */ v[0]}

@@ -9,12 +9,19 @@ import Footer from '../components/footer'
 import "../styles/index.scss"
 
 class Index extends Component<any> {
+	private store: any
+	constructor (props: any) {
+		super(props)
+
+		this.store = props.store
+	}
+
 	render() {
 		return (
 			<Layout>
 				<div className="page homepage">
 					<div className="gradient">
-						<Header className="container" />
+						<Header className="container" store={this.store} />
 						<div className="container billboard">
 							<Bio className="left" />
 							<Socials className="right" />

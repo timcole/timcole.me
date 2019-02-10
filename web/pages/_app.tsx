@@ -13,14 +13,16 @@ const client = new ApolloClient({
 	fetch,
 });
 
+import SubscribeModal from '../components/subscribe_modal';
 class Main extends App {
-	constructor(props) {
+	constructor (props: any) {
 		super(props)
 
 		this.store.get = this.store.get.bind(this);
 		this.store.set = this.store.set.bind(this);
 	}
-	
+
+	state = { showSubscribe: false }
 	private store = {
 		get(): {} { return this.state; },
 		set(s: any): void { this.setState(s); },
@@ -31,7 +33,8 @@ class Main extends App {
 		return (
 			<Container>
 				<ApolloProvider client={client}>
-					<Component {...pageProps} store={this.store} />
+					{this.state.showSubscribe ? (<SubscribeModal store={this.store} />) : null}
+					<Component store={this.store} {...pageProps} />
 				</ApolloProvider>
 			</Container>
 		)
