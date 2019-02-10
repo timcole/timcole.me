@@ -2,7 +2,6 @@ import App, { Container } from 'next/app'
 import React from 'react'
 
 const _TWITCH_CLIENT_ID = "kimne78kx3ncx6brgo4mv6wki5h1ko";
-
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from "apollo-boost";
 import fetch from 'node-fetch';
@@ -12,6 +11,10 @@ const client = new ApolloClient({
 	// @ts-ignore
 	fetch,
 });
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons'
+library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube); 
 
 import SubscribeModal from '../components/subscribe_modal';
 class Main extends App {

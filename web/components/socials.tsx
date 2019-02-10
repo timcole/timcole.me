@@ -1,5 +1,6 @@
 import * as React from "react";
 import fetch from "node-fetch";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface IState {
 	discord: null | number
@@ -42,9 +43,10 @@ class Stats extends React.Component<any, any> {
 	render () {
 		return (
 			<div className={this.props.className}>
-				{this.socials.map((v: string[]) => (
+				{this.socials.map((v: any) => (
 					<a href={v[1]} target="_blank" key={v[2]}>
 						<div className={`button ${v[2]}`}>
+							<FontAwesomeIcon icon={['fab', v[2]]} />
 							{/* Social Media Name */ v[0]}
 							{/* Social Media Stat */ this.state[v[2]] ? (<span>{this.state[v[2]]}</span>) : "" }
 						</div>
