@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import Layout from '../components/layout'
 import Header from '../components/header'
@@ -8,7 +8,7 @@ import Footer from '../components/footer'
 
 import "../styles/index.scss"
 
-class Index extends React.Component<any> {
+class Index extends Component<any> {
 	render() {
 		return (
 			<Layout>

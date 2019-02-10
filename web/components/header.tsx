@@ -33,7 +33,7 @@ class Header extends Component<any> {
 				</div>
 				<div className="right">
 					<ul>
-						{this.links.map((link: ILink) => <li key={link.name}><ActiveLink href={link.href}><a>{link.name}</a></ActiveLink></li> )}
+						{this.links.map((link: ILink) => <li key={link.name}><ActiveLink prefetch href={link.href}><a>{link.name}</a></ActiveLink></li> )}
 					</ul>
 					<div className="subscribe" id="show-modal">Subscribe</div>
 				</div>

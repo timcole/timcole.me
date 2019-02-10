@@ -10,7 +10,7 @@ const client = new ApolloClient({
 	uri: "https://gql.twitch.tv/gql",
 	headers: { "Client-ID": _TWITCH_CLIENT_ID },
 	// @ts-ignore
-	fetch: fetch,
+	fetch,
 });
 
 class Main extends App {

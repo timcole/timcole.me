@@ -3,9 +3,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,11 @@
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "apollo-boost": "^0.1.27",
+    "express": "^4.16.4",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "next": "^7.0.2",
+    "next-url-prettifier": "^1.4.0",
     "node-fetch": "^2.3.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.1",

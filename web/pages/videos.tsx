@@ -10,7 +10,7 @@ import "../styles/videos.scss"
 class Videos extends Component<any> {
 	render() {
 		return (
-			<Layout>
+			<Layout title="Timothy Cole - Stream VODs">
 				<div className="videos_page">
 					<div className="header"><Header className="container" /></div>
 						<Query
