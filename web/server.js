@@ -13,6 +13,6 @@ app.prepare().then(() => {
 
 	// everything else
 	server.get('*', (req, res) => app.getRequestHandler()(req, res));
-	const port = 3000;
+	const port = 9001;
 	server.listen(port, () => `Listening on ${port}`);
 });

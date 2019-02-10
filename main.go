@@ -1,11 +1,9 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
@@ -38,25 +36,6 @@ func init() {
 }
 
 func main() {
-	var static = http.StripPrefix("/assets", http.FileServer(http.Dir("./build")))
-	router.PathPrefix("/assets").Handler(static)
-
-	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		uri := strings.Split(r.RequestURI, "/")
-
-		var ss string
-		if len(uri) == 3 && uri[1] == "ss" {
-			ss = uri[2]
-		}
-
-		temp, _ := template.ParseFiles("./build/index.html")
-		temp.Execute(w, struct {
-			Screenshot string
-			Version    string
-		}{Screenshot: ss, Version: Version})
-	})
-
-	// API Router
 	var api = router.PathPrefix("/api").Subrouter()
 	api.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
