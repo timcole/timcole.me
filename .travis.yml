@@ -18,7 +18,8 @@ script:
 - docker push $DOCKER_HUB_USERNAME/timcole.me-api:production
 - docker push $DOCKER_HUB_USERNAME/timcole.me:production
 after_script:
-- docker rm -f app
+- docker rm -f web
+- docker rm -f api
 deploy:
   provider: script
   skip_cleanup: true
