@@ -8,7 +8,7 @@ import Footer from '../components/footer'
 
 import "../styles/index.scss"
 
-class Index extends React.Component {
+class Index extends React.Component<any> {
 	render() {
 		return (
 			<Layout>

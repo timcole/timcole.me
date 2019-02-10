@@ -1,18 +1,19 @@
 import { Component } from "react";
 import Head from 'next/head'
 
-import "../styles/app.scss"
+import "../styles/app.scss";
 
 const defaultTitle = `Full Stack Developer - Timothy Cole`;
 class Layout extends Component<any> {
 	render () {
+		const { title, children } = this.props
 		return (
 			<div id="app">
 				<Head>
 					<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 					<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-					<link rel="shortcut icon" href="../assets/logo.png" type="image/x-icon" />
-					<title>{this.props.title || defaultTitle}</title>
+					<link rel="shortcut icon" href="/static/logo.png" type="image/x-icon" />
+					<title>{title || defaultTitle}</title>
 
 					<meta name="keywords" content="Full Stack Developer, Web Developer, Programmer" />
 					<meta name="description" content="Timothy Cole - Full Stack Developer" />
@@ -31,7 +32,7 @@ class Layout extends Component<any> {
 					<link rel="preload" href="https://cdn.tcole.me/setup-compressed.jpg" as="image" />
 				</Head>
 
-				{this.props.children}
+				{children}
 			</div>
 		)
 	}
