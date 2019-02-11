@@ -8,4 +8,4 @@
 ---
 
 ### Information
-This is my personal website.  Written with a [go](https://golang.org/) back-end and a [vue](https://vuejs.org/) front-end.  Hosted in [docker](https://www.docker.com/) with a [redis](https://redis.io/) database.
+This is my personal website.  Written with a [go](https://golang.org/) back-end and a [react](https://reactjs.org/) front-end.  Hosted in a [docker](https://www.docker.com/) container with a [redis](https://redis.io/) database. &mdash; Hosted on [Vultr](https://www.vultr.com/?ref=7804157-4F)
