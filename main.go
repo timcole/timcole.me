@@ -7,19 +7,20 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
+	"github.com/TimothyCole/timcole.me/pkg/firehose"
+	"github.com/TimothyCole/timcole.me/pkg/ping"
+	"github.com/TimothyCole/timcole.me/pkg/security"
+	"github.com/TimothyCole/timcole.me/pkg/sockets"
 	"github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/go-redis/redis"
-	"github.com/gorilla/context"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
 var (
-	router     = mux.NewRouter()
-	tcoleme    = router.Host("tcole.me").Subrouter()
-	modestland = router.Host("modest.land").Subrouter()
-	err        error
-	store      *redis.Client
+	router = mux.NewRouter()
+	err    error
+	store  *redis.Client
 )
 
 func init() {
@@ -36,44 +37,31 @@ func init() {
 }
 
 func main() {
-	var api = router.PathPrefix("/api").Subrouter()
-	api.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			context.Set(r, "redis", store)
-			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			next.ServeHTTP(w, r)
-		})
-	})
-	api.HandleFunc("/login", pkg.AdminAuth).Methods("POST")
-	api.HandleFunc("/stats", SBStats).Methods("GET")
+	router.Use(middleware)
 
-	// Spotify API Router
-	var spotifyRouter = api.PathPrefix("/spotify").Subrouter()
-	spotifyRouter.HandleFunc("/playing", spotify.GetPlaying).Methods("GET")
+	router.HandleFunc("/login", security.UserLogin).Methods("POST")
+	router.HandleFunc("/stats", pkg.SBStats).Methods("GET")
+
+	router.HandleFunc("/spotify/playing", spotify.GetPlaying).Methods("GET")
+
+	// WebSockets
+	pubsub := sockets.New()
+	go pubsub.Start()
+	pubsub.AddHandler((ping.New(pubsub)).Handler, "ping")
+	if os.Getenv("TWITCH_OAUTH") != "" {
+		pubsub.AddHandler((firehose.New(pubsub)).Handler, "firehose")
+	}
+	router.Handle("/ws", security.WSMiddleWare(
+		http.HandlerFunc(pubsub.Handler),
+	)).Methods("GET")
 
 	// Admin API Router
-	var admin = api.PathPrefix("/admin").Subrouter()
-	admin.Use(pkg.UserMiddleWare)
+	var admin = router.PathPrefix("/admin").Subrouter()
+	admin.Use(security.UserMiddleWare)
 	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
 
-	// tcole.me Handlers
-	tcoleme.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			next.ServeHTTP(w, r)
-		})
-	})
-	tcoleme.HandleFunc("/ref/xsplit-vcam", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "https://www.xsplit.com/vcam?utm_medium=referral&utm_source=modesttim", 301)
-	}).Methods("GET")
-
-	// modest.land Handlers
-	modestland.HandleFunc("/discord", DiscordInvite).Methods("GET")
-
 	// API 404 Handler
-	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(`{"status": 404, "error": "StatusNotFound"}`))

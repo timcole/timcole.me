@@ -1,4 +1,4 @@
-package pkg
+package security
 
 import (
 	"encoding/json"
@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -42,33 +41,8 @@ func (u *User) Access(key string) bool {
 	return a
 }
 
-// UserMiddleWare makes sure they have a valid jwt before continueing
-func UserMiddleWare(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authorization := r.Header.Get("Authorization")
-		if len(strings.Split(authorization, ".")) != 3 {
-			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
-			return
-		}
-
-		token, _ := jwt.ParseWithClaims(authorization, &User{}, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("SIGNING_KEY")), nil
-		})
-
-		if claims, ok := token.Claims.(*User); ok && token.Valid {
-			context.Set(r, "User", claims)
-			next.ServeHTTP(w, r)
-			return
-		}
-
-		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"status": 401, "error": "StatusUnauthorized"}`))
-	})
-}
-
-// AdminAuth checks the login and creates a session
-func AdminAuth(w http.ResponseWriter, r *http.Request) {
+// UserLogin checks the login and creates a session
+func UserLogin(w http.ResponseWriter, r *http.Request) {
 	var login Login
 	body, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(body, &login)
