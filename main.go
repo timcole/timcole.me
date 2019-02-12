@@ -7,6 +7,10 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
+	"github.com/TimothyCole/timcole.me/pkg/firehose"
+	"github.com/TimothyCole/timcole.me/pkg/ping"
+	"github.com/TimothyCole/timcole.me/pkg/security"
+	"github.com/TimothyCole/timcole.me/pkg/sockets"
 	"github.com/TimothyCole/timcole.me/pkg/spotify"
 	"github.com/go-redis/redis"
 	"github.com/gorilla/handlers"
@@ -35,14 +39,25 @@ func init() {
 func main() {
 	router.Use(middleware)
 
-	router.HandleFunc("/login", pkg.AdminAuth).Methods("POST")
+	router.HandleFunc("/login", security.UserLogin).Methods("POST")
 	router.HandleFunc("/stats", pkg.SBStats).Methods("GET")
 
 	router.HandleFunc("/spotify/playing", spotify.GetPlaying).Methods("GET")
 
+	// WebSockets
+	pubsub := sockets.New()
+	go pubsub.Start()
+	pubsub.AddHandler((ping.New(pubsub)).Handler, "ping")
+	if os.Getenv("TWITCH_OAUTH") != "" {
+		pubsub.AddHandler((firehose.New(pubsub)).Handler, "firehose")
+	}
+	router.Handle("/ws", security.WSMiddleWare(
+		http.HandlerFunc(pubsub.Handler),
+	)).Methods("GET")
+
 	// Admin API Router
 	var admin = router.PathPrefix("/admin").Subrouter()
-	admin.Use(pkg.UserMiddleWare)
+	admin.Use(security.UserMiddleWare)
 	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
 
 	// API 404 Handler
