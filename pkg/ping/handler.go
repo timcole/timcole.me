@@ -8,5 +8,5 @@ func (p *ping) Handler(i *s.Instance, c *s.Client, args []string) {
 		return
 	}
 
-	c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{Data: "asd"}}
+	c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{Data: args[1]}}
 }
