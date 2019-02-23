@@ -18,17 +18,11 @@ class Index extends Component<any> {
 
 	render() {
 		return (
-			<Layout>
-				<div className="page homepage">
-					<div className="gradient">
-						<Header className="container" store={this.store} />
-						<div className="container billboard">
-							<Bio className="left" />
-							<Socials className="right" />
-						</div>
-						<Footer />
-					</div>
-				</div>
+			<Layout className="homepage">
+				<div className="header"><Header className="container" store={this.store} /></div>
+				<div className="setup"><div className="bio"><Bio className="container" /></div></div>
+				<Socials className="socials" />
+				<Footer />
 			</Layout>
 		)
 	}

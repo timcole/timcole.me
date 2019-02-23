@@ -17,35 +17,33 @@ class Videos extends Component<any> {
 
 	render() {
 		return (
-			<Layout title="Timothy Cole - Stream VODs">
-				<div className="videos_page">
-					<div className="header"><Header className="container" store={this.store} /></div>
-						<Query
-							query={videosQuery}
-							variables={{ login: "modesttim", limit: 100 }}
-						>
-						{({ loading, error, data }) => {
-							if (loading) return <p>Loading...</p>;
-							if (error) return <p>Error :(</p>;
-							return (
-								<div className="container videos">
-									{data.user.videos.edges.map((edge: any) => (
-										<div className="video" key={edge.node.id}>
-											<a href={`https://www.twitch.tv/videos/${edge.node.id}`} target="_blank">
-												<img className="thumbnail" src={edge.node.previewThumbnailURL.replace("{width}", "1280").replace("{height}", "720")} alt={edge.node.title} />
-												<div className="meta">
-													<h2>{edge.node.title}</h2>
-													<p>{new Date(edge.node.createdAt).toLocaleString() }</p>
-												</div>
-											</a>
-										</div>
-									))}
-								</div>
-							)
-						}}
-						</Query>
-					<Footer />
-				</div>
+			<Layout title="Timothy Cole - Stream VODs" className="videos_page">
+				<div className="header"><Header className="container" store={this.store} /></div>
+					<Query
+						query={videosQuery}
+						variables={{ login: "modesttim", limit: 100 }}
+					>
+					{({ loading, error, data }) => {
+						if (loading) return <p>Loading...</p>;
+						if (error) return <p>Error :(</p>;
+						return (
+							<div className="container videos">
+								{data.user.videos.edges.map((edge: any) => (
+									<div className="video" key={edge.node.id}>
+										<a href={`https://www.twitch.tv/videos/${edge.node.id}`} target="_blank">
+											<img className="thumbnail" src={edge.node.previewThumbnailURL.replace("{width}", "1280").replace("{height}", "720")} alt={edge.node.title} />
+											<div className="meta">
+												<h2>{edge.node.title}</h2>
+												<p>{new Date(edge.node.createdAt).toLocaleString() }</p>
+											</div>
+										</a>
+									</div>
+								))}
+							</div>
+						)
+					}}
+					</Query>
+				<Footer />
 			</Layout>
 		)
 	}

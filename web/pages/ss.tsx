@@ -37,16 +37,14 @@ class Screenshot extends Component<any> {
 		const { router, error } = this.props
 		if (error) return <Error />;
 		return (
-			<Layout title={`Timothy Cole - Screenshot: ${router.query.screenshot}`} screenshot={router.query.screenshot}>
-				<div className="screenshot">
-					<div className="header"><Header className="container" store={this.store} /></div>
-					<div className="body">
-						<a href={this.imageLink(router.query.screenshot)}>
-							<img src={this.imageLink(router.query.screenshot)} alt="Screenshot" />
-						</a>
-					</div>
-					<Footer />
+			<Layout title={`Timothy Cole - Screenshot: ${router.query.screenshot}`} screenshot={router.query.screenshot} className="screenshot">
+				<div className="header"><Header className="container" store={this.store} /></div>
+				<div className="body">
+					<a href={this.imageLink(router.query.screenshot)}>
+						<img src={this.imageLink(router.query.screenshot)} alt="Screenshot" />
+					</a>
 				</div>
+				<Footer />
 			</Layout>
 		)
 	}
