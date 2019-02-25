@@ -15,8 +15,6 @@ $whiteish: #aabccb;
 		background: rgba(50,59,72, 0.8);
 		background: linear-gradient(-55deg, rgba(36,39,48,0.8) 0%, rgba(50,59,72,0.8) 100%);
 
-		.container { max-width: 1000px; }
-
 		a {
 			color: $white;
 			text-decoration: none;
@@ -41,6 +39,7 @@ $whiteish: #aabccb;
 .socials {
 	text-align: center;
 	margin-top: -25px;
+	margin-bottom: 10px;
 
 	&:nth-child(1) { margin-left: 0; }
 	a { margin-left: 25px; }

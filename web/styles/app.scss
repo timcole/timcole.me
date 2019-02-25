@@ -35,12 +35,18 @@ div.container {
 	margin: 0 auto;
 }
 
+.narrow {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
 h1 {
 	margin: 0;
 	padding: 20px 0;
 	font-weight: 100;
 	white-space: nowrap;
 	overflow: hidden;
+	font-size: 1.7em;
 
 	&::before {
 		margin-right: 24px;
