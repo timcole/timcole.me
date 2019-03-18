@@ -27,8 +27,7 @@ class Header extends Component<any> {
 	}
 
 	private links: ILink[] = [
-		{href: "/", name: "Home"},
-		{href: "/videos", name: "VODs"},
+		// {href: "/", name: "Home"},
 	];
 
 	render() {

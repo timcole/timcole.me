@@ -6,7 +6,7 @@ import "../styles/app.scss";
 const defaultTitle = `Timothy Cole - Software Engineer`;
 class Layout extends Component<any> {
 	render () {
-		const { title, children, screenshot } = this.props
+		const { title, children, screenshot, className } = this.props
 		return (
 			<div id="app">
 				<Head>
@@ -56,7 +56,7 @@ class Layout extends Component<any> {
 					</Head>
 				) : null}
 
-				{children}
+				<div className={`page ${className}`}>{children}</div>
 			</div>
 		)
 	}

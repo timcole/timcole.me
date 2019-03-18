@@ -10,6 +10,13 @@ interface IState {
 	github: null | number
 }
 
+
+enum ESocial {
+	TOOLTIP,
+	URL,
+	NETWORK,
+}
+
 class Stats extends React.Component<any, any> {
 	state: IState = { discord: null, youtube: null, twitter: null, instagram: null, github: null }
 
@@ -36,22 +43,20 @@ class Stats extends React.Component<any, any> {
 		["Check out my GitHub", "https://github.com/TimothyCole", "github"],
 		["Follow on Twitter", "https://twitter.com/modesttim", "twitter"],
 		["Join us on Discord", "https://discordapp.com/invite/YFtfGwq", "discord"],
-		["View my Instagram", "https://instagram.com/modesttim", "instagram"],
 		["Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube"],
+		["View my Instagram", "https://instagram.com/modesttim", "instagram"],
 	]
 
 	render () {
 		return (
 			<div className={this.props.className}>
-				{this.socials.map((v: any) => (
-					<a href={v[1]} target="_blank" key={v[2]}>
-						<div className={`button ${v[2]}`}>
-							<FontAwesomeIcon icon={['fab', v[2]]} />
-							{/* Social Media Name */ v[0]}
-							{/* Social Media Stat */ this.state[v[2]] ? (<span>{this.state[v[2]]}</span>) : "" }
-						</div>
-					</a>
-				))}
+			{this.socials.map((v: any) => (
+				<a href={v[ESocial.URL]} target="_blank" key={v[ESocial.NETWORK]}>
+					<div className={`button ${v[ESocial.NETWORK]}`} data-tooltip={`${v[ESocial.TOOLTIP]} - ${this.state[v[ESocial.NETWORK]]}`}>
+						<FontAwesomeIcon icon={['fab', v[ESocial.NETWORK]]} />
+					</div>
+				</a>
+			))}
 			</div>
 		)
 	}
