@@ -43,8 +43,8 @@ class Stats extends React.Component<any, any> {
 		["Check out my GitHub", "https://github.com/TimothyCole", "github"],
 		["Follow on Twitter", "https://twitter.com/modesttim", "twitter"],
 		["Join us on Discord", "https://discordapp.com/invite/YFtfGwq", "discord"],
-		["View my Instagram", "https://instagram.com/modesttim", "instagram"],
 		["Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube"],
+		["View my Instagram", "https://instagram.com/modesttim", "instagram"],
 	]
 
 	render () {

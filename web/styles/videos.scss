@@ -1,75 +1,82 @@
-.videos_page {
-	.videos {
-		padding-top: 15px;
-		display: grid;
-		grid-template-columns: 25% 25% 25% 25%;
-		grid-auto-flow: row;
+.videos {
+	padding-top: 15px;
+	display: grid;
+	grid-template-columns: 25% 25% 25% 25%;
+	grid-auto-flow: row;
 
-		@media only screen and (max-width: 1000px) {
-			grid-template-columns: 50% 50%;
+	@media only screen and (max-width: 1000px) {
+		grid-template-columns: 50% 50%;
+	}
+
+	@media only screen and (max-width: 550px) {
+		grid-template-columns: 100%;
+	}
+
+	.video {
+		margin: 10px;
+		-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
+		-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
+		box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
+		position: relative;
+		border: 1px solid #33363F;
+		border-radius: 3px;
+		background: linear-gradient(180deg, rgba(36, 39, 48, 0.75) 0%, rgba(36, 39, 48, 0.2) 100%);
+
+		a {
+			color: inherit;
+			text-decoration: none;
+			&:focus {
+				outline: none;
+			}
 		}
 
-		@media only screen and (max-width: 550px) {
-			grid-template-columns: 100%;
+		&:hover {
+			-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
+			-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
+			box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
 		}
 
-		.video {
-			margin: 10px;
-			-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
-			-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
-			box-shadow: 0px 5px 10px 0px rgba(0,0,0,.25);
-			position: relative;
+		svg.platform {
+			position: absolute;
+			font-size: 1.75em;
+			top: 8px;
+			right: 10px;
+			-webkit-filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
+			filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
+			&.youtube { color: #ff0000; }
+			&.twitch { color: #6441A4; }
+		}
 
-			a {
-				color: inherit;
-				text-decoration: none;
-				&:focus {
-					outline: none;
-				}
-			}
+		img.thumbnail {
+			display: block;
+			width: 100%;
+			height: auto;
+			border-radius: 3px;
+			opacity: 0.6;
+		}
 
-			&:hover {
-				-webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
-				-moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
-				box-shadow: 0px 5px 10px 0px rgba(0,0,0,.7);
-			}
-
-			svg.platform {
+		div.meta {
+			h2 {
 				position: absolute;
-				font-size: 1.75em;
-				top: 8px;
-				right: 10px;
-				-webkit-filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
-				filter: drop-shadow(0 2px 5px rgba(#000000, 0.35));
-				&.youtube { color: #ff0000; }
-				&.twitch { color: #6441A4; }
+				margin: 0;
+				font-size: 0.9rem;
+				font-weight: 500;
+				padding: 5px 8px;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				top: 5px;
+				width: calc(100% - 16px);
 			}
 
-			img.thumbnail {
-				display: block;
-				width: 100%;
-				height: auto;
-			}
-
-			div.meta {
-				background: darken(#2b2e39, 3%);
-
-				h2 {
-					margin: 0;
-					font-size: 0.9rem;
-					font-weight: 600;
-					padding: 5px 8px;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					overflow: hidden;
-				}
-
-				p {
-					// text-align: right;
-					font-size: 0.8rem;
-					padding: 5px 8px;
-					margin: 0;
-				}
+			p {
+				position: absolute;
+				text-align: right;
+				font-size: 0.85rem;
+				padding: 5px 8px;
+				margin: 0;
+				bottom: 0;
+				width: calc(100% - 16px);
 			}
 		}
 	}
