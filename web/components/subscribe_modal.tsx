@@ -16,6 +16,7 @@ class SubscribeModal extends Component<any> {
 		"Subscriber",
 		"3-Month Subscriber",
 		"6-Month Subscriber",
+		"9-Month Subscriber",
 		"1-Year Subscriber",
 		"2-Year Subscriber",
 		"3-Year Subscriber",
