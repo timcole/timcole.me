@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/TimothyCole/timcole.me/pkg"
-	"github.com/TimothyCole/timcole.me/pkg/firehose"
-	"github.com/TimothyCole/timcole.me/pkg/ping"
+	"github.com/TimothyCole/timcole.me/pkg/chat"
 	"github.com/TimothyCole/timcole.me/pkg/security"
 	"github.com/TimothyCole/timcole.me/pkg/sockets"
 	"github.com/TimothyCole/timcole.me/pkg/spotify"
+	"github.com/TimothyCole/timcole.me/pkg/stream"
 	"github.com/go-redis/redis"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -47,18 +47,16 @@ func main() {
 	// WebSockets
 	pubsub := sockets.New()
 	go pubsub.Start()
-	pubsub.AddHandler((ping.New(pubsub)).Handler, "ping")
-	if os.Getenv("TWITCH_OAUTH") != "" {
-		pubsub.AddHandler((firehose.New(pubsub)).Handler, "firehose")
-	}
+	pubsub.AddHandler((chat.New(pubsub)).Handler, "chat")
 	router.Handle("/ws", security.WSMiddleWare(
 		http.HandlerFunc(pubsub.Handler),
 	)).Methods("GET")
 
-	// Admin API Router
-	var admin = router.PathPrefix("/admin").Subrouter()
-	admin.Use(security.UserMiddleWare)
-	admin.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
+	// NDA API Router
+	var NDA = router.PathPrefix("/nda").Subrouter()
+	NDA.Use(security.NDAMiddleWare)
+	NDA.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
+	NDA.HandleFunc("/stream", stream.GetHLS).Methods("GET")
 
 	// API 404 Handler
 	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

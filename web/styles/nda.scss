@@ -1,0 +1,19 @@
+.body {
+	height: calc(100% - 71px);
+	max-height: calc(100% - 71px);
+	position: relative;
+	display: flex;
+	overflow: hidden;
+
+	.player {
+		flex: 1;
+		z-index: 1;
+	}
+
+	.chat {
+		$width: 425px;
+		min-width: $width;
+		max-width: $width;
+		z-index: 2;
+	}
+}

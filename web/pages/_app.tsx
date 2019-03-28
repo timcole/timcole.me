@@ -13,8 +13,27 @@ const client = new ApolloClient({
 });
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import {
+	faTwitch,
+	faTwitter,
+	faGithub,
+	faInstagram,
+	faDiscord,
+	faYoutube
+} from '@fortawesome/free-brands-svg-icons'
 library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube); 
+import {
+	faPlay,
+	faPause,
+	faCompress,
+	faVolumeMute
+} from '@fortawesome/free-solid-svg-icons';
+library.add(faPlay, faPause, faCompress, faVolumeMute);
+import {
+	faVolume,
+} from '@fortawesome/pro-solid-svg-icons';
+library.add(faVolume);
+
 
 import SubscribeModal from '../components/subscribe_modal';
 class Main extends App {

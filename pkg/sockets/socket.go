@@ -47,7 +47,7 @@ func (c *Client) read(i *Instance) {
 			for _, topic := range payload.Data.Topics {
 				args := strings.Split(topic, ".")
 				if f, ok := i.handlers[args[0]]; ok {
-					go f(i, c, args)
+					go f(i, c, args, payload)
 				} else {
 					c.Send <- &MessagePayload{Type: TypeResponse, Nonce: payload.Nonce, Error: ErrInvalidTopic}
 				}

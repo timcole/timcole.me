@@ -1,0 +1,132 @@
+@mixin no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.player {
+	height: 100%;
+	width: 100%;
+	position: relative;
+
+	video {
+		height: 100%;
+		width: 100%;
+		outline: none;
+	}
+
+	&:hover {
+		#controls {
+			opacity: 1;
+		}
+	}
+
+	#controls {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 5px;
+		padding-bottom: 6px;
+		opacity: 0;
+		-webkit-transition: opacity .3s;
+		-moz-transition: opacity .3s;
+		-o-transition: opacity .3s;
+		-ms-transition: opacity .3s;
+		transition: opacity .3s;
+		display: flex;
+		* {vertical-align: middle;}
+
+		background: rgba(#242730, 1);
+		-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+		-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+		box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+
+		font-size: 1.1rem;
+
+		.left {
+			flex: 1;
+		}
+
+		.right {
+			
+		}
+
+		button {
+			background: transparent;
+			border: none;
+			font-size: 1.2rem;
+			color: #aabccb;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+
+		#mute {
+			&:hover {
+				& ~ #volume-bar {
+					display: inline-block;
+				}
+			}
+		}
+
+		#volume-bar {
+			display: none;
+			&:hover {
+				display: inline-block;
+			}
+		}
+
+		#quality {
+			display: inline-block;
+			position: relative;
+			padding-right: 15px;
+			@include no-select();
+
+			p {
+				margin: 0;
+				font-size: 0.9rem;
+
+				&:hover {
+					& ~ ul {
+						display: inline-block;
+					}
+				}
+			}
+
+			ul {
+				list-style: none;
+				position: absolute;
+				bottom: -40px;
+				left: -115px;
+				width: 135px;
+				padding-bottom: 50px;
+				display: none;
+
+				&:hover {
+					display: inline-block;
+				}
+
+				li {
+					margin: 4px;
+					padding: 4px 6px;
+					left: 0;
+
+					background: rgba(#242730, 1);
+					-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+					-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+					box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+
+					&:hover {
+						background: var(--accent);
+						cursor: pointer;
+					}
+				}
+			}
+		}
+	}
+}

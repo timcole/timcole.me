@@ -9,8 +9,8 @@ import (
 	"github.com/gorilla/context"
 )
 
-// UserMiddleWare makes sure they have a valid jwt before continuing
-func UserMiddleWare(next http.Handler) http.Handler {
+// NDAMiddleWare makes sure they have a valid jwt and has NDA permissions
+func NDAMiddleWare(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authorization := r.Header.Get("Authorization")
 		if len(strings.Split(authorization, ".")) != 3 {
@@ -24,9 +24,11 @@ func UserMiddleWare(next http.Handler) http.Handler {
 		})
 
 		if claims, ok := token.Claims.(*User); ok && token.Valid {
-			context.Set(r, "User", claims)
-			next.ServeHTTP(w, r)
-			return
+			if claims.Access("NDA") {
+				context.Set(r, "User", claims)
+				next.ServeHTTP(w, r)
+				return
+			}
 		}
 
 		w.WriteHeader(http.StatusUnauthorized)
@@ -37,7 +39,12 @@ func UserMiddleWare(next http.Handler) http.Handler {
 // WSMiddleWare checks for a JWT header to make sure thehy have access too the given topic
 func WSMiddleWare(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authorization := r.Header.Get("Authorization")
+		var authorization string
+		if r.Header.Get("Authorization") != "" {
+			authorization = r.Header.Get("Authorization")
+		} else if r.URL.Query().Get("authorization") != "" {
+			authorization = r.URL.Query().Get("authorization")
+		}
 		if len(strings.Split(authorization, ".")) != 3 {
 			context.Set(r, "User", &User{})
 			next.ServeHTTP(w, r)
