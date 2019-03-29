@@ -12,8 +12,7 @@ import '../styles/nda.scss'
  
 class NDA extends Component {
 	static getInitialProps({ req }) {
-		let host = req ? req.headers.host : window.location.origin
-		let isDev = host.indexOf("timcole.me") >= -1
+		let isDev = process.env.NODE_ENV === "development";
 		return { isDev };
 	}
 
