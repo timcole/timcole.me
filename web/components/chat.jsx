@@ -6,9 +6,10 @@ class Chat extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.url = this.props.isDev ? "ws://127.0.0.1:6969/ws" : "wss://timcole.me/ws"
 		this.state = {
 			connected: false,
-			client: new WebSocket(`wss://timcole.me/ws?authorization=${this.props.authorization}`),
+			client: new WebSocket(`${this.url}?authorization=${this.props.authorization}`),
 			mounted: false,
 			chat: []
 		}

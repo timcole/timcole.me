@@ -19,7 +19,8 @@ import {
 	faGithub,
 	faInstagram,
 	faDiscord,
-	faYoutube
+	faYoutube,
+	faWindows
 } from '@fortawesome/free-brands-svg-icons'
 library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube); 
 import {
@@ -34,7 +35,6 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 library.add(faVolume);
 
-
 import SubscribeModal from '../components/subscribe_modal';
 class Main extends App {
 	constructor (props: any) {
@@ -44,7 +44,9 @@ class Main extends App {
 		this.store.set = this.store.set.bind(this);
 	}
 
-	state = { showSubscribe: false }
+	state = {
+		showSubscribe: false
+	}
 	private store = {
 		get(): {} { return this.state; },
 		set(s: any): void { this.setState(s); },

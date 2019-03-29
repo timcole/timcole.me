@@ -11,13 +11,20 @@ import Footer from '../components/footer'
 import '../styles/nda.scss'
  
 class NDA extends Component {
+	static getInitialProps({ req }) {
+		let host = req ? req.headers.host : window.location.origin
+		let isDev = host.indexOf("timcole.me") >= -1
+		return { isDev };
+	}
+
 	constructor (props) {
 		super(props)
 
 		this.store = props.store
 		this.state = {
 			isNDA: false,
-			authorization: null
+			authorization: null,
+			baseUrl: this.props.isDev ? "http://127.0.0.1:6969" : "https://timcole.me/api"
 		}
 
 		this.login = this.login.bind(this);
@@ -32,10 +39,7 @@ class NDA extends Component {
 		authorization = storedAuth
 		this.setState({ authorization })
 
-		const authedUrl = "https://timcole.me/api/nda/ping";
-		// const authedUrl = "http://127.0.0.1:6969/nda/ping";
-		console.log({ authorization })
-		const ok = (await fetch(authedUrl, {
+		const ok = (await fetch(`${this.state.baseUrl}/nda/ping`, {
 			headers: { "Authorization": authorization }
 		}).then(data => data.text()));
 		this.setState({ isNDA: ok === "ok" })
@@ -55,19 +59,19 @@ class NDA extends Component {
 		];
 		if (username == "" || password == "") return;
 
-		const loginUrl = "https://timcole.me/api/login";
-		// const loginUrl = "http://127.0.0.1:6969/login";
-		const { error, jwt } = (await fetch(loginUrl, {
+		const { error, jwt } = (await fetch(`${this.state.baseUrl}/login`, {
 			method: "POST",
 			body: JSON.stringify({ username, password })
 		}).then(data => data.json()));
 		if (error) return alert(error);
 		if (!jwt) return alert("No auth Authorizatione, jwt returned from the server. Try again later.");
 		localStorage.setItem("Authorization", jwt);
+		location.reload();
 	}
 
 	render () {
 		const { authorization, isNDA } = this.state;
+		const { isDev } = this.props;
 		if (!isNDA) return (
 			<Layout title={`Timothy Cole - NDA Login`} className="nda-login">
 				<div className="header"><Header className="container" store={this.store} /></div>
@@ -111,7 +115,7 @@ class NDA extends Component {
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					<VideoPlayer { ...options } />
-					<Chat authorization={authorization} />
+					<Chat isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>
 		)
