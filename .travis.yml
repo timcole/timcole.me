@@ -4,11 +4,11 @@ notifications:
 services:
 - docker
 before_install:
-- openssl aes-256-cbc -K $encrypted_f73069fb71a8_key -iv $encrypted_f73069fb71a8_iv
-  -in deploy_key.enc -out ./deploy_key -d
+# - openssl aes-256-cbc -K $encrypted_f73069fb71a8_key -iv $encrypted_f73069fb71a8_iv
+#   -in deploy_key.enc -out ./deploy_key -d
 - docker login --username=$DOCKER_HUB_USERNAME --password=$DOCKER_HUB_PASSWORD
 - docker build -t timcole.me-api .
-- docker build -t timcole.me web/
+- docker build --build-arg npm_key=${FONT_AWESOME_PRO} -t timcole.me web/
 - docker run -d --name api timcole.me-api
 - docker run -d --name web timcole.me
 - docker ps -a

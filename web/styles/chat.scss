@@ -24,11 +24,11 @@
 		.username {
 			font-weight: 600;
 			padding-right: 10px;
+			text-transform: capitalize;
 			&:after { content: ":"; }
 
 			&[data-name="tim"] {
 				color: var(--accent);
-				text-transform: capitalize;
 
 				&:before {
 					content: "🦄";

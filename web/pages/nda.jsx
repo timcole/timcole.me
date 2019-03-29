@@ -22,12 +22,13 @@ class NDA extends Component {
 
 	componentDidUpdate () { this._checkAuth(); }
 	componentDidMount () { this._checkAuth(); }
-	async _checkAuth () {
+	async _checkAuth() {
 		const { authorization } = this.state;
-		if (authorization == "") return;
+		if (localStorage.getItem("Authorization") == authorization) return;
+		this.setState({ authorization: localStorage.getItem("Authorization") })
 
 		const ok = (await fetch("https://timcole.me/api/nda/ping", {
-			headers: { "Authorization": localStorage.getItem("Authorization") }
+			headers: { "Authorization": authorization }
 		}).then(data => data.text()));
 		this.setState({ isNDA: ok === "ok" })
 	}
