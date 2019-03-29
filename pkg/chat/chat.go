@@ -1,7 +1,6 @@
 package chat
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -22,7 +21,6 @@ func updateViewers(i *sockets.Instance) {
 		viewers := 0
 		for c := range i.Clients {
 			for _, t := range c.Topics {
-				log.Println(strings.Join(t, ".") == "chat.receive")
 				if strings.Join(t, ".") == "chat.receive" {
 					viewers += 1
 				}
