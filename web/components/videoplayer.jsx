@@ -15,7 +15,7 @@ export default class VideoPlayer extends React.Component {
 			qualityName: "Source",
 			playingIcon: "play",
 			mutedIcon: "volume",
-			baseUrl: `https://live.tcole.me/hls/tXQWK22pwnxbbjsuOaCY76LbxCa9QxMB`,
+			baseUrl: `https://live.tcole.me/hls/nda`,
 			quality_options: [
 				{ name: "Source", key: "_source" },
 				{ name: "High", key: "_high" },
@@ -59,7 +59,7 @@ export default class VideoPlayer extends React.Component {
 		} = this.refs;
 		let hls = new Hls(hlsConfig);
 
-		hls.loadSource(`${this.state.baseUrl}${this.state.quality}/index.m3u8`);
+		hls.loadSource(`${this.state.baseUrl}${this.state.quality}/index.m3u8?authorization=${this.props.authorization}`);
 		hls.attachMedia($video);
 		hls.on(Hls.Events.MANIFEST_PARSED, () => {
 			if (autoplay) $video.play();
