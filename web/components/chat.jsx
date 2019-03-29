@@ -32,8 +32,7 @@ class Chat extends React.Component {
 			if (!msg) return;
 
 			if (topics == "chat.viewers") this.setState({ viewers: msg })
-
-			if (topics == "chat.receive") {
+			if (topics == "chat.receive" || topics == "chat.send") {
 				msg.ts = new Date();
 				msg.message = this.processMsg(msg.message);
 				this.setState({ chat: [...this.state.chat, msg] });
