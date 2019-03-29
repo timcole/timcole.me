@@ -53,7 +53,6 @@ class NDA extends Component {
 			document.querySelector('[data-type="username"]').value,
 			document.querySelector('[data-type="password"]').value,
 		];
-		console.log({username,password})
 		if (username == "" || password == "") return;
 
 		const loginUrl = "https://timcole.me/api/login";
@@ -65,7 +64,6 @@ class NDA extends Component {
 		if (error) return alert(error);
 		if (!jwt) return alert("No auth Authorizatione, jwt returned from the server. Try again later.");
 		localStorage.setItem("Authorization", jwt);
-		this.setState({ Authorization: jwt });
 	}
 
 	render () {
