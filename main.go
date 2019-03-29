@@ -71,8 +71,12 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 5 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		Handler:      r,
-		Addr:         ":6969",
+		Handler: handlers.CORS(
+			handlers.AllowedOrigins([]string{"*"}),
+			handlers.AllowedHeaders([]string{"Authorization", "Content-Type"}),
+			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+		)(r),
+		Addr: ":6969",
 	}
 
 	log.Printf("HTTP Server Started [%s]\n", httpServer.Addr)
