@@ -32,8 +32,8 @@ class NDA extends Component {
 		authorization = storedAuth
 		this.setState({ authorization })
 
-		// const authedUrl = "https://timcole.me/api/nda/ping";
-		const authedUrl = "http://127.0.0.1:6969/nda/ping";
+		const authedUrl = "https://timcole.me/api/nda/ping";
+		// const authedUrl = "http://127.0.0.1:6969/nda/ping";
 		console.log({ authorization })
 		const ok = (await fetch(authedUrl, {
 			headers: { "Authorization": authorization }
@@ -56,8 +56,8 @@ class NDA extends Component {
 		console.log({username,password})
 		if (username == "" || password == "") return;
 
-		// const loginUrl = "https://timcole.me/api/login";
-		const loginUrl = "http://127.0.0.1:6969/login";
+		const loginUrl = "https://timcole.me/api/login";
+		// const loginUrl = "http://127.0.0.1:6969/login";
 		const { error, jwt } = (await fetch(loginUrl, {
 			method: "POST",
 			body: JSON.stringify({ username, password })
