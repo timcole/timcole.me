@@ -1,6 +1,8 @@
 package sockets
 
 import (
+	"sync"
+
 	"github.com/TimothyCole/timcole.me/pkg/security"
 	"github.com/gorilla/websocket"
 )
@@ -16,10 +18,11 @@ type Instance struct {
 
 // Client is a connection to the Instance
 type Client struct {
-	socket *websocket.Conn
-	Send   chan *MessagePayload
-	Topics [][]string
-	User   *security.User
+	socket      *websocket.Conn
+	Send        chan *MessagePayload
+	topics      [][]string
+	User        *security.User
+	topicsMutex sync.Mutex
 }
 
 // MessagePayload is the message from clients to the server and server to clients

@@ -20,7 +20,7 @@ func updateViewers(i *sockets.Instance) {
 	for range ticker.C {
 		viewers := 0
 		for c := range i.Clients {
-			for _, t := range c.Topics {
+			for _, t := range c.GetTopics() {
 				if strings.Join(t, ".") == "chat.receive" {
 					viewers += 1
 				}

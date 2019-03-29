@@ -33,7 +33,7 @@ func (p *chat) Handler(i *s.Instance, c *s.Client, args []string, payload s.Mess
 		})
 		break
 	case "receive":
-		c.Topics = append(c.Topics, args)
+		c.AddTopics(args)
 		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{
 			Topics: []string{"chat.receive"},
 			Data: chatMessage{
@@ -50,7 +50,7 @@ func (p *chat) Handler(i *s.Instance, c *s.Client, args []string, payload s.Mess
 		}}
 		break
 	case "viewers":
-		c.Topics = append(c.Topics, args)
+		c.AddTopics(args)
 		break
 	default:
 		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Error: s.ErrInvalidTopic}
