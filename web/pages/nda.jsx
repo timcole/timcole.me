@@ -105,6 +105,7 @@ class NDA extends Component {
 			authorization,
 			autoplay: true,
 			controls: false,
+			muted: true,
 			hlsConfig: {
 				liveSyncPosition: 3000
 			}

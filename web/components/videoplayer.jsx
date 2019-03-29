@@ -14,7 +14,7 @@ export default class VideoPlayer extends React.Component {
 			quality: "_source",
 			qualityName: "Source",
 			playingIcon: "play",
-			mutedIcon: "volume",
+			mutedIcon: "volume-mute",
 			baseUrl: `https://live.tcole.me/hls/nda`,
 			quality_options: [
 				{ name: "Source", key: "_source" },
@@ -132,7 +132,7 @@ export default class VideoPlayer extends React.Component {
 
 		return (
 			<div key={playerId} className="player">
-				<video ref="video" id={playerId} controls={controls} {...videoProps}></video>
+				<video ref="video" muted autoPlay id={playerId} controls={controls} {...videoProps}></video>
 				<div id="controls">
 					<div className="left">
 						<button ref="playPause"><FontAwesomeIcon icon={['fas', playingIcon]} /></button>

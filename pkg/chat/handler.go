@@ -1,8 +1,6 @@
 package chat
 
 import (
-	"log"
-
 	s "github.com/TimothyCole/timcole.me/pkg/sockets"
 )
 
@@ -26,6 +24,7 @@ func (p *chat) Handler(i *s.Instance, c *s.Client, args []string, payload s.Mess
 		i.Publish([]string{args[0] + ".receive"}, &s.MessagePayload{
 			Type: s.TypeResponse,
 			Data: s.MessagePayloadData{
+				Topics: []string{"chat.send"},
 				Data: chatMessage{
 					Username: c.User.Username,
 					Message:  payload.Data.Data.(string),
@@ -35,15 +34,23 @@ func (p *chat) Handler(i *s.Instance, c *s.Client, args []string, payload s.Mess
 		break
 	case "receive":
 		c.Topics = append(c.Topics, args)
-		log.Println(c.Topics)
-		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{Data: chatMessage{
-			Username: "",
-			Message:  "Welcome to the chat room!",
-		}}}
-		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{Data: chatMessage{
-			Username: "",
-			Message:  "Remember everything in here is confidential information!",
-		}}}
+		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{
+			Topics: []string{"chat.receive"},
+			Data: chatMessage{
+				Username: "",
+				Message:  "Welcome to the chat room!",
+			},
+		}}
+		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Data: s.MessagePayloadData{
+			Topics: []string{"chat.receive"},
+			Data: chatMessage{
+				Username: "",
+				Message:  "Remember everything in here is confidential information!",
+			},
+		}}
+		break
+	case "viewers":
+		c.Topics = append(c.Topics, args)
 		break
 	default:
 		c.Send <- &s.MessagePayload{Type: s.TypeResponse, Error: s.ErrInvalidTopic}
