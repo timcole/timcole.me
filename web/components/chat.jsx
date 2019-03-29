@@ -21,6 +21,7 @@ class Chat extends React.Component {
 
 		this.state.client.onmessage = ({ data: wsData }) => {
 			let { data: { data: msg } } = JSON.parse(wsData);
+			if (!msg) return;
 			msg.ts = new Date();
 			this.setState({ chat: [...this.state.chat, msg] });
 		}
