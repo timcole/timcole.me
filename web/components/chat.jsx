@@ -8,7 +8,7 @@ class Chat extends React.Component {
 
 		this.state = {
 			connected: false,
-			client: new WebSocket(`ws://localhost:6969/ws?authorization=${this.props.authorization}`),
+			client: new WebSocket(`wss://timcole.me/ws?authorization=${this.props.authorization}`),
 			mounted: false,
 			chat: []
 		}
