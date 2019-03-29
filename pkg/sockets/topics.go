@@ -1,5 +1,7 @@
 package sockets
 
+import "strings"
+
 // GetTopics returns a clients active topics
 func (c *Client) GetTopics() [][]string {
 	c.topicsMutex.Lock()
@@ -12,6 +14,12 @@ func (c *Client) GetTopics() [][]string {
 func (c *Client) AddTopics(topic []string) {
 	c.topicsMutex.Lock()
 	defer c.topicsMutex.Unlock()
+
+	for _, t := range c.topics {
+		if strings.Join(topic, ".") == strings.Join(t, ".") {
+			return
+		}
+	}
 
 	c.topics = append(c.topics, topic)
 }
