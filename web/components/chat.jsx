@@ -2,6 +2,8 @@ import * as React from "react";
 
 import "../styles/chat.scss";
 
+import Spotify from "./spotify";
+
 class Chat extends React.Component {
 	constructor(props) {
 		super(props);
@@ -87,6 +89,7 @@ class Chat extends React.Component {
 		const { chat, viewers } = this.state;
 		return (
 			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''}`}>
+				<Spotify />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
 					{chat.map((msg, i) => (
