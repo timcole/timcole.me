@@ -16,11 +16,12 @@ export default class VideoPlayer extends React.Component {
 			playingIcon: "play",
 			mutedIcon: "volume-mute",
 			baseUrl: `https://live.tcole.me/hls/nda`,
+			isLiveChecker: null,
 			quality_options: [
 				{ name: "Source", key: "_source" },
-				{ name: "High", key: "_high" },
-				{ name: "Medium", key: "_mid" },
-				{ name: "Low", key: "_low" },
+				{ name: "Low Bandwidth", key: "_high" },
+				// { name: "Medium", key: "_mid" },
+				// { name: "Low", key: "_low" },
 			]
 		};
 
@@ -63,7 +64,13 @@ export default class VideoPlayer extends React.Component {
 		hls.attachMedia($video);
 		hls.on(Hls.Events.MANIFEST_PARSED, () => {
 			if (autoplay) $video.play();
+			if ($video.duration) $video.currentTime = $video.duration;
 		});
+		hls.on(Hls.Events.ERROR, (_, { type }) => {
+			if (type === "networkError") this.isLiveCheck();
+		});
+
+		this.hls = hls;
 
 		// Toggle Playback
 		let togglePlayback = _ => {
@@ -112,9 +119,22 @@ export default class VideoPlayer extends React.Component {
 		$video.addEventListener("pause", _ => { this.setState({ playingIcon: "play" }) })
 		$video.addEventListener("volumechange", _ => {
 			this.setState({ mutedIcon: $video.muted ? "volume-mute" : "volume" })
-		})
+		});
+	}
 
-		this.hls = hls;
+	isLiveCheck() {
+		const { isLiveChecker } = this.state;
+		if (isLiveChecker != null) clearInterval(isLiveChecker);
+
+		this.setState({
+			isLiveChecker: setInterval(async () => {
+				const isLive = await fetch(`${this.state.baseUrl}${this.state.quality}/index.m3u8?authorization=${this.props.authorization}`).then(({ status }) => status);
+				if (isLive) {
+					this._initPlayer();
+					clearInterval(this.state.isLiveChecker);
+				}
+			}, 2000)
+		});
 	}
 
 	render() {
@@ -132,7 +152,15 @@ export default class VideoPlayer extends React.Component {
 
 		return (
 			<div key={playerId} className="player">
-				<video ref="video" muted autoPlay id={playerId} controls={controls} {...videoProps}></video>
+				<video
+					ref="video"
+					poster="https://static-cdn.jtvnw.net/jtv_user_pictures/5137fa06-4eff-420a-bbe5-366774c5706d-channel_offline_image-1920x1080.png"
+					muted
+					autoPlay
+					id={playerId}
+					controls={controls}
+					{...videoProps}>
+				</video>
 				<div id="controls">
 					<div className="left">
 						<button ref="playPause"><FontAwesomeIcon icon={['fas', playingIcon]} /></button>

@@ -5,6 +5,22 @@
 	display: flex;
 	overflow: hidden;
 
+	@media only screen and (max-width: 750px) {
+		flex-direction: column;
+
+		.player {
+			flex: 0 !important;
+			height: calc(560px * 9/16);
+			max-height: calc(560px * 9/16);
+		}
+
+		.chat {
+			flex: 1;
+			max-height: 100% !important;
+			max-width: 100% !important;
+		}
+	}
+
 	.player {
 		flex: 1;
 		z-index: 1;
@@ -15,6 +31,11 @@
 		min-width: $width;
 		max-width: $width;
 		z-index: 2;
+
+		&.isChatOnly {
+			flex: 1;
+			max-width: 100% !important;
+		}
 	}
 }
 

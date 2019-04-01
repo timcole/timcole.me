@@ -18,11 +18,11 @@ class Chat extends React.Component {
 	componentDidMount() { this.connectToChat(); }
 	connectToChat () {
 		this.url = this.props.isDev ? "ws://127.0.0.1:6969/ws" : "wss://timcole.me/ws";
+		if (this.state.connected) this.state.client.close();
 		let client = new WebSocket(`${this.url}?authorization=${this.props.authorization}`);
-		this.setState({ client })
+		this.setState({ client, connected: true });
 
 		client.onopen = () => {
-			this.setState({ connected: true });
 			console.log('Chat Connected');
 			client.send(`{"type":"LISTEN","data":{"topics":["chat.receive","chat.viewers"]}}`);
 		}
@@ -40,6 +40,17 @@ class Chat extends React.Component {
 				const { messages } = this.refs;
 				if (messages) messages.scrollTop = messages.scrollHeight;
 			}
+		}
+
+		client.onclose = () => {
+			if (!this.state.connected) return;
+			this.setState({
+				connected: false,
+				chat: [...this.state.chat, {
+				ts: new Date(),
+				message: "Disconnected, Attempting to reconnect."
+			}]});
+			setTimeout(() => this.connectToChat(), 3000);
 		}
 		this.sendMsg = this.sendMsg.bind(this);
 	}
@@ -72,9 +83,10 @@ class Chat extends React.Component {
 	}
 
 	render () {
+		const { isChatOnly } = this.props;
 		const { chat, viewers } = this.state;
 		return (
-			<div className="chat">
+			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''}`}>
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
 					{chat.map((msg, i) => (

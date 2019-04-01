@@ -110,12 +110,13 @@ class NDA extends Component {
 			}
 		};
 
+		const isChatOnly = window.location.hash == "#chat";
 		return (
 			<Layout title={`Timothy Cole - NDA`} className="nda">
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
-					<VideoPlayer { ...options } />
-					<Chat isDev={isDev} authorization={authorization} />
+					{isChatOnly ? '' : <VideoPlayer { ...options } />}
+					<Chat isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>
 		)
