@@ -41,6 +41,7 @@ func main() {
 
 	router.HandleFunc("/login", security.UserLogin).Methods("POST")
 	router.HandleFunc("/stats", pkg.SBStats).Methods("GET")
+	router.HandleFunc("/nda/OnPublish", stream.OnPublish).Methods("GET")
 
 	router.HandleFunc("/spotify/playing", spotify.GetPlaying).Methods("GET")
 
@@ -56,7 +57,6 @@ func main() {
 	var NDA = router.PathPrefix("/nda").Subrouter()
 	NDA.Use(security.NDAMiddleWare)
 	NDA.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) }).Methods("GET")
-	NDA.HandleFunc("/stream", stream.GetHLS).Methods("GET")
 
 	// API 404 Handler
 	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
