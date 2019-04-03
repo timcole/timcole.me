@@ -35,7 +35,7 @@ class Screenshot extends Component<any> {
 
 	render () {
 		const { router, error } = this.props
-		if (error) return <Error />;
+		if (error) return <Error statusCode="404" />;
 		return (
 			<Layout title={`Timothy Cole - Screenshot: ${router.query.screenshot}`} screenshot={router.query.screenshot} className="screenshot">
 				<div className="header"><Header className="container" store={this.store} /></div>
