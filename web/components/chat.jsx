@@ -13,12 +13,14 @@ class Chat extends React.Component {
 			client: null,
 			mounted: false,
 			chat: [],
-			viewers: 0
+			viewers: 0,
+			username: ""
 		}
 	}
 
 	componentDidMount() { this.connectToChat(); }
 	connectToChat () {
+		this.setState({ username: localStorage.getItem("Username") });
 		this.url = this.props.isDev ? "ws://127.0.0.1:6969/ws" : "wss://timcole.me/ws";
 		if (this.state.connected) this.state.client.close();
 		let client = new WebSocket(`${this.url}?authorization=${this.props.authorization}`);
@@ -62,8 +64,19 @@ class Chat extends React.Component {
 		let dummy = document.createElement("div");
 		dummy.innerHTML = message;
 		msg = dummy.innerText;
+		msg = this.mentions(msg);
 		msg = this.hyperlink(msg);
 		return msg;
+	}
+
+	mentions (msg) {
+		const { username } = this.state;
+		if (username == null) return;
+
+		let reg = new RegExp(username, 'ig');
+		if (!reg.test(msg)) return msg;
+
+		return msg.replace(reg, `<span class="tag">${username}</span>`);
 	}
 
 	hyperlink (msg) {

@@ -58,13 +58,14 @@ class NDA extends Component {
 		];
 		if (username == "" || password == "") return;
 
-		const { error, jwt } = (await fetch(`${this.state.baseUrl}/login`, {
+		const { error, jwt, username: name } = (await fetch(`${this.state.baseUrl}/login`, {
 			method: "POST",
 			body: JSON.stringify({ username, password })
 		}).then(data => data.json()));
 		if (error) return alert(error);
 		if (!jwt) return alert("No auth Authorizatione, jwt returned from the server. Try again later.");
 		localStorage.setItem("Authorization", jwt);
+		localStorage.setItem("Username", name);
 		location.reload();
 	}
 
