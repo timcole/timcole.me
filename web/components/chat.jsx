@@ -160,10 +160,12 @@ class Chat extends React.Component {
 		const { username } = this.state;
 		if (username == null) return msg;
 
-		let reg = new RegExp(username, 'ig');
-		if (!reg.test(msg)) return msg;
-
-		return msg.replace(reg, `<span class="tag">${username}</span>`);
+		let lowerName = username.toLowerCase();
+		let words = msg.split(" ").map(word => {
+			if (lowerName != word) return word;
+			return `<span class="tag">${lowerName}</span>`;
+		})
+		return words.join(" ");
 	}
 
 	hyperlink (msg) {
