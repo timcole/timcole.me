@@ -54,6 +54,24 @@
 					padding-right: 5px;
 				}
 			}
+
+			&[data-name="jack"] {
+				color: #a8a230;
+
+				&:before {
+					content: "🖕";
+					padding-right: 5px;
+				}
+			}
+
+			&[data-name="nathan"] {
+				color: #00aced;
+
+				&:before {
+					content: "🐺";
+					padding-right: 5px;
+				}
+			}
 		}
 
 		.tag {
