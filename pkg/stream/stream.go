@@ -10,17 +10,22 @@ import (
 func OnPublish(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	call := r.URL.Query().Get("call")
-	if name != os.Getenv("STREAM_KEY") {
+	if name != os.Getenv("STREAM_KEY") && name != os.Getenv("STREAM_KEY")+"_test" {
 		w.WriteHeader(401)
 		return
 	}
 	defer w.WriteHeader(200)
 
+	// Don't send notifications if it's just a test
+	if name[len(name)-5:] == "_test" {
+		return
+	}
+
 	var message string
 	var colour string
 	switch call {
 	case "publish":
-		message = "Stream Start"
+		message = "Stream Started"
 		colour = "5696084"
 	case "publish_done":
 		message = "Stream Ended"
