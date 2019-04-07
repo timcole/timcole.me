@@ -71,7 +71,7 @@ class Chat extends React.Component {
 
 	mentions (msg) {
 		const { username } = this.state;
-		if (username == null) return;
+		if (username == null) return msg;
 
 		let reg = new RegExp(username, 'ig');
 		if (!reg.test(msg)) return msg;
