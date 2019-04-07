@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// OnPublish is called when you stop and start the rtmp stream
 func OnPublish(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	call := r.URL.Query().Get("call")
