@@ -72,6 +72,15 @@
 					padding-right: 5px;
 				}
 			}
+
+			&[data-name="mercxry"] {
+				color: #4e913f;
+
+				&:before {
+					content: "👽";
+					padding-right: 5px;
+				}
+			}
 		}
 
 		.tag {
