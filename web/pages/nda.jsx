@@ -31,6 +31,7 @@ class NDA extends Component {
 
 		this.login = this.login.bind(this);
 		this.toggleChat = this.toggleChat.bind(this);
+		this.popoutChat = this.popoutChat.bind(this);
 	}
 
 	componentDidUpdate () { this._checkAuth(); }
@@ -75,7 +76,12 @@ class NDA extends Component {
 
 	toggleChat () {
 		const { isChatHidden } = this.state;
-		this.setState({ isChatHidden: !isChatHidden })
+		this.setState({ isChatHidden: !isChatHidden });
+	}
+
+	popoutChat () {
+		window.open("/nda#chat", "_blank", "toolbar=0,location=0,menubar=0,width=450,height=900");
+		this.setState({ isChatHidden: true });
 	}
 
 	render () {
@@ -126,7 +132,12 @@ class NDA extends Component {
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					{isChatOnly ? '' : <VideoPlayer { ...options } />}
-					{isChatOnly ? '' : <FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />}
+					{isChatOnly ? '' : (
+						<div class="chatControls">
+							<FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />
+							<FontAwesomeIcon onClick={this.popoutChat} className="popoutChat" icon={['fas', 'external-link-square']} />
+						</div>
+					)}
 					<Chat isChatHidden={isChatHidden} isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>

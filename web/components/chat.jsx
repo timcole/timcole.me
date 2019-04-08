@@ -189,7 +189,7 @@ class Chat extends React.Component {
 
 	focusInput () {
 		const { chatInput } = this.refs;
-		chatInput.focus();
+		// chatInput.focus();
 	}
 
 	render () {

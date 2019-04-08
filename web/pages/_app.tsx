@@ -20,7 +20,6 @@ import {
 	faInstagram,
 	faDiscord,
 	faYoutube,
-	faWindows
 } from '@fortawesome/free-brands-svg-icons'
 library.add(faTwitch, faTwitter, faGithub, faInstagram, faDiscord, faYoutube); 
 import {
@@ -32,8 +31,9 @@ import {
 library.add(faPlay, faPause, faCompress, faVolumeMute);
 import {
 	faVolume,
+	faExternalLinkSquare
 } from '@fortawesome/pro-solid-svg-icons';
-library.add(faVolume);
+library.add(faVolume, faExternalLinkSquare);
 
 import SubscribeModal from '../components/subscribe_modal';
 class Main extends App {
