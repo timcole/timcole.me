@@ -7,15 +7,18 @@ import (
 	"github.com/TimothyCole/timcole.me/pkg/sockets"
 )
 
-type chat struct{}
+type chat struct {
+	viewers int
+}
 
 // New ...
 func New(i *sockets.Instance) *chat {
-	go updateViewers(i)
-	return &chat{}
+	c := &chat{}
+	go c.updateViewers(i)
+	return c
 }
 
-func updateViewers(i *sockets.Instance) {
+func (c *chat) updateViewers(i *sockets.Instance) {
 	ticker := time.NewTicker(time.Second)
 	for range ticker.C {
 		viewers := 0
@@ -26,6 +29,12 @@ func updateViewers(i *sockets.Instance) {
 				}
 			}
 		}
+
+		if c.viewers == viewers {
+			continue
+		}
+		c.viewers = viewers
+
 		i.Publish([]string{"chat.viewers"}, &sockets.MessagePayload{
 			Type: sockets.TypeResponse,
 			Data: sockets.MessagePayloadData{

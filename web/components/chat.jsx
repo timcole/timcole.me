@@ -16,6 +16,7 @@ class Chat extends React.Component {
 			viewers: 0,
 			username: "",
 			emotes: {},
+			spotify: {},
 			client_id: "kimne78kx3ncx6brgo4mv6wki5h1ko",
 			emote_sets: [
 				0, // Global
@@ -54,15 +55,16 @@ class Chat extends React.Component {
 
 		client.onopen = () => {
 			console.log('Chat Connected');
-			client.send(`{"type":"LISTEN","data":{"topics":["chat.receive","chat.viewers"]}}`);
+			client.send(`{"type":"LISTEN","data":{"topics":["chat.receive","chat.viewers","spotify.playback"]}}`);
 		}
 
 		client.onmessage = ({ data: wsData }) => {
 			let { data: { topics, data: msg } } = JSON.parse(wsData);
 			if (!msg) return;
 
+			if (topics == "spotify.playback") this.setState({ spotify: msg })
 			if (topics == "chat.viewers") this.setState({ viewers: msg })
-			if (topics == "chat.receive" || topics == "chat.send") {
+			if (topics == "chat.receive") {
 				msg.ts = new Date();
 
 				if (msg.message.substring(0, 4) === "/me ") {
@@ -194,10 +196,10 @@ class Chat extends React.Component {
 
 	render () {
 		const { isChatOnly, isChatHidden } = this.props;
-		const { chat, viewers } = this.state;
+		const { chat, viewers, spotify } = this.state;
 		return (
 			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''} ${isChatHidden ? 'isChatHidden' : ''}`} onClick={this.focusInput}>
-				<Spotify />
+				<Spotify song={spotify}  />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
 					{chat.map((msg, i) => (

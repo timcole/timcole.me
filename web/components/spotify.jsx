@@ -6,52 +6,31 @@ class Spotify extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			song: null
-		}
-
 		this.checker = null
 	}
 
-	componentWillUnmount() { if (this.checker) clearInterval(this.checker);}
-	componentDidMount() {
-		this.checkSong();
-		this.checker = setInterval(() => this.checkSong(), 3000);
-	}
-
-	async checkSong() {
-		const spotify = await fetch(`https://spotify.aidenwallis.co.uk/u/5beb2bcc97ae3503e5f41c4f?json=true&ts=${Date.now()}`).then(data => data.json())
-		if (spotify.error) {
-			this.setState({ song: null });
-			return;
-		}
+	componentDidUpdate() {
+		const { song } = this.props;
 
 		let temp = document.createElement("p");
-		temp.textContent = spotify.title;
+		temp.textContent = song.song;
 		temp.style = "display: inline; visibility: hidden; font-size: 1.25rem;";
 		document.body.appendChild(temp);
 		let isMarquee = document.querySelector(".chat").offsetWidth - temp.offsetWidth - 75 <= 0;
 		temp.remove();
 
-		this.setState({
-			song: {
-				name: spotify.title,
-				artists: spotify.artists.map(d => d.name).join(", "),
-				art: spotify.albumCover,
-				isMarquee
-			}
-		});
+		this.setState({ isMarquee });
 	}
 
 	render() {
-		const { song } = this.state;
-		if (!song) return (<></>);
+		const { song } = this.props;
+		if (!song.is_playing) return (<></>);
 
 		return (
 			<div className="spotify">
 				<img src={song.art} alt="Album art" />
 				<div className="meta">
-					{song.isMarquee ? <marquee>{song.name}</marquee> : <p>{song.name}</p>}
+					{song.isMarquee ? <marquee>{song.song}</marquee> : <p>{song.song}</p>}
 					<span>{song.artists}</span>
 				</div>
 			</div>

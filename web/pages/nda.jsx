@@ -131,13 +131,13 @@ class NDA extends Component {
 			<Layout title={`Timothy Cole - NDA`} className="nda">
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
-					{isChatOnly ? '' : <VideoPlayer { ...options } />}
-					{isChatOnly ? '' : (
-						<div class="chatControls">
+					{isChatOnly ? '' : (<>
+						<VideoPlayer {...options} />
+						<div className="chatControls">
 							<FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />
 							<FontAwesomeIcon onClick={this.popoutChat} className="popoutChat" icon={['fas', 'external-link-square']} />
 						</div>
-					)}
+					</>)}
 					<Chat isChatHidden={isChatHidden} isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>

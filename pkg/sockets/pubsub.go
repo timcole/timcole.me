@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/TimothyCole/timcole.me/pkg/security"
+	"github.com/go-redis/redis"
 	"github.com/gorilla/websocket"
 )
 
@@ -14,6 +15,7 @@ type Instance struct {
 	Register   chan *Client
 	Unregister chan *Client
 	handlers   map[string]func(*Instance, *Client, []string, MessagePayload)
+	Store      *redis.Client
 }
 
 // Client is a connection to the Instance
@@ -40,13 +42,14 @@ type MessagePayloadData struct {
 }
 
 // New creates a new pubsub instance
-func New() *Instance {
+func New(store *redis.Client) *Instance {
 	i := &Instance{
 		Clients:    make(map[*Client]bool),
 		Inbound:    make(chan []byte),
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
 		handlers:   make(map[string]func(*Instance, *Client, []string, MessagePayload)),
+		Store:      store,
 	}
 
 	return i

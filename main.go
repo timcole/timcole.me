@@ -46,9 +46,10 @@ func main() {
 	router.HandleFunc("/spotify/playing", spotify.GetPlaying).Methods("GET")
 
 	// WebSockets
-	pubsub := sockets.New()
+	pubsub := sockets.New(store)
 	go pubsub.Start()
 	pubsub.AddHandler((chat.New(pubsub)).Handler, "chat")
+	pubsub.AddHandler((spotify.New(pubsub)).Handler, "spotify")
 	router.Handle("/ws", security.WSMiddleWare(
 		http.HandlerFunc(pubsub.Handler),
 	)).Methods("GET")
