@@ -126,7 +126,7 @@ class NDA extends Component {
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					{isChatOnly ? '' : <VideoPlayer { ...options } />}
-					<FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />
+					{isChatOnly ? '' : <FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />}
 					<Chat isChatHidden={isChatHidden} isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>
