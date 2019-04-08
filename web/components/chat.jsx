@@ -56,6 +56,11 @@ class Chat extends React.Component {
 		client.onopen = () => {
 			console.log('Chat Connected');
 			client.send(`{"type":"LISTEN","data":{"topics":["chat.receive","chat.viewers","spotify.playback"]}}`);
+
+			if (this.pinger) clearInterval(this.pinger);
+			this.pinger = setInterval(function() {
+				client.send(`{"type":"LISTEN","data":{"topics":["ping"]}}`);
+			}, 60000)
 		}
 
 		client.onmessage = ({ data: wsData }) => {
@@ -199,7 +204,7 @@ class Chat extends React.Component {
 		const { chat, viewers, spotify } = this.state;
 		return (
 			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''} ${isChatHidden ? 'isChatHidden' : ''}`} onClick={this.focusInput}>
-				<Spotify song={spotify}  />
+				<Spotify song={spotify} />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
 					{chat.map((msg, i) => (
