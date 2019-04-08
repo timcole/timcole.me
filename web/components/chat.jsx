@@ -41,6 +41,7 @@ class Chat extends React.Component {
 		}
 
 		this.loadEmotes();
+		this.focusInput = this.focusInput.bind(this);
 	}
 
 	componentDidMount() { this.connectToChat(); }
@@ -186,11 +187,16 @@ class Chat extends React.Component {
 		}));
 	}
 
+	focusInput () {
+		const { chatInput } = this.refs;
+		chatInput.focus();
+	}
+
 	render () {
-		const { isChatOnly } = this.props;
+		const { isChatOnly, isChatHidden } = this.props;
 		const { chat, viewers } = this.state;
 		return (
-			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''}`}>
+			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''} ${isChatHidden ? 'isChatHidden' : ''}`} onClick={this.focusInput}>
 				<Spotify />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
@@ -202,7 +208,7 @@ class Chat extends React.Component {
 						</p>
 					))}
 				</div>
-				<input className="sendMsg" type="text" onKeyPress={this.sendMsg} />
+				<input ref="chatInput" className="sendMsg" type="text" onKeyPress={this.sendMsg} />
 			</div>
 		)
 	}

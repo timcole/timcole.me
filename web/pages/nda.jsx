@@ -8,6 +8,8 @@ import Layout from '../components/layout'
 import Header from '../components/header'
 import Footer from '../components/footer'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import '../styles/nda.scss'
  
 class NDA extends Component {
@@ -23,10 +25,12 @@ class NDA extends Component {
 		this.state = {
 			isNDA: false,
 			authorization: null,
-			baseUrl: this.props.isDev ? "http://127.0.0.1:6969" : "https://timcole.me/api"
+			baseUrl: this.props.isDev ? "http://127.0.0.1:6969" : "https://timcole.me/api",
+			isChatHidden: false
 		}
 
 		this.login = this.login.bind(this);
+		this.toggleChat = this.toggleChat.bind(this);
 	}
 
 	componentDidUpdate () { this._checkAuth(); }
@@ -69,8 +73,13 @@ class NDA extends Component {
 		location.reload();
 	}
 
+	toggleChat () {
+		const { isChatHidden } = this.state;
+		this.setState({ isChatHidden: !isChatHidden })
+	}
+
 	render () {
-		const { authorization, isNDA } = this.state;
+		const { authorization, isNDA, isChatHidden } = this.state;
 		const { isDev } = this.props;
 		if (!isNDA) return (
 			<Layout title={`Timothy Cole - NDA Login`} className="nda-login">
@@ -117,7 +126,8 @@ class NDA extends Component {
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					{isChatOnly ? '' : <VideoPlayer { ...options } />}
-					<Chat isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
+					<FontAwesomeIcon onClick={this.toggleChat} className={`hideChat ${isChatHidden ? "isChatHidden" : ""}`} icon={['fas', 'play']} />
+					<Chat isChatHidden={isChatHidden} isChatOnly={isChatOnly} isDev={isDev} authorization={authorization} />
 				</div>
 			</Layout>
 		)

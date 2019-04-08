@@ -27,6 +27,24 @@
 			z-index: 1;
 		}
 
+		.hideChat {
+			display: block;
+			right: 10px;
+			top: 10px;
+			position: relative;
+			z-index: 10;
+			font-size: 0.5em;
+			color: rgba(#dfebf5, 0.5);
+			background: #242730;
+			padding: 8px;
+			opacity: 0.0;
+			transition: ease all 150ms;
+
+			&:hover { opacity: 1; }
+
+			&.isChatHidden { transform: rotate(180deg); }
+		}
+
 		.chat {
 			$width: 425px;
 			min-width: $width;
@@ -37,6 +55,8 @@
 				flex: 1;
 				max-width: 100% !important;
 			}
+
+			&.isChatHidden { display: none; }
 		}
 	}
 }
