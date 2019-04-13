@@ -16,12 +16,12 @@ export default class VideoPlayer extends React.Component {
 			playingIcon: "play",
 			mutedIcon: "volume-mute",
 			baseUrl: `https://live.tcole.me/hls/nda`,
+			volume: 1,
+			buffering: false,
 			isLiveChecker: null,
 			quality_options: [
 				{ name: "Source", key: "_source" },
 				{ name: "Low Bandwidth", key: "_high" },
-				// { name: "Medium", key: "_mid" },
-				// { name: "Low", key: "_low" },
 			]
 		};
 
@@ -47,10 +47,7 @@ export default class VideoPlayer extends React.Component {
 		if (clean) this.hls.destroy();
 		this.lastQuality = this.state.quality;
 
-		let {
-			autoplay,
-			hlsConfig
-		} = this.props;
+		let { autoplay } = this.props;
 		let {
 			video: $video,
 			playPause,
@@ -58,13 +55,20 @@ export default class VideoPlayer extends React.Component {
 			volume,
 			fullScreen
 		} = this.refs;
-		let hls = new Hls(hlsConfig);
+
+		let hls = new Hls({
+			maxBufferLength: 10,
+			maxMaxBufferLength: 60,
+			maxLoadingDelay: 2,
+			liveSyncDurationCount: 1,
+			liveMaxLatencyDurationCount: 10,
+			liveSyncPosition: 3000
+		});
 
 		hls.loadSource(`${this.state.baseUrl}${this.state.quality}/index.m3u8?authorization=${this.props.authorization}`);
 		hls.attachMedia($video);
 		hls.on(Hls.Events.MANIFEST_PARSED, () => {
 			if (autoplay) $video.play();
-			if ($video.duration) $video.currentTime = $video.duration;
 		});
 		hls.on(Hls.Events.ERROR, (_, { type }) => {
 			if (type === "networkError") this.isLiveCheck();
@@ -82,28 +86,36 @@ export default class VideoPlayer extends React.Component {
 		if (clean) playPause.removeEventListener("click", togglePlayback);
 
 		// Toggle Mute
-		let toggleMute = _ => {
+		let toggleMute = function () {
 			$video.muted = !$video.muted;
-		};
+			$video.volume = $video.muted ? 0 : this.state.volume;
+			volume.value = $video.muted ? 0 : this.state.volume * 100;
+		}.bind(this);
 		mute.addEventListener("click", toggleMute);
 		if (clean) mute.removeEventListener("click", toggleMute);
 
 		// Volume Slider
 		volume.onchange = function () {
 			$video.volume = volume.value / 100;
-		};
+			if (!$video.muted) this.setState({ volume: $video.volume });
+		}.bind(this);
 
 		// Toogle Fullscreen
+		let isFullscreen = false;
 		let toggleFullscreen = _ => {
+			let { videoPlayer } = this.refs;
+
 			let method;
-			if ($video.requestFullscreen) {
-				method = "requestFullscreen";
-			} else if ($video.mozRequestFullScreen) {
-				method = "mozRequestFullScreen";
-			} else if ($video.webkitRequestFullscreen) {
-				method = "webkitRequestFullscreen";
+			if (!isFullscreen) {
+				method = videoPlayer.requestFullscreen ? "requestFullscreen" : videoPlayer.mozRequestFullScreen ? "mozRequestFullScreen" : "webkitRequestFullscreen";
+
+				if (!method) return;
+				videoPlayer[method]();
+			} else if (isFullscreen) {
+				method = document.exitFullscreen ? "exitFullscreen" : document.mozCancelFullScreen ? "mozCancelFullScreen" : "webkitExitFullscreen";
+				document[method]();
 			}
-			if (method) $video[method]();
+			isFullscreen = !isFullscreen;
 		};
 		fullScreen.addEventListener("click", toggleFullscreen);
 		if (clean) fullScreen.removeEventListener("click", toggleFullscreen);
@@ -115,11 +127,17 @@ export default class VideoPlayer extends React.Component {
 		});
 
 		// Icon Handler
-		$video.addEventListener("play", _ => { this.setState({ playingIcon: "pause" }) })
+		$video.addEventListener("play", _ => {
+			this.setState({ playingIcon: "pause" })
+			setTimeout(() => { if ($video.duration) $video.currentTime = $video.duration - 4; })
+		})
 		$video.addEventListener("pause", _ => { this.setState({ playingIcon: "play" }) })
 		$video.addEventListener("volumechange", _ => {
 			this.setState({ mutedIcon: $video.muted ? "volume-mute" : "volume" })
 		});
+
+		$video.addEventListener("waiting", () => { this.setState({ buffering: true }) })
+		$video.addEventListener("playing", () => { this.setState({ buffering: false }) })
 	}
 
 	isLiveCheck() {
@@ -143,7 +161,8 @@ export default class VideoPlayer extends React.Component {
 			qualityName,
 			quality_options,
 			playingIcon,
-			mutedIcon
+			mutedIcon,
+			buffering
 		} = this.state;
 		const {
 			controls,
@@ -151,12 +170,15 @@ export default class VideoPlayer extends React.Component {
 		} = this.props;
 
 		return (
-			<div key={playerId} className="player">
+			<div
+				key={playerId}
+				className=""
+				className={`player ${buffering ? "buffering" : ""}`}
+				ref="videoPlayer" >
 				<video
 					ref="video"
 					poster="https://static-cdn.jtvnw.net/jtv_user_pictures/5137fa06-4eff-420a-bbe5-366774c5706d-channel_offline_image-1920x1080.png"
 					muted
-					autoPlay
 					id={playerId}
 					controls={controls}
 					{...videoProps}>
@@ -165,7 +187,7 @@ export default class VideoPlayer extends React.Component {
 					<div className="left">
 						<button ref="playPause"><FontAwesomeIcon icon={['fas', playingIcon]} /></button>
 						<button ref="mute"><FontAwesomeIcon icon={['fas', mutedIcon]} /></button>
-						<input type="range" ref="volume" min="0" max="100" step="1" defaultValue="100" />
+						<input type="range" ref="volume" min="0" max="100" step="1" defaultValue="0" />
 					</div>
 					<div className="right">
 						<div id="quality">
