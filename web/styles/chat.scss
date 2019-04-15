@@ -81,6 +81,15 @@
 					padding-right: 5px;
 				}
 			}
+			
+			&[data-name="fletcher"] {
+				color: #1e90ff;
+
+				&:before {
+					content: "🍕";
+					padding-right: 5px;
+				}
+			}
 		}
 
 		.tag {
