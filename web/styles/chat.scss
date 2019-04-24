@@ -90,6 +90,15 @@
 					padding-right: 5px;
 				}
 			}
+			
+			&[data-name="byte"] {
+				color: #1bb9dc;
+
+				&:before {
+					content: "⚒";
+					padding-right: 5px;
+				}
+			}
 		}
 
 		.tag {
