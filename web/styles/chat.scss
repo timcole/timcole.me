@@ -46,6 +46,7 @@
 			text-transform: capitalize;
 			&:after { content: ":"; }
 
+			// #region User Chat Colours
 			&[data-name="tim"] {
 				color: var(--accent);
 
@@ -81,7 +82,7 @@
 					padding-right: 5px;
 				}
 			}
-			
+
 			&[data-name="fletcher"] {
 				color: #1e90ff;
 
@@ -90,7 +91,7 @@
 					padding-right: 5px;
 				}
 			}
-			
+
 			&[data-name="byte"] {
 				color: #1bb9dc;
 
@@ -99,6 +100,52 @@
 					padding-right: 5px;
 				}
 			}
+
+			&[data-name="aaron"] {
+				color: #1bdc6b;
+
+				&:before {
+					content: "🐍";
+					padding-right: 5px;
+				}
+			}
+
+			&[data-name="jamie"] {
+				color: #e59554;
+
+				&:before {
+					content: "💖";
+					padding-right: 5px;
+				}
+			}
+
+			&[data-name="jamie254"] {
+				color: #bf54e5;
+
+				&:before {
+					content: "🤡";
+					padding-right: 5px;
+				}
+			}
+
+			&[data-name="ash"] {
+				color: #e554c6;
+
+				&:before {
+					content: "🎮";
+					padding-right: 5px;
+				}
+			}
+
+			&[data-name="bot"] {
+				color: #c73535;
+
+				&:before {
+					content: "🤖";
+					padding-right: 5px;
+				}
+			}
+			// #endregion User Chat Colours
 		}
 
 		.tag {
