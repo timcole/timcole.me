@@ -7,6 +7,7 @@
 	height: 100%;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 
 	.viewers {
 		height: 40px;
@@ -152,6 +153,56 @@
 			background: rgba(145, 26, 26, 0.5);
 			padding: 3px 5px;
 			border-radius: 3px;
+		}
+	}
+
+	.emoteMenu {
+		position: absolute;
+		bottom: 65px;
+		right: 0;
+		min-width: 350px;
+		height: 350px;
+		background: #2b2e39;
+		-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+		-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+		box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.25);
+		overflow: auto;
+		padding: 5px;
+		text-align: center;
+
+		.emoteMenuGroup {
+			padding-bottom: 10px;
+			border-bottom: 1px solid #252831;
+
+			p {
+				font-size: 0.95em;
+				margin: 5px 0;
+			}
+
+			img {
+				padding: 3px;
+				border-radius: 3px;
+				height: 24px;
+				cursor: pointer;
+
+				&:hover {
+					background: #252831;
+				}
+			}
+		}
+	}
+
+	.emoteMenuButton {
+		position: absolute;
+		bottom: 25px;
+		right: 0;
+		opacity: 0.2;
+		cursor: pointer;
+		transition: 250ms all ease;
+
+		&.active,
+		&:hover {
+			opacity: 1;
 		}
 	}
 

@@ -19,26 +19,40 @@ class Chat extends React.Component {
 			spotify: {},
 			client_id: "kimne78kx3ncx6brgo4mv6wki5h1ko",
 			emote_sets: [
-				0, // Global
-				19194, // Twitch Prime
-				293434, // ModestTim T1
-				293441, // ModestTim T2
-				293442, // ModestTim T3
-				3421, // SocialBladeGaming
-				5079, // LoserFruit
-				4132, // Scrubing T1
-				26012, // Scrubing T2
-				26013, // Scrubing T3
-				266611, // MrDemonWolf T1
-				266612, // MrDemonWolf T2
-				266613, // MrDemonWolf T3
-				105, // SodaPoppin T1
-				36711, // SodaPoppin T2
-				36712, // SodaPoppin T3
-				19503, // xQcOW T1
-				31465, // xQcOW T2
-				31466, // xQcOW T3
-			]
+				{
+					name: "ModestTim",
+					sets: [ 293434, 293441, 293442 ]
+				},
+				{
+					name: "LoserFruit",
+					sets: [	5079 ],
+				},
+				{
+					name: "SodaPoppin",
+					sets: [ 105, 36711, 36712 ],
+				},
+				{
+					name: " xQcOW",
+					sets: [ 19503, 31465, 31466 ],
+				},
+				{
+					name: "Scrubing",
+					sets: [4132, 26012, 26013]
+				},
+				{
+					name: "MrDemonWolf",
+					sets: [266611, 266612, 266613],
+				},
+				{
+					name: "Prime",
+					sets: [ 19194 ]
+				},
+				{
+					name: "Global",
+					sets: [ 0 ]
+				}
+			],
+			emoteMenuOpen: false
 		}
 
 		this.loadEmotes();
@@ -104,14 +118,30 @@ class Chat extends React.Component {
 			fetch(`https://api.betterttv.net/2/emotes`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/room/modesttim`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/set/global`).then(data => data.json()),
-			fetch(`https://api.twitch.tv/kraken/chat/emoticon_images?client_id=${this.state.client_id}&emotesets=${this.state.emote_sets.join(",")}`).then(data => data.json()),
+			fetch(`https://api.twitch.tv/kraken/chat/emoticon_images?client_id=${this.state.client_id}&emotesets=${this.state.emote_sets.map(emote => emote.sets).flat(1).join(",")}`).then(data => data.json()),
 		]).then(values => {
 			values.map(data => {
 				switch (true) {
+					// Twitch Direct
+					case !!data.emoticon_sets:
+						Object.entries(data.emoticon_sets).map(([ i, emotes ]) => {
+							emotes.map(({ id, code }) => {
+								this.setState({ emotes: { ...this.state.emotes, [code]: {
+									set: i,
+									provider: "twitch",
+									src: `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`
+								}}})
+							})
+						})
+						break;
+
 					// BetterTTV
 					case !!data.emotes && !!data.urlTemplate:
 						data.emotes.map(({ code, id }) => {
-							this.setState({ emotes: { ...this.state.emotes, [code]: `https://cdn.betterttv.net/emote/${id}/1x` } })
+							this.setState({ emotes: { ...this.state.emotes, [code]: {
+								provider: "betterttv",
+								src: `https://cdn.betterttv.net/emote/${id}/1x`
+							}}})
 						});
 						break;
 
@@ -120,16 +150,10 @@ class Chat extends React.Component {
 						Object.entries(data.sets).map(([ _, { emoticons } ]) => {
 							emoticons.map(({ name, urls }) => {
 								if (!urls["1"]) return;
-								this.setState({ emotes: { ...this.state.emotes, [name]: urls["1"] } })
-							})
-						})
-						break;
-
-					// Twitch Direct
-					case !!data.emoticon_sets:
-						Object.entries(data.emoticon_sets).map(([ _, emotes ]) => {
-							emotes.map(({ id, code }) => {
-								this.setState({ emotes: { ...this.state.emotes, [code]: `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0` } })
+								this.setState({ emotes: { ...this.state.emotes, [name]: {
+									provider: "frankerfacez",
+									src: urls["1"]
+								}}})
 							})
 						})
 						break;
@@ -159,7 +183,7 @@ class Chat extends React.Component {
 		const { emotes } = this.state;
 		let words = msg.split(" ").map(word => {
 			if (!emotes[word]) return word;
-			return `<img src="${emotes[word]}" title="${word}" alt="${word} emote" />`;
+			return `<img src="${emotes[word].src}" title="${word}" alt="${word} emote" />`;
 		})
 		return words.join(" ");
 	}
@@ -194,27 +218,75 @@ class Chat extends React.Component {
 		}));
 	}
 
-	focusInput () {
-		const { chatInput } = this.refs;
-		// chatInput.focus();
+	focusInput (e) {
+		if (
+			!e.target.classList.contains("emoteMenuButton") &&
+			e.target.className !== "emoteMenuGroup" &&
+			e.target.className !== "emoteMenuHeader" &&
+			e.target.className !== "emoteMenu" &&
+			e.target.className !== "emote"
+		) this.setState({ emoteMenuOpen: false });
+	}
+
+	addEmote (emote) {
+		let { chatInput } = this.refs;
+		chatInput.value += ` ${emote}`;
 	}
 
 	render () {
 		const { isChatOnly, isChatHidden } = this.props;
-		const { chat, viewers, spotify } = this.state;
+		const { emotes, emote_sets, emoteMenuOpen, chat, viewers, spotify } = this.state;
 		return (
-			<div className={`chat ${isChatOnly ? 'isChatOnly' : ''} ${isChatHidden ? 'isChatHidden' : ''}`} onClick={this.focusInput}>
+			<div className={`chat ${isChatOnly && 'isChatOnly'} ${isChatHidden && 'isChatHidden'}`} onClick={(e) => this.focusInput(e)}>
 				<Spotify song={spotify} />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
 					{chat.map((msg, i) => (
 						<p key={i} className={msg.action ? "action" : ""}>
 							<span className="time">{msg.ts.toLocaleTimeString()}</span>
-							{msg.username ? <span className="username" data-name={msg.username}>{msg.username}</span> : ''}
+							{msg.username && <span className="username" data-name={msg.username}>{msg.username}</span>}
 							<span className="message" dangerouslySetInnerHTML={{__html: msg.message}}></span>
 						</p>
 					))}
 				</div>
+				{emoteMenuOpen && <div className="emoteMenu">
+					{emote_sets.map(group => (
+						group.name != "Global" &&
+						<div className="emoteMenuGroup">
+							<p className="emoteMenuHeader">Twitch {group.name}</p>
+							{Object.keys(emotes).map((emote) =>
+								emotes[emote].provider === "twitch" &&
+								group.sets.indexOf(+emotes[emote].set) != -1 &&
+								<img src={emotes[emote].src} alt="" className="emote" key={group.name + emote} onClick={() => this.addEmote(emote)} />
+							)}
+						</div>
+					))}
+					<div className="emoteMenuGroup">
+						<p className="emoteMenuHeader">BetterTTV</p>
+						{Object.keys(emotes).map((emote) =>
+							emotes[emote].provider === "betterttv" &&
+							<img src={emotes[emote].src} alt="" className="emote" key={"bttv" + emote} onClick={() => this.addEmote(emote)} />
+						)}
+					</div>
+					<div className="emoteMenuGroup">
+						<p className="emoteMenuHeader">FrankerFaceZ</p>
+						{Object.keys(emotes).map((emote) =>
+							emotes[emote].provider === "frankerfacez" &&
+							<img src={emotes[emote].src} alt="" className="emote" key={"ffz" + emote} onClick={() => this.addEmote(emote)} />
+						)}
+					</div>
+					<div className="emoteMenuGroup">
+						<p className="emoteMenuHeader">Twitch Global</p>
+						{Object.keys(emotes).map((emote) =>
+							emotes[emote].provider === "twitch" &&
+							emotes[emote].set === "0" &&
+							<img src={emotes[emote].src} alt="" className="emote" key={emote} onClick={() => this.addEmote(emote)} />
+						)}
+					</div>
+				</div>}
+				<img className={`emoteMenuButton ${emoteMenuOpen ? "active" : ""}`}
+					onClick={() => this.setState({ emoteMenuOpen: !emoteMenuOpen })}
+					src="https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ebf60cd72f7aa600-24x18.png" alt="Emotes" />
 				<input ref="chatInput" className="sendMsg" type="text" onKeyPress={this.sendMsg} />
 			</div>
 		)
