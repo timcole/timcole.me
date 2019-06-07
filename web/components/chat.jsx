@@ -187,7 +187,7 @@ class Chat extends React.Component {
 		const { emotes } = this.state;
 		let words = msg.split(" ").map(word => {
 			if (!emotes[word]) return word;
-			return `<img src="${emotes[word].src}" title="${word}" alt="${word} emote" />`;
+			return `<img src="${emotes[word].src}" title="${word}" alt="${word}" />`;
 		})
 		return words.join(" ");
 	}
