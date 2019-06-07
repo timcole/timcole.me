@@ -44,6 +44,10 @@ class Chat extends React.Component {
 					sets: [266611, 266612, 266613],
 				},
 				{
+					name: "Ziggy",
+					sets: [218096, 218098, 218099],
+				},
+				{
 					name: "Prime",
 					sets: [ 19194 ]
 				},
