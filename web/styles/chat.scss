@@ -185,24 +185,29 @@
 		padding: 5px;
 		text-align: center;
 
+		&.search {
+			height: auto;
+			padding: 15px 5px;
+		}
+
 		.emoteMenuGroup {
 			padding-bottom: 10px;
 			border-bottom: 1px solid #252831;
+		}
 
-			p {
-				font-size: 0.95em;
-				margin: 5px 0;
-			}
+		p {
+			font-size: 0.95em;
+			margin: 5px 0;
+		}
 
-			img {
-				padding: 3px;
-				border-radius: 3px;
-				height: 24px;
-				cursor: pointer;
+		img {
+			padding: 3px;
+			border-radius: 3px;
+			height: 24px;
+			cursor: pointer;
 
-				&:hover {
-					background: #252831;
-				}
+			&:hover {
+				background: #252831;
 			}
 		}
 	}
@@ -224,6 +229,18 @@
 		display: grid;
 		grid-template-columns: 25% 25% 25% 25%;
 		grid-auto-flow: row;
+
+		&.search {
+			display: block;
+			text-align: left;
+			line-height: 30px;
+
+			span { 
+				border-radius: 3px;
+				padding: 5px 8px;
+				background: #242730;
+			}
+		}
 
 		.emoteProvider {
 			vertical-align: middle;
