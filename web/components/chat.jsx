@@ -113,7 +113,7 @@ class Chat extends React.Component {
 
 				msg.message = `Chatters: ${[msg.map(chatter => {
 					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>`;
-				})].join(", ")}`;
+				})].join(",&nbsp;")}`;
 				this.setState({ chat: [...this.state.chat, msg] });
 			}
 
