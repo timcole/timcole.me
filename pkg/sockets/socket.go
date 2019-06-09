@@ -8,15 +8,15 @@ import (
 )
 
 const (
-	maxMessage = 1000
-	maxBuffer  = 1024
+	maxMessage = 1048576
+	maxBuffer  = 1048576
 )
 
 var (
 	closerErrs = []int{websocket.CloseGoingAway, websocket.CloseAbnormalClosure, websocket.CloseNormalClosure, websocket.CloseNoStatusReceived}
 	upgrader   = websocket.Upgrader{
-		ReadBufferSize:  1024,
-		WriteBufferSize: 1024,
+		ReadBufferSize:  1048576,
+		WriteBufferSize: 1048576,
 		CheckOrigin:     func(*http.Request) bool { return true },
 	}
 )

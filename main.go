@@ -8,6 +8,7 @@ import (
 
 	"github.com/TimothyCole/timcole.me/pkg"
 	"github.com/TimothyCole/timcole.me/pkg/chat"
+	"github.com/TimothyCole/timcole.me/pkg/chatters"
 	"github.com/TimothyCole/timcole.me/pkg/ping"
 	"github.com/TimothyCole/timcole.me/pkg/security"
 	"github.com/TimothyCole/timcole.me/pkg/sockets"
@@ -52,6 +53,7 @@ func main() {
 	pubsub.AddHandler((chat.New(pubsub)).Handler, "chat")
 	pubsub.AddHandler((spotify.New(pubsub)).Handler, "spotify")
 	pubsub.AddHandler((ping.New(pubsub)).Handler, "ping")
+	pubsub.AddHandler((chatters.New(pubsub)).Handler, "chatters")
 	router.Handle("/ws", security.WSMiddleWare(
 		http.HandlerFunc(pubsub.Handler),
 	)).Methods("GET")

@@ -28,6 +28,10 @@ class Chat extends React.Component {
 					sets: [	5079 ],
 				},
 				{
+					name: "AidenWallis",
+					sets: [ 1000525, 1000526, 1000527 ],
+				},
+				{
 					name: "SodaPoppin",
 					sets: [ 105, 36711, 36712 ],
 				},
@@ -37,15 +41,15 @@ class Chat extends React.Component {
 				},
 				{
 					name: "Scrubing",
-					sets: [4132, 26012, 26013]
+					sets: [ 4132, 26012, 26013 ]
 				},
 				{
 					name: "MrDemonWolf",
-					sets: [266611, 266612, 266613],
+					sets: [ 266611, 266612, 266613 ],
 				},
 				{
 					name: "Ziggy",
-					sets: [218096, 218098, 218099],
+					sets: [ 218096, 218098, 218099 ],
 				},
 				{
 					name: "Prime",
@@ -56,7 +60,8 @@ class Chat extends React.Component {
 					sets: [ 0 ]
 				}
 			],
-			emoteMenuOpen: false
+			emoteMenuOpen: false,
+			emoteMenuSelected: 0
 		}
 
 		this.loadEmotes();
@@ -97,10 +102,19 @@ class Chat extends React.Component {
 
 				msg.message = this.processMsg(msg.message);
 				this.setState({ chat: [...this.state.chat, msg] });
-
-				const { messages } = this.refs;
-				if (messages) messages.scrollTop = messages.scrollHeight;
 			}
+			if (topics == "chatters") {
+				msg.ts = new Date();
+				msg.username = "bot";
+
+				msg.message = `Chatters: ${[msg.map(chatter => {
+					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>`;
+				})].join(", ")}`;
+				this.setState({ chat: [...this.state.chat, msg] });
+			}
+
+			const { messages } = this.refs;
+			if (messages) messages.scrollTop = messages.scrollHeight;
 		}
 
 		client.onclose = () => {
@@ -116,57 +130,53 @@ class Chat extends React.Component {
 		this.sendMsg = this.sendMsg.bind(this);
 	}
 
-	loadEmotes () {
-		Promise.all([
+	async loadEmotes () {
+		let emotes = await Promise.all([
 			fetch(`https://api.betterttv.net/2/channels/modesttim`).then(data => data.json()),
 			fetch(`https://api.betterttv.net/2/emotes`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/room/modesttim`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/set/global`).then(data => data.json()),
 			fetch(`https://api.twitch.tv/kraken/chat/emoticon_images?client_id=${this.state.client_id}&emotesets=${this.state.emote_sets.map(emote => emote.sets).flat(1).join(",")}`).then(data => data.json()),
-		]).then(values => {
-			values.map(data => {
-				switch (true) {
-					// Twitch Direct
-					case !!data.emoticon_sets:
-						Object.entries(data.emoticon_sets).map(([ i, emotes ]) => {
-							emotes.map(({ id, code }) => {
-								this.setState({ emotes: { ...this.state.emotes, [code]: {
-									set: i,
-									provider: "twitch",
-									src: `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`
-								}}})
-							})
-						})
-						break;
+		]);
 
-					// BetterTTV
-					case !!data.emotes && !!data.urlTemplate:
-						data.emotes.map(({ code, id }) => {
-							this.setState({ emotes: { ...this.state.emotes, [code]: {
-								provider: "betterttv",
-								src: `https://cdn.betterttv.net/emote/${id}/1x`
-							}}})
-						});
-						break;
+		emotes.map(data => {
+			switch (true) {
+				// Twitch Direct
+				case !!data.emoticon_sets:
+				Object.entries(data.emoticon_sets).map(([ i, emotes ]) => {
+					emotes.map(({ id, code }) => {
+						this.setState({ emotes: { ...this.state.emotes, [code]: {
+							set: i,
+							provider: "twitch",
+							src: `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`
+						}}})
+					})
+				})
+				break;
 
-					// FrankerFaceZ
-					case !!data.sets:
-						Object.entries(data.sets).map(([ _, { emoticons } ]) => {
-							emoticons.map(({ name, urls }) => {
-								if (!urls["1"]) return;
-								this.setState({ emotes: { ...this.state.emotes, [name]: {
-									provider: "frankerfacez",
-									src: urls["1"]
-								}}})
-							})
-						})
-						break;
+				// BetterTTV
+				case !!data.emotes && !!data.urlTemplate:
+				data.emotes.map(({ code, id }) => {
+					this.setState({ emotes: { ...this.state.emotes, [code]: {
+						provider: "betterttv",
+						src: `https://cdn.betterttv.net/emote/${id}/1x`
+					}}})
+				});
+				break;
 
-					// IDK What this one is lol
-					default:
-						break;
-				}
-			});
+				// FrankerFaceZ
+				case !!data.sets:
+				Object.entries(data.sets).map(([ _, { emoticons } ]) => {
+					emoticons.map(({ name, urls }) => {
+						if (!urls["1"]) return;
+						this.setState({ emotes: { ...this.state.emotes, [name]: {
+							provider: "frankerfacez",
+							src: urls["1"]
+						}}})
+					})
+				})
+				break;
+			}
 		});
 	}
 
@@ -216,7 +226,7 @@ class Chat extends React.Component {
 		if (msg.length > 0) this.state.client.send(JSON.stringify({
 			type: "LISTEN",
 			data: {
-				topics: ["chat.send"],
+				topics: [msg == "/chatters" ? "chatters" : "chat.send"],
 				data: msg
 			}
 		}));
@@ -225,6 +235,9 @@ class Chat extends React.Component {
 	focusInput (e) {
 		if (
 			!e.target.classList.contains("emoteMenuButton") &&
+			e.target.className !== "emoteProviders" &&
+			e.target.className !== "emoteProvider" &&
+			e.target.className !== "emoteProviderLogo" &&
 			e.target.className !== "emoteMenuGroup" &&
 			e.target.className !== "emoteMenuHeader" &&
 			e.target.className !== "emoteMenu" &&
@@ -239,7 +252,7 @@ class Chat extends React.Component {
 
 	render () {
 		const { isChatOnly, isChatHidden } = this.props;
-		const { emotes, emote_sets, emoteMenuOpen, chat, viewers, spotify } = this.state;
+		const { emoteMenuSelected, emotes, emote_sets, emoteMenuOpen, chat, viewers, spotify } = this.state;
 		return (
 			<div className={`chat ${isChatOnly && 'isChatOnly'} ${isChatHidden && 'isChatHidden'}`} onClick={(e) => this.focusInput(e)}>
 				<Spotify song={spotify} />
@@ -248,46 +261,69 @@ class Chat extends React.Component {
 					{chat.map((msg, i) => (
 						<p key={i} className={msg.action ? "action" : ""}>
 							<span className="time">{msg.ts.toLocaleTimeString()}</span>
-							{msg.username && <span className="username" data-name={msg.username}>{msg.username}</span>}
+							{msg.username && <span className="username" data-name={msg.username}>{msg.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>}
 							<span className="message" dangerouslySetInnerHTML={{__html: msg.message}}></span>
 						</p>
 					))}
 				</div>
-				{emoteMenuOpen && <div className="emoteMenu">
-					{emote_sets.map(group => (
-						group.name != "Global" &&
-						<div className="emoteMenuGroup">
-							<p className="emoteMenuHeader">Twitch {group.name}</p>
+				{emoteMenuOpen && <>
+					<div className="emoteMenu">
+						{emote_sets.map(group => (
+							group.name != "Global" &&
+							group.name != "Prime" &&
+							group.name != "Pride" &&
+							emoteMenuSelected == 0 &&
+							<div className="emoteMenuGroup">
+								<p className="emoteMenuHeader">Twitch {group.name}</p>
+								{Object.keys(emotes).map((emote) =>
+									emotes[emote].provider === "twitch" &&
+									group.sets.indexOf(+emotes[emote].set) != -1 &&
+									<img src={emotes[emote].src} alt="" className="emote" key={group.name + emote} onClick={() => this.addEmote(emote)} />
+								)}
+							</div>
+						))}
+						{emoteMenuSelected == 1 && <div className="emoteMenuGroup">
+							<p className="emoteMenuHeader">FrankerFaceZ</p>
 							{Object.keys(emotes).map((emote) =>
-								emotes[emote].provider === "twitch" &&
-								group.sets.indexOf(+emotes[emote].set) != -1 &&
-								<img src={emotes[emote].src} alt="" className="emote" key={group.name + emote} onClick={() => this.addEmote(emote)} />
+								emotes[emote].provider === "frankerfacez" &&
+								<img src={emotes[emote].src} alt="" className="emote" key={"ffz" + emote} onClick={() => this.addEmote(emote)} />
 							)}
+						</div>}
+						{emoteMenuSelected == 2 && <div className="emoteMenuGroup">
+							<p className="emoteMenuHeader">BetterTTV</p>
+							{Object.keys(emotes).map((emote) =>
+								emotes[emote].provider === "betterttv" &&
+								<img src={emotes[emote].src} alt="" className="emote" key={"bttv" + emote} onClick={() => this.addEmote(emote)} />
+							)}
+						</div>}
+						{emote_sets.map(group => (
+							(group.name == "Global" || group.name == "Prime" || group.name == "Pride") &&
+							emoteMenuSelected == 3 &&
+							<div className="emoteMenuGroup">
+								<p className="emoteMenuHeader">Twitch {group.name}</p>
+								{Object.keys(emotes).map((emote) =>
+									emotes[emote].provider === "twitch" &&
+									group.sets.indexOf(+emotes[emote].set) != -1 &&
+									<img src={emotes[emote].src} alt="" className="emote" key={group.name + emote} onClick={() => this.addEmote(emote)} />
+								)}
+							</div>
+						))}
+					</div>
+					<div className="emoteProviders">
+						<div className={`emoteProvider${emoteMenuSelected == 0 ? " active" : ""}`} onClick={() => this.setState({ emoteMenuSelected: 0 })}>
+							<img className="emoteProviderLogo" src="https://timcole.me/static/logo.png" />
 						</div>
-					))}
-					<div className="emoteMenuGroup">
-						<p className="emoteMenuHeader">BetterTTV</p>
-						{Object.keys(emotes).map((emote) =>
-							emotes[emote].provider === "betterttv" &&
-							<img src={emotes[emote].src} alt="" className="emote" key={"bttv" + emote} onClick={() => this.addEmote(emote)} />
-						)}
+						<div className={`emoteProvider${emoteMenuSelected == 1 ? " active" : ""}`} onClick={() => this.setState({ emoteMenuSelected: 1 })}>
+							<img className="emoteProviderLogo" src="https://frankerfacez.com/static/images/favicon-32.png" />
+						</div>
+						<div className={`emoteProvider${emoteMenuSelected == 2 ? " active" : ""}`} onClick={() => this.setState({ emoteMenuSelected: 2 })}>
+							<img className="emoteProviderLogo" src="https://manage.betterttv.net/img/favicon.png" />
+						</div>
+						<div className={`emoteProvider${emoteMenuSelected == 3 ? " active" : ""}`} onClick={() => this.setState({ emoteMenuSelected: 3 })}>
+							<img className="emoteProviderLogo" src="https://www.twitch.tv/favicon.ico" />
+						</div>
 					</div>
-					<div className="emoteMenuGroup">
-						<p className="emoteMenuHeader">FrankerFaceZ</p>
-						{Object.keys(emotes).map((emote) =>
-							emotes[emote].provider === "frankerfacez" &&
-							<img src={emotes[emote].src} alt="" className="emote" key={"ffz" + emote} onClick={() => this.addEmote(emote)} />
-						)}
-					</div>
-					<div className="emoteMenuGroup">
-						<p className="emoteMenuHeader">Twitch Global</p>
-						{Object.keys(emotes).map((emote) =>
-							emotes[emote].provider === "twitch" &&
-							emotes[emote].set === "0" &&
-							<img src={emotes[emote].src} alt="" className="emote" key={emote} onClick={() => this.addEmote(emote)} />
-						)}
-					</div>
-				</div>}
+				</>}
 				<img className={`emoteMenuButton ${emoteMenuOpen ? "active" : ""}`}
 					onClick={() => this.setState({ emoteMenuOpen: !emoteMenuOpen })}
 					src="https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ebf60cd72f7aa600-24x18.png" alt="Emotes" />
