@@ -73,7 +73,6 @@ h1 {
 [data-tooltip] {
 	position: relative;
 	z-index: 2;
-	cursor: pointer;
 
 	&:hover:before,
 	&:hover:after {
@@ -99,8 +98,7 @@ h1 {
 		-webkit-border-radius: 3px;
 		-moz-border-radius: 3px;
 		border-radius: 3px;
-		background-color: #000;
-		background-color: hsla(0, 0%, 20%, 0.9);
+		background-color: rgba(#282d38, 0.9);
 		color: #fff;
 		content: attr(data-tooltip);
 		text-align: center;
@@ -115,8 +113,7 @@ h1 {
 		margin-bottom: -15px;
 		margin-left: -5px;
 		width: 0;
-		border-top: 5px solid #000;
-		border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+		background-color: rgba(#282d38, 0.9);
 		border-right: 5px solid transparent;
 		border-left: 5px solid transparent;
 		content: " ";

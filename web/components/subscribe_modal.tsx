@@ -89,7 +89,7 @@ class SubscribeModal extends Component<any> {
 											if (badge.setID != "subscriber") return; 
 											const style = { order: this.badges.indexOf(badge.description)}
 											return (
-												<div key={badge.imageURL} style={style} className="ToolTipContainer">
+												<div key={badge.imageURL} style={style} className="ToolTipContainer" data-tooltip={badge.description}>
 													<img src={badge.imageURL.replace('/1', '/3')} alt={badge.description} />
 												</div>
 											);
@@ -99,7 +99,7 @@ class SubscribeModal extends Component<any> {
 										<h5>{ this.emotes(data.user.subscriptionProducts).length } Subscriber Emote:</h5>
 										<div className="flex-parent">
 										{this.emotes(data.user.subscriptionProducts).map((emote: any) => (
-											<div key={emote.id} className="ToolTipContainer">
+											<div key={emote.id} className="ToolTipContainer" data-tooltip={emote.token}>
 												<img src={`https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/4.0`} alt={emote.token} />
 											</div>
 										))}
