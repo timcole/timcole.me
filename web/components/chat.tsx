@@ -120,14 +120,16 @@ class Chat extends React.Component<Props, State> {
 			}, 60000)
 		}
 
+		let totalSystemMessage: number = 0;
 		client.onmessage = ({ data: wsData }) => {
 			let { data: { topics, data: msg } } = JSON.parse(wsData);
 			if (!msg) return;
-
+			
 			if (topics == "spotify.playback") this.setState({ spotify: msg })
 			if (topics == "chat.viewers") this.setState({ viewers: msg })
 			if (topics == "chat.receive") {
 				msg.ts = new Date();
+				if (msg.username == "") totalSystemMessage++;
 
 				if (msg.message.substring(0, 4) === "/me ") {
 					msg.message = msg.message.substring(4);
@@ -142,13 +144,18 @@ class Chat extends React.Component<Props, State> {
 				msg.username = "bot";
 
 				msg.message = `Chatters: ${[msg.map(chatter => {
-					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>`;
+					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span> `;
 				})].join(",")}`;
 				this.setState({ chat: [...this.state.chat, msg] });
 			}
 
 			const messages: any = this.refs.messages;
 			if (messages) messages.scrollTop = messages.scrollHeight;
+
+			if (totalSystemMessage == 2) {
+				client.send(`{"type":"LISTEN","data":{"topics":["chatters"]}}`);
+				totalSystemMessage = 0;
+			}
 		}
 
 		client.onclose = () => {
