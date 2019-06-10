@@ -143,8 +143,8 @@ class Chat extends React.Component<Props, State> {
 				msg.ts = new Date();
 				msg.username = "bot";
 
-				msg.message = `Chatters: ${[msg.map(chatter => {
-					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span> `;
+				msg.message = `Chatters:${[msg.map(chatter => {
+					return ` <span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>`;
 				})].join(",")}`;
 				this.setState({ chat: [...this.state.chat, msg] });
 			}
