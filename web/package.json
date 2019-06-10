@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/TimothyCole/timcole.me#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-common-types": "^0.2.19",
     "@fortawesome/fontawesome-svg-core": "^1.2.14",
     "@fortawesome/free-brands-svg-icons": "^5.7.1",
     "@fortawesome/free-solid-svg-icons": "^5.7.1",

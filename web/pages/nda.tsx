@@ -11,8 +11,27 @@ import Footer from '../components/footer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import '../styles/nda.scss'
+
+interface Props {
+	store: IStore
+	isDev: boolean
+}
+
+interface State {
+	isNDA: boolean
+	authorization?: string
+	baseUrl: string
+	isChatHidden: boolean
+}
+
+interface IStore {
+	get(): {}
+	set(s: any): void
+}
  
-class NDA extends Component {
+class NDA extends Component<Props, State> {
+	private store?: IStore;
+
 	static getInitialProps({ req }) {
 		let isDev = process.env.NODE_ENV === "development";
 		return { isDev };
@@ -34,32 +53,32 @@ class NDA extends Component {
 		this.popoutChat = this.popoutChat.bind(this);
 	}
 
-	componentDidUpdate () { this._checkAuth(); }
-	componentDidMount () { this._checkAuth(); }
-	async _checkAuth() {
+	componentDidUpdate () { this.checkAuth(); }
+	componentDidMount () { this.checkAuth(); }
+	private async checkAuth(): Promise<void> {
 		let { authorization } = this.state;
-		let storedAuth = localStorage.getItem("Authorization");
+		let storedAuth: string = localStorage.getItem("Authorization");
 		if (storedAuth == authorization) return;
 		authorization = storedAuth
 		this.setState({ authorization })
 
-		const ok = (await fetch(`${this.state.baseUrl}/nda/ping`, {
+		const ok: string = (await fetch(`${this.state.baseUrl}/nda/ping`, {
 			headers: { "Authorization": authorization }
 		}).then(data => data.text()));
 		this.setState({ isNDA: ok === "ok" })
 	}
 
-	updateValue (e) {
+	private updateValue(e: any): void {
 		e.target.setAttribute('data-value', e.target.value)
 		if (e.keyCode != 13) return;
-		if (e.target.dataset.type === "username") document.querySelector('[data-type="password"]').focus();
+		if (e.target.dataset.type === "username") (document.querySelector('[data-type="password"]') as HTMLInputElement).focus();
 		// if (e.target.dataset.type === "password") document.querySelector('input[type="submit"]').click();
 	}
 
-	async login () {
+	private async login(): Promise<void> {
 		let [username, password] = [
-			document.querySelector('[data-type="username"]').value,
-			document.querySelector('[data-type="password"]').value,
+			(document.querySelector('[data-type="username"]') as HTMLInputElement).value,
+			(document.querySelector('[data-type="password"]') as HTMLInputElement).value,
 		];
 		if (username == "" || password == "") return;
 
@@ -74,17 +93,17 @@ class NDA extends Component {
 		location.reload();
 	}
 
-	toggleChat () {
+	public toggleChat(): void {
 		const { isChatHidden } = this.state;
 		this.setState({ isChatHidden: !isChatHidden });
 	}
 
-	popoutChat () {
+	public popoutChat(): void {
 		window.open("/nda#chat", "_blank", "toolbar=0,location=0,menubar=0,width=450,height=900");
 		this.setState({ isChatHidden: true });
 	}
 
-	render () {
+	render() {
 		const { authorization, isNDA, isChatHidden } = this.state;
 		const { isDev } = this.props;
 		if (!isNDA) return (
