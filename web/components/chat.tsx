@@ -294,7 +294,7 @@ class Chat extends React.Component<Props, State> {
 	}
 
 	private emoteSearch(): HTMLElement {
-		let emoteSearched: any = Object.keys(this.state.emotes).filter((emote: string) => emote.startsWith(this.state.emoteSearch));
+		let emoteSearched: any = Object.keys(this.state.emotes).filter((emote: string) => emote.toLowerCase().indexOf(this.state.emoteSearch.toLowerCase()) !== -1);
 		if (emoteSearched.length === 1) {
 			this.addEmote(emoteSearched[0]);
 			return null;

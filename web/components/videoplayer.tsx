@@ -5,12 +5,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import "../styles/video.scss";
 
-export default class VideoPlayer extends React.Component {
+interface Props {
+	authorization: string
+	autoplay: boolean
+	controls: boolean
+	muted: boolean
+	options: any
+}
+
+interface State {
+	playerId: string
+	quality: string
+	qualityName: string
+	playingIcon: string
+	mutedIcon: string
+	baseUrl: string
+	volume: number
+	buffering: boolean
+	isLiveChecker?: number
+	quality_options: IQuality[]
+}
+
+interface IQuality {
+	name: string
+	key: string
+}
+
+export default class VideoPlayer extends React.Component<Props, State> {
+	private hls: Hls = null;
+	public refs: {
+		video: HTMLVideoElement
+		videoPlayer: HTMLDivElement
+		playPause: HTMLButtonElement
+		mute: HTMLButtonElement
+		volume: HTMLInputElement
+		fullScreen: HTMLButtonElement
+	}
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			playerId: Date.now(),
+			playerId: Date.now().toString(),
 			quality: "_source",
 			qualityName: "Source",
 			playingIcon: "play",
@@ -24,26 +60,18 @@ export default class VideoPlayer extends React.Component {
 				{ name: "Low Bandwidth", key: "_high" },
 			]
 		};
-
-		this.hls = null;
 	}
 
-	lastQuality = null;
-	componentDidUpdate() {
-		if (this.state.quality != this.lastQuality) this._initPlayer();
-	}
-
-	componentDidMount() {
-		this._initPlayer();
-	}
-
+	private lastQuality?: string = null;
+	componentDidUpdate() { if (this.state.quality != this.lastQuality) this.initPlayer(); }
+	componentDidMount() { this.initPlayer(); }
 	componentWillUnmount() {
 		let { hls } = this;
 		if (hls) hls.destroy();
 	}
 
-	_initPlayer() {
-		const clean = this.hls ? true : false;
+	private initPlayer(): void {
+		const clean: boolean = this.hls ? true : false;
 		if (clean) this.hls.destroy();
 		this.lastQuality = this.state.quality;
 
@@ -56,7 +84,7 @@ export default class VideoPlayer extends React.Component {
 			fullScreen
 		} = this.refs;
 
-		let hls = new Hls({
+		let hls: Hls = new Hls({
 			maxBufferLength: 10,
 			maxMaxBufferLength: 60,
 			maxLoadingDelay: 2,
@@ -77,7 +105,7 @@ export default class VideoPlayer extends React.Component {
 		this.hls = hls;
 
 		// Toggle Playback
-		let togglePlayback = _ => {
+		let togglePlayback = function (): void {
 			let action = $video.paused ? "play" : "pause";
 			$video[action]();
 			if (action === "play" && $video.duration) $video.currentTime = $video.duration;
@@ -86,42 +114,44 @@ export default class VideoPlayer extends React.Component {
 		if (clean) playPause.removeEventListener("click", togglePlayback);
 
 		// Toggle Mute
-		let toggleMute = function () {
+		let toggleMute = function (): void {
 			$video.muted = !$video.muted;
 			$video.volume = $video.muted ? 0 : this.state.volume;
-			volume.value = $video.muted ? 0 : this.state.volume * 100;
+			volume.value = String($video.muted ? 0 : this.state.volume * 100);
 		}.bind(this);
 		mute.addEventListener("click", toggleMute);
 		if (clean) mute.removeEventListener("click", toggleMute);
 
 		// Volume Slider
-		volume.onchange = function () {
-			$video.volume = volume.value / 100;
+		volume.onchange = function (): void {
+			$video.volume = Number(volume.value) / 100;
 			if (!$video.muted) this.setState({ volume: $video.volume });
 		}.bind(this);
 
 		// Toogle Fullscreen
-		let isFullscreen = false;
-		let toggleFullscreen = _ => {
+		let isFullscreen: boolean = false;
+		let toggleFullscreen = function(): void {
 			let { videoPlayer } = this.refs;
 
-			let method;
+			let method: string;
 			if (!isFullscreen) {
+				// @ts-ignore
 				method = videoPlayer.requestFullscreen ? "requestFullscreen" : videoPlayer.mozRequestFullScreen ? "mozRequestFullScreen" : "webkitRequestFullscreen";
 
 				if (!method) return;
 				videoPlayer[method]();
 			} else if (isFullscreen) {
+				// @ts-ignore
 				method = document.exitFullscreen ? "exitFullscreen" : document.mozCancelFullScreen ? "mozCancelFullScreen" : "webkitExitFullscreen";
 				document[method]();
 			}
 			isFullscreen = !isFullscreen;
-		};
+		}.bind(this);
 		fullScreen.addEventListener("click", toggleFullscreen);
 		if (clean) fullScreen.removeEventListener("click", toggleFullscreen);
 
 		// Quality Changer
-		let qualityOptions = document.querySelectorAll("#quality #options li");
+		let qualityOptions: NodeListOf<HTMLLIElement> = document.querySelectorAll("#quality #options li");
 		qualityOptions.forEach(q => {
 			q.addEventListener("click", _ => this.setState({ quality: q.dataset.name, qualityName: q.innerText }));
 		});
@@ -148,7 +178,7 @@ export default class VideoPlayer extends React.Component {
 			isLiveChecker: setInterval(async () => {
 				const isLive = await fetch(`${this.state.baseUrl}${this.state.quality}/index.m3u8?authorization=${this.props.authorization}`).then(({ status }) => status);
 				if (isLive) {
-					this._initPlayer();
+					this.initPlayer();
 					clearInterval(this.state.isLiveChecker);
 				}
 			}, 2000)
@@ -166,22 +196,19 @@ export default class VideoPlayer extends React.Component {
 		} = this.state;
 		const {
 			controls,
-			videoProps
 		} = this.props;
 
 		return (
 			<div
 				key={playerId}
-				className=""
 				className={`player ${buffering ? "buffering" : ""}`}
-				ref="videoPlayer" >
+				ref="videoPlayer">
 				<video
 					ref="video"
 					poster="https://static-cdn.jtvnw.net/jtv_user_pictures/5137fa06-4eff-420a-bbe5-366774c5706d-channel_offline_image-1920x1080.png"
 					muted
 					id={playerId}
-					controls={controls}
-					{...videoProps}>
+					controls={controls}>
 				</video>
 				<div id="controls">
 					<div className="left">
