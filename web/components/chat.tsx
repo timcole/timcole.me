@@ -4,7 +4,38 @@ import "../styles/chat.scss";
 
 import Spotify from "./spotify";
 
-class Chat extends React.Component {
+interface Props {
+	isChatHidden: boolean
+	isChatOnly: boolean
+	isDev: boolean
+	authorization: string
+}
+
+interface State {
+	connected: boolean,
+	client?: WebSocket,
+	mounted: boolean,
+	chat: any[],
+	viewers: number,
+	username: string,
+	emotes: any,
+	spotify: any,
+	client_id: string,
+	emote_sets: EmoteSet[],
+	emoteMenuOpen: boolean,
+	emoteMenuSelected: number,
+	emoteSearching: boolean
+	emoteSearch: string
+}
+
+interface EmoteSet {
+	name: string
+	sets: number[]
+}
+
+class Chat extends React.Component<Props, State> {
+	private url = this.props.isDev ? "ws://127.0.0.1:6969/ws" : "wss://timcole.me/ws";
+
 	constructor(props) {
 		super(props);
 
@@ -67,17 +98,16 @@ class Chat extends React.Component {
 		}
 
 		this.loadEmotes();
-		this.focusInput = this.focusInput.bind(this);
 	}
 
 	componentDidMount() { this.connectToChat(); }
-	componentWillUnmount() { location.reload(); }
+	componentWillUnmount() { if (this.props.isDev) location.reload(); }
 
-	connectToChat () {
+	private pinger?: number = null;
+	private connectToChat(): void {
 		this.setState({ username: localStorage.getItem("Username") });
-		this.url = this.props.isDev ? "ws://127.0.0.1:6969/ws" : "wss://timcole.me/ws";
 		if (this.state.connected) this.state.client.close();
-		let client = new WebSocket(`${this.url}?authorization=${this.props.authorization}`);
+		let client: WebSocket = new WebSocket(`${this.url}?authorization=${this.props.authorization}`);
 		this.setState({ client, connected: true });
 
 		client.onopen = () => {
@@ -113,11 +143,11 @@ class Chat extends React.Component {
 
 				msg.message = `Chatters: ${[msg.map(chatter => {
 					return `<span style="font-weight: 400" data-name="${chatter.username}">${chatter.username.replace(/^\w/, c => { return c.toUpperCase() })}</span>`;
-				})].join(",&nbsp;")}`;
+				})].join(",")}`;
 				this.setState({ chat: [...this.state.chat, msg] });
 			}
 
-			const { messages } = this.refs;
+			const messages: any = this.refs.messages;
 			if (messages) messages.scrollTop = messages.scrollHeight;
 		}
 
@@ -134,12 +164,13 @@ class Chat extends React.Component {
 		this.sendMsg = this.sendMsg.bind(this);
 	}
 
-	async loadEmotes () {
-		let emotes = await Promise.all([
+	async loadEmotes(): Promise<void> {
+		let emotes: any = await Promise.all([
 			fetch(`https://api.betterttv.net/2/channels/modesttim`).then(data => data.json()),
 			fetch(`https://api.betterttv.net/2/emotes`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/room/modesttim`).then(data => data.json()),
 			fetch(`https://api.frankerfacez.com/v1/set/global`).then(data => data.json()),
+			// @ts-ignore
 			fetch(`https://api.twitch.tv/kraken/chat/emoticon_images?client_id=${this.state.client_id}&emotesets=${this.state.emote_sets.map(emote => emote.sets).flat(1).join(",")}`).then(data => data.json()),
 		]);
 
@@ -147,7 +178,8 @@ class Chat extends React.Component {
 			switch (true) {
 				// Twitch Direct
 				case !!data.emoticon_sets:
-				Object.entries(data.emoticon_sets).map(([ i, emotes ]) => {
+				Object.keys(data.emoticon_sets).map(i => {
+					let emotes: any = data.emoticon_sets[i];
 					emotes.map(({ id, code }) => {
 						this.setState({ emotes: { ...this.state.emotes, [code]: {
 							set: i,
@@ -170,7 +202,8 @@ class Chat extends React.Component {
 
 				// FrankerFaceZ
 				case !!data.sets:
-				Object.entries(data.sets).map(([ _, { emoticons } ]) => {
+				Object.keys(data.sets).map(v => {
+					let emoticons: any = data.sets[v].emoticons;
 					emoticons.map(({ name, urls }) => {
 						if (!urls["1"]) return;
 						this.setState({ emotes: { ...this.state.emotes, [name]: {
@@ -184,10 +217,10 @@ class Chat extends React.Component {
 		});
 	}
 
-	processMsg (message) {
-		let msg = "";
+	private processMsg(message: string): string {
+		let msg: string = "";
 		// Remove HTML
-		let dummy = document.createElement("div");
+		let dummy: HTMLDivElement = document.createElement("div");
 		dummy.innerHTML = message;
 		msg = dummy.innerText;
 		// Process
@@ -197,7 +230,7 @@ class Chat extends React.Component {
 		return msg;
 	}
 
-	emotes (msg) {
+	private emotes(msg: string): string {
 		const { emotes } = this.state;
 		let words = msg.split(" ").map(word => {
 			if (!emotes[word]) return word;
@@ -206,38 +239,41 @@ class Chat extends React.Component {
 		return words.join(" ");
 	}
 
-	mentions (msg) {
+	private mentions(msg: string): string {
 		const { username } = this.state;
 		if (username == null) return msg;
 
-		let lowerName = username.toLowerCase();
-		let words = msg.split(" ").map(word => {
+		let lowerName: string = username.toLowerCase();
+		let words: string[] = msg.split(" ").map(word => {
 			if (lowerName != word) return word;
 			return `<span class="tag">${lowerName}</span>`;
 		})
 		return words.join(" ");
 	}
 
-	hyperlink (msg) {
+	private hyperlink(msg: string): string {
 		return msg.replace(/(https?:\/\/[^\s]+)/g, "<a href='$1' target='_blank'>$1</a>");
 	}
 
-	sendMsg(e) {
-		let colons = 0
-		e.target.value.split("").map(letter => {
-			if (letter == ":") colons++
+	private sendMsg(e: React.KeyboardEvent<HTMLInputElement>): void {
+		let colons: number = 0;
+		let target: any = e.target;
+
+		let letters: string[] = target.value.split("");
+		letters.map((letter: string, i: number) => {
+			if (letter == ":") if (letters[i-1] != " " || typeof letters[i-1] != undefined) colons++
 		});
 		if (colons % 2 == 0) this.setState({ emoteSearching: false, emoteMenuOpen: false })
 		else this.setState({ emoteSearching: true, emoteMenuOpen: true })
 
 		if (this.state.emoteSearching) {
-			let search = e.target.value.split(":").reverse()[0];
+			let search: string = target.value.split(":").reverse()[0];
 			return this.setState({ emoteMenuOpen: search.length >= 1, emoteSearch: search })
 		} else this.setState({ emoteMenuOpen: false, emoteSearch: "" })
 
 		if (e.key !== 'Enter') return;
-		let msg = e.target.value;
-		e.target.value = "";
+		let msg: string = target.value;
+		target.value = "";
 
 		if (msg.length > 0) this.state.client.send(JSON.stringify({
 			type: "LISTEN",
@@ -248,22 +284,8 @@ class Chat extends React.Component {
 		}));
 	}
 
-	focusInput (e) {
-		return
-		if (
-			!e.target.classList.contains("emoteMenuButton") &&
-			e.target.className !== "emoteProviders" &&
-			e.target.className !== "emoteProvider" &&
-			e.target.className !== "emoteProviderLogo" &&
-			e.target.className !== "emoteMenuGroup" &&
-			e.target.className !== "emoteMenuHeader" &&
-			e.target.className !== "emoteMenu" &&
-			e.target.className !== "emote"
-		) this.setState({ emoteMenuOpen: false });
-	}
-
-	addEmote (emote) {
-		let { chatInput } = this.refs;
+	private addEmote(emote: string): void {
+		let chatInput: any = this.refs.chatInput;
 
 		if (this.state.emoteSearching) {
 			chatInput.value = chatInput.value.replace(`:${this.state.emoteSearch}`, emote);
@@ -271,11 +293,20 @@ class Chat extends React.Component {
 		} else chatInput.value += `${emote}`;
 	}
 
-	render () {
+	private emoteSearch(): HTMLElement {
+		let emoteSearched: any = Object.keys(this.state.emotes).filter((emote: string) => emote.startsWith(this.state.emoteSearch));
+		if (emoteSearched.length === 1) {
+			this.addEmote(emoteSearched[0]);
+			return null;
+		}
+		return emoteSearched.map((emote: any) => <img src={this.state.emotes[emote].src} alt="" className="emote" key={"search" + emote} onClick={() => this.addEmote(emote)} />)
+	}
+
+	render() {
 		const { isChatOnly, isChatHidden } = this.props;
 		const { emoteSearching, emoteSearch, emoteMenuSelected, emotes, emote_sets, emoteMenuOpen, chat, viewers, spotify } = this.state;
 		return (
-			<div className={`chat ${isChatOnly && 'isChatOnly'} ${isChatHidden && 'isChatHidden'}`} onClick={(e) => this.focusInput(e)}>
+			<div className={`chat ${isChatOnly && 'isChatOnly'} ${isChatHidden && 'isChatHidden'}`}>
 				<Spotify song={spotify} />
 				<div className="viewers">Viewers: {viewers}</div>
 				<div className="messages" ref="messages">
@@ -288,11 +319,7 @@ class Chat extends React.Component {
 					))}
 				</div>
 				{emoteMenuOpen && <>
-					{emoteSearching && emoteSearch.length >= 1 && <div className="emoteMenu search">
-						{Object.keys(emotes).map((emote) => {
-							if (emote.startsWith(emoteSearch)) return <img src={emotes[emote].src} alt="" className="emote" key={"search" + emote} onClick={() => this.addEmote(emote)} />
-						})}
-					</div>}
+					{emoteSearching && emoteSearch.length >= 1 && <div className="emoteMenu search">{this.emoteSearch()}</div>}
 					{!emoteSearching && <div className="emoteMenu">
 						{emote_sets.map(group => (
 							group.name != "Global" &&
