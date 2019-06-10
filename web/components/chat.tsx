@@ -256,12 +256,13 @@ class Chat extends React.Component<Props, State> {
 	}
 
 	private sendMsg(e: React.KeyboardEvent<HTMLInputElement>): void {
-		let colons: number = 0;
 		let target: any = e.target;
-
+		
+		let colons: number = 0;
 		let letters: string[] = target.value.split("");
 		letters.map((letter: string, i: number) => {
-			if (letter == ":") if (letters[i-1] != " " || typeof letters[i-1] != undefined) colons++
+			if (letter == ":")
+				if (letters[i-1] == " " || typeof letters[i-1] == "undefined") colons++
 		});
 		if (colons % 2 == 0) this.setState({ emoteSearching: false, emoteMenuOpen: false })
 		else this.setState({ emoteSearching: true, emoteMenuOpen: true })
