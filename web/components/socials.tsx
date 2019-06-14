@@ -29,6 +29,7 @@ class Stats extends React.Component<any, any> {
 		this.setState({
 			discord: (await fetch("https://discordapp.com/api/v6/invite/YFtfGwq?with_counts=true").then(data => data.json())).approximate_member_count.toLocaleString(),
 			github: (await fetch("https://api.github.com/users/timothycole").then(data => data.json())).followers.toLocaleString(),
+			notify: (await fetch("https://timcole.me/api/notify").then(data => data.json())).channel.subCount.toLocaleString(),
 		});
 
 		const socialblade = (await fetch("https://timcole.me/api/stats").then(data => data.json())).results;
@@ -45,15 +46,19 @@ class Stats extends React.Component<any, any> {
 		["Join us on Discord", "https://discordapp.com/invite/YFtfGwq", "discord"],
 		["Subscribe on YouTube", "https://www.youtube.com/user/EatTim?sub_confirmation=1", "youtube"],
 		["View my Instagram", "https://instagram.com/modesttim", "instagram"],
-	]
+		["Get Notifed", "https://notify.me/tim", "notify"],
+	];
 
 	render () {
 		return (
 			<div className={this.props.className}>
 			{this.socials.map((v: any) => (
 				<a href={v[ESocial.URL]} target="_blank" key={v[ESocial.NETWORK]}>
-					<div className={`button ${v[ESocial.NETWORK]}`} data-tooltip={`${v[ESocial.TOOLTIP]} - ${this.state[v[ESocial.NETWORK]]}`}>
-						<FontAwesomeIcon icon={['fab', v[ESocial.NETWORK]]} />
+					<div className={`button ${v[ESocial.NETWORK]}`} data-tooltip={`${v[ESocial.TOOLTIP]} - ${this.state[v[ESocial.NETWORK]] || "loading"}`}>
+						{v[ESocial.NETWORK] != "notify"
+							? <FontAwesomeIcon icon={['fab', v[ESocial.NETWORK]]} />
+							: <img src="https://assets.notify.me/notify.svg" />
+						}
 					</div>
 				</a>
 			))}

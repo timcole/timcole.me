@@ -20,6 +20,7 @@ func SBStats(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	defer res.Body.Close()
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)

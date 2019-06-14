@@ -43,6 +43,7 @@ func main() {
 
 	router.HandleFunc("/login", security.UserLogin).Methods("POST")
 	router.HandleFunc("/stats", pkg.SBStats).Methods("GET")
+	router.HandleFunc("/notify", pkg.Notify).Methods("GET")
 	router.HandleFunc("/nda/OnPublish", stream.OnPublish).Methods("GET")
 
 	router.HandleFunc("/spotify/playing", spotify.GetPlaying).Methods("GET")
