@@ -107,7 +107,7 @@ class NDA extends Component<Props, State> {
 		const { authorization, isNDA, isChatHidden } = this.state;
 		const { isDev } = this.props;
 		if (!isNDA) return (
-			<Layout title={`Timothy Cole - NDA Login`} className="nda-login">
+			<Layout title={`Timothy Cole - NDA Login`} className="nda-login" nda={true}>
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					<h1>Unauthorized</h1>
@@ -144,7 +144,7 @@ class NDA extends Component<Props, State> {
 
 		const isChatOnly = window.location.hash == "#chat";
 		return (
-			<Layout title={`Timothy Cole - NDA`} className="nda">
+			<Layout title={`Timothy Cole - NDA`} className="nda" nda={true}>
 				<div className="header"><Header className="container" store={this.store} /></div>
 				<div className="body">
 					{isChatOnly ? '' : (<>

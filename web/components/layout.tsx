@@ -6,7 +6,7 @@ import "../styles/app.scss";
 const defaultTitle = `Timothy Cole - Software Engineer`;
 class Layout extends Component<any> {
 	render () {
-		const { title, children, screenshot, className } = this.props
+		const { title, children, screenshot, nda, className } = this.props
 		return (
 			<div id="app">
 				<Head>
@@ -32,6 +32,16 @@ class Layout extends Component<any> {
 					<link rel="preload" href="https://cdn.tcole.me/logo.png" as="image" />
 					<link rel="preload" href="https://cdn.tcole.me/setup-compressed.jpg" as="image" />
 				</Head>
+
+				{nda && (
+					<Head>
+						<meta property="og:title" content="Private Stream" />
+						<meta property="og:type" content="website" />
+						<meta property="og:image" content="https://cdn.tcole.me/fOnOJIjpEh.png" />
+						<meta property="og:description" content="Private Stream" />
+						<meta property="og:url" content="https://timcole.me/nda" />
+					</Head>
+				)}
 
 				{screenshot ? (
 					<Head>
