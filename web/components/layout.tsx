@@ -53,7 +53,7 @@ class Layout extends Component<any> {
 						<meta property="og:title" content={`Screenshot - ${screenshot}`} />
 						<meta property="og:type" content="website" />
 						<meta property="og:image" content={`https://cdn.tcole.me/${screenshot}`} />
-						<meta property="og:site_name" content="Timothy Cole - Full Stack Developer" />
+						<meta property="og:site_name" content="Timothy Cole - Software Engineer" />
 						<meta property="og:description" content={`Screenshot - ${screenshot}`} />
 
 						<meta itemProp="name" content={`Screenshot - ${screenshot}`} />
