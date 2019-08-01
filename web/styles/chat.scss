@@ -166,6 +166,15 @@
 				padding-right: 5px;
 			}
 		}
+		
+		[data-name="datagutt"] {
+			color: #9eebcf;
+
+			&:before {
+				content: "💻";
+				padding-right: 5px;
+			}
+		}
 		// #endregion User Chat Colours
 	}
 
