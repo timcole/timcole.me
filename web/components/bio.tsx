@@ -13,7 +13,7 @@ class Bio extends React.Component<any> {
 
 				<p>My name is <b>Timothy Cole 🦄</b> or as my parents refer to me, tech support but you can call me <b>Tim</b>!</p>
 
-				<p>I'm a <b>{this.age()} year old</b>, self-taught, software engineer currently living in <b>Los Angeles, CA</b>.</p>
+				<p>I'm a <b>{this.age()} year old</b>, self-taught, software engineer currently living in <b>Vancouver, BC</b> with plans to return to <b>Los Angeles, CA</b> soon.</p>
 
 				<p>When I was 10 years old I fell in love with computers.  I thought they were so neat that I wanted to become the CEO of Intel one day.  When I was 13 I realized how intriguing websites are so I started to tinker with inspect element.  It wasn't until then when I realized what I wanted to do with my life. A few months passed and I was still learning and investing my time away.</p>
 
