@@ -33,7 +33,7 @@
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "hls.js": "^0.12.4",
-    "next": "^8.0.4",
+    "next": "^9.3.2",
     "next-url-prettifier": "^1.4.0",
     "node-fetch": "^2.3.0",
     "node-sass": "^4.11.0",
