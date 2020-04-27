@@ -1,1 +1,1 @@
-module.exports = require('@zeit/next-typescript')(require('@zeit/next-sass')())
+module.exports = require('@zeit/next-sass')();

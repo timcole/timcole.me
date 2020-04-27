@@ -3,9 +3,9 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "next start"
   },
   "repository": {
     "type": "git",
@@ -18,31 +18,30 @@
   },
   "homepage": "https://github.com/TimothyCole/timcole.me#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-common-types": "^0.2.19",
-    "@fortawesome/fontawesome-svg-core": "^1.2.14",
-    "@fortawesome/free-brands-svg-icons": "^5.7.1",
-    "@fortawesome/free-solid-svg-icons": "^5.7.1",
-    "@fortawesome/react-fontawesome": "^0.1.4",
-    "@types/next": "^8.0.3",
-    "@types/react": "^16.8.2",
-    "@types/react-dom": "^16.8.0",
+    "@fortawesome/fontawesome-common-types": "^0.2.28",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/pro-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@zeit/next-sass": "^1.0.1",
-    "@zeit/next-typescript": "^1.1.1",
-    "apollo-boost": "^0.3.1",
-    "express": "^4.16.4",
-    "graphql": "^14.1.1",
-    "graphql-tag": "^2.10.1",
-    "hls.js": "^0.12.4",
-    "next": "^8.0.4",
-    "next-url-prettifier": "^1.4.0",
-    "node-fetch": "^2.3.0",
-    "node-sass": "^4.11.0",
-    "react": "^16.8.1",
-    "react-apollo": "^2.4.1",
-    "react-dom": "^16.8.1"
+    "apollo-boost": "^0.4.7",
+    "express": "^4.17.1",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
+    "hls.js": "^0.13.2",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^9.3.5",
+    "node-sass": "^4.14.0",
+    "react": "^16.13.1",
+    "react-apollo": "^3.1.5",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@fortawesome/pro-solid-svg-icons": "^5.8.1",
-    "@types/node": "^11.13.0"
+    "@types/next": "^9.0.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "@types/node": "^13.13.4",
+    "typescript": "^3.8.3"
   }
 }
