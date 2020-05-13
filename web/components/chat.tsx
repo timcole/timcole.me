@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
-import "../styles/chat.scss";
+import '../styles/chat.scss';
 
-import Spotify from "./spotify";
+import Spotify from './spotify';
 
 interface Props {
   isChatHidden: boolean;
@@ -35,8 +35,8 @@ interface EmoteSet {
 
 class Chat extends React.Component<Props, State> {
   private url = this.props.isDev
-    ? "ws://127.0.0.1:6969/ws"
-    : "wss://timcole.me/ws";
+    ? 'ws://127.0.0.1:6969/ws'
+    : 'wss://timcole.me/ws';
 
   constructor(props) {
     super(props);
@@ -47,56 +47,56 @@ class Chat extends React.Component<Props, State> {
       mounted: false,
       chat: [],
       viewers: 0,
-      username: "",
+      username: '',
       emotes: {},
       spotify: {},
-      client_id: "kimne78kx3ncx6brgo4mv6wki5h1ko",
+      client_id: 'kimne78kx3ncx6brgo4mv6wki5h1ko',
       emote_sets: [
         {
-          name: "ModestTim",
+          name: 'ModestTim',
           sets: [293434, 293441, 293442],
         },
         {
-          name: "LoserFruit",
+          name: 'LoserFruit',
           sets: [5079],
         },
         {
-          name: "AidenWallis",
+          name: 'AidenWallis',
           sets: [1000525, 1000526, 1000527],
         },
         {
-          name: "SodaPoppin",
+          name: 'SodaPoppin',
           sets: [105, 36711, 36712],
         },
         {
-          name: " xQcOW",
+          name: ' xQcOW',
           sets: [19503, 31465, 31466],
         },
         {
-          name: "Scrubing",
+          name: 'Scrubing',
           sets: [4132, 26012, 26013],
         },
         {
-          name: "MrDemonWolf",
+          name: 'MrDemonWolf',
           sets: [266611, 266612, 266613],
         },
         {
-          name: "Ziggy",
+          name: 'Ziggy',
           sets: [218096, 218098, 218099],
         },
         {
-          name: "Prime",
+          name: 'Prime',
           sets: [19194],
         },
         {
-          name: "Global",
+          name: 'Global',
           sets: [0],
         },
       ],
       emoteMenuOpen: false,
       emoteMenuSelected: 0,
       emoteSearching: false,
-      emoteSearch: "",
+      emoteSearch: '',
     };
 
     this.loadEmotes();
@@ -111,7 +111,7 @@ class Chat extends React.Component<Props, State> {
 
   private pinger?: NodeJS.Timeout = null;
   private connectToChat(): void {
-    this.setState({ username: localStorage.getItem("Username") });
+    this.setState({ username: localStorage.getItem('Username') });
     if (this.state.connected) this.state.client.close();
     let client: WebSocket = new WebSocket(
       `${this.url}?authorization=${this.props.authorization}`
@@ -119,7 +119,7 @@ class Chat extends React.Component<Props, State> {
     this.setState({ client, connected: true });
 
     client.onopen = () => {
-      console.log("Chat Connected");
+      console.log('Chat Connected');
       client.send(
         `{"type":"LISTEN","data":{"topics":["chat.receive","chat.viewers","spotify.playback"]}}`
       );
@@ -137,13 +137,13 @@ class Chat extends React.Component<Props, State> {
       } = JSON.parse(wsData);
       if (!msg) return;
 
-      if (topics == "spotify.playback") this.setState({ spotify: msg });
-      if (topics == "chat.viewers") this.setState({ viewers: msg });
-      if (topics == "chat.receive") {
+      if (topics == 'spotify.playback') this.setState({ spotify: msg });
+      if (topics == 'chat.viewers') this.setState({ viewers: msg });
+      if (topics == 'chat.receive') {
         msg.ts = new Date();
-        if (msg.username == "") totalSystemMessage++;
+        if (msg.username == '') totalSystemMessage++;
 
-        if (msg.message.substring(0, 4) === "/me ") {
+        if (msg.message.substring(0, 4) === '/me ') {
           msg.message = msg.message.substring(4);
           msg.action = true;
         }
@@ -151,9 +151,9 @@ class Chat extends React.Component<Props, State> {
         msg.message = this.processMsg(msg.message);
         this.setState({ chat: [...this.state.chat, msg] });
       }
-      if (topics == "chatters") {
+      if (topics == 'chatters') {
         msg.ts = new Date();
-        msg.username = "bot";
+        msg.username = 'bot';
 
         msg.message = `Chatters:${[
           msg.map((chatter) => {
@@ -163,7 +163,7 @@ class Chat extends React.Component<Props, State> {
               return c.toUpperCase();
             })}</span>`;
           }),
-        ].join(",")}`;
+        ].join(',')}`;
         this.setState({ chat: [...this.state.chat, msg] });
       }
 
@@ -184,7 +184,7 @@ class Chat extends React.Component<Props, State> {
           ...this.state.chat,
           {
             ts: new Date(),
-            message: "Disconnected, Attempting to reconnect.",
+            message: 'Disconnected, Attempting to reconnect.',
           },
         ],
       });
@@ -195,28 +195,31 @@ class Chat extends React.Component<Props, State> {
 
   async loadEmotes(): Promise<void> {
     let emotes: any = await Promise.all([
-      fetch(`https://api.betterttv.net/2/channels/modesttim`).then((data) =>
+      fetch(
+        `https://api.betterttv.net/3/users/54fa4e6a01e468494b85b4fa?limited=false&personal=false`
+      )
+        .then((data) => data.json())
+        .then((data) => [...data.channelEmotes, ...data.sharedEmotes]),
+      fetch(`https://api.betterttv.net/3/cached/emotes/global`).then((data) =>
         data.json()
       ),
-      fetch(`https://api.betterttv.net/2/emotes`).then((data) => data.json()),
       fetch(`https://api.frankerfacez.com/v1/room/modesttim`).then((data) =>
         data.json()
       ),
       fetch(`https://api.frankerfacez.com/v1/set/global`).then((data) =>
         data.json()
       ),
-      // @ts-ignore
       fetch(
         `https://api.twitch.tv/kraken/chat/emoticon_images?client_id=${
           this.state.client_id
         }&emotesets=${this.state.emote_sets
           .map((emote) => emote.sets)
           .flat(1)
-          .join(",")}`
+          .join(',')}`
       ).then((data) => data.json()),
     ]);
 
-    emotes.map((data) => {
+    emotes.map((data: any) => {
       switch (true) {
         // Twitch Direct
         case !!data.emoticon_sets:
@@ -228,7 +231,7 @@ class Chat extends React.Component<Props, State> {
                   ...this.state.emotes,
                   [code]: {
                     set: i,
-                    provider: "twitch",
+                    provider: 'twitch',
                     src: `https://static-cdn.jtvnw.net/emoticons/v1/${id}/1.0`,
                   },
                 },
@@ -238,13 +241,13 @@ class Chat extends React.Component<Props, State> {
           break;
 
         // BetterTTV
-        case !!data.emotes && !!data.urlTemplate:
-          data.emotes.map(({ code, id }) => {
+        case data instanceof Array:
+          data.map(({ code, id }) => {
             this.setState({
               emotes: {
                 ...this.state.emotes,
                 [code]: {
-                  provider: "betterttv",
+                  provider: 'betterttv',
                   src: `https://cdn.betterttv.net/emote/${id}/1x`,
                 },
               },
@@ -257,13 +260,13 @@ class Chat extends React.Component<Props, State> {
           Object.keys(data.sets).map((v) => {
             let emoticons: any = data.sets[v].emoticons;
             emoticons.map(({ name, urls }) => {
-              if (!urls["1"]) return;
+              if (!urls['1']) return;
               this.setState({
                 emotes: {
                   ...this.state.emotes,
                   [name]: {
-                    provider: "frankerfacez",
-                    src: urls["1"],
+                    provider: 'frankerfacez',
+                    src: urls['1'],
                   },
                 },
               });
@@ -275,9 +278,9 @@ class Chat extends React.Component<Props, State> {
   }
 
   private processMsg(message: string): string {
-    let msg: string = "";
+    let msg: string = '';
     // Remove HTML
-    let dummy: HTMLDivElement = document.createElement("div");
+    let dummy: HTMLDivElement = document.createElement('div');
     dummy.innerHTML = message;
     msg = dummy.innerText;
     // Process
@@ -289,11 +292,11 @@ class Chat extends React.Component<Props, State> {
 
   private emotes(msg: string): string {
     const { emotes } = this.state;
-    let words = msg.split(" ").map((word) => {
+    let words = msg.split(' ').map((word) => {
       if (!emotes[word]) return word;
       return `<img src="${emotes[word].src}" title="${word}" alt="${word}" />`;
     });
-    return words.join(" ");
+    return words.join(' ');
   }
 
   private mentions(msg: string): string {
@@ -301,11 +304,11 @@ class Chat extends React.Component<Props, State> {
     if (username == null) return msg;
 
     let lowerName: string = username.toLowerCase();
-    let words: string[] = msg.split(" ").map((word) => {
+    let words: string[] = msg.split(' ').map((word) => {
       if (lowerName != word) return word;
       return `<span class="tag">${lowerName}</span>`;
     });
-    return words.join(" ");
+    return words.join(' ');
   }
 
   private hyperlink(msg: string): string {
@@ -319,10 +322,10 @@ class Chat extends React.Component<Props, State> {
     let target: any = e.target;
 
     let colons: number = 0;
-    let letters: string[] = target.value.split("");
+    let letters: string[] = target.value.split('');
     letters.map((letter: string, i: number) => {
-      if (letter == ":")
-        if (letters[i - 1] == " " || typeof letters[i - 1] == "undefined")
+      if (letter == ':')
+        if (letters[i - 1] == ' ' || typeof letters[i - 1] == 'undefined')
           colons++;
     });
     if (colons % 2 == 0)
@@ -330,23 +333,25 @@ class Chat extends React.Component<Props, State> {
     else this.setState({ emoteSearching: true, emoteMenuOpen: true });
 
     if (this.state.emoteSearching) {
-      let search: string = target.value.split(":").reverse()[0];
-      return this.setState({
-        emoteMenuOpen: search.length >= 1,
-        emoteSearch: search,
+      let search: string = target.value.split(':').reverse()[0];
+      this.setState({
+        emoteMenuOpen: e.key === 'Enter' ? false : search.length >= 1,
+        emoteSearch: e.key === 'Enter' ? '' : search,
       });
-    } else this.setState({ emoteMenuOpen: false, emoteSearch: "" });
+      if (e.key === 'Enter') this.emoteSearch(true);
+      return;
+    } else this.setState({ emoteMenuOpen: false, emoteSearch: '' });
 
-    if (e.key !== "Enter") return;
+    if (e.key !== 'Enter') return;
     let msg: string = target.value;
-    target.value = "";
+    target.value = '';
 
     if (msg.length > 0)
       this.state.client.send(
         JSON.stringify({
-          type: "LISTEN",
+          type: 'LISTEN',
           data: {
-            topics: [msg == "/chatters" ? "chatters" : "chat.send"],
+            topics: [msg == '/chatters' ? 'chatters' : 'chat.send'],
             data: msg,
           },
         })
@@ -359,22 +364,22 @@ class Chat extends React.Component<Props, State> {
     if (this.state.emoteSearching) {
       chatInput.value = chatInput.value.replace(
         `:${this.state.emoteSearch}`,
-        emote
+        `${emote} `
       );
       this.setState({
         emoteMenuOpen: false,
         emoteSearching: false,
-        emoteSearch: "",
+        emoteSearch: '',
       });
-    } else chatInput.value += `${emote}`;
+    } else chatInput.value += emote;
   }
 
-  private emoteSearch(): HTMLElement {
+  private emoteSearch(select: boolean): HTMLElement {
     let emoteSearched: any = Object.keys(this.state.emotes).filter(
       (emote: string) =>
         emote.toLowerCase().indexOf(this.state.emoteSearch.toLowerCase()) !== -1
     );
-    if (emoteSearched.length === 1) {
+    if (select && emoteSearched?.length >= 1) {
       this.addEmote(emoteSearched[0]);
       return null;
     }
@@ -383,7 +388,7 @@ class Chat extends React.Component<Props, State> {
         src={this.state.emotes[emote].src}
         alt=""
         className="emote"
-        key={"search" + emote}
+        key={'search' + emote}
         onClick={() => this.addEmote(emote)}
       />
     ));
@@ -404,15 +409,15 @@ class Chat extends React.Component<Props, State> {
     } = this.state;
     return (
       <div
-        className={`chat ${isChatOnly && "isChatOnly"} ${
-          isChatHidden && "isChatHidden"
+        className={`chat ${isChatOnly && 'isChatOnly'} ${
+          isChatHidden && 'isChatHidden'
         }`}
       >
         <Spotify song={spotify} />
         <div className="viewers">Viewers: {viewers}</div>
         <div className="messages" ref="messages">
           {chat.map((msg, i) => (
-            <p key={i} className={msg.action ? "action" : ""}>
+            <p key={i} className={msg.action ? 'action' : ''}>
               <span className="time">{msg.ts.toLocaleTimeString()}</span>
               {msg.username && (
                 <span className="username" data-name={msg.username}>
@@ -431,21 +436,21 @@ class Chat extends React.Component<Props, State> {
         {emoteMenuOpen && (
           <>
             {emoteSearching && emoteSearch.length >= 1 && (
-              <div className="emoteMenu search">{this.emoteSearch()}</div>
+              <div className="emoteMenu search">{this.emoteSearch(false)}</div>
             )}
             {!emoteSearching && (
               <div className="emoteMenu">
                 {emote_sets.map(
                   (group) =>
-                    group.name != "Global" &&
-                    group.name != "Prime" &&
-                    group.name != "Pride" &&
+                    group.name != 'Global' &&
+                    group.name != 'Prime' &&
+                    group.name != 'Pride' &&
                     emoteMenuSelected == 0 && (
                       <div className="emoteMenuGroup" key={group.name}>
                         <p className="emoteMenuHeader">Twitch {group.name}</p>
                         {Object.keys(emotes).map(
                           (emote) =>
-                            emotes[emote].provider === "twitch" &&
+                            emotes[emote].provider === 'twitch' &&
                             group.sets.indexOf(+emotes[emote].set) != -1 && (
                               <img
                                 src={emotes[emote].src}
@@ -464,12 +469,12 @@ class Chat extends React.Component<Props, State> {
                     <p className="emoteMenuHeader">FrankerFaceZ</p>
                     {Object.keys(emotes).map(
                       (emote) =>
-                        emotes[emote].provider === "frankerfacez" && (
+                        emotes[emote].provider === 'frankerfacez' && (
                           <img
                             src={emotes[emote].src}
                             alt=""
                             className="emote"
-                            key={"ffz" + emote}
+                            key={'ffz' + emote}
                             onClick={() => this.addEmote(emote)}
                           />
                         )
@@ -481,12 +486,12 @@ class Chat extends React.Component<Props, State> {
                     <p className="emoteMenuHeader">BetterTTV</p>
                     {Object.keys(emotes).map(
                       (emote) =>
-                        emotes[emote].provider === "betterttv" && (
+                        emotes[emote].provider === 'betterttv' && (
                           <img
                             src={emotes[emote].src}
                             alt=""
                             className="emote"
-                            key={"bttv" + emote}
+                            key={'bttv' + emote}
                             onClick={() => this.addEmote(emote)}
                           />
                         )
@@ -495,21 +500,21 @@ class Chat extends React.Component<Props, State> {
                 )}
                 {emote_sets.map(
                   (group) =>
-                    (group.name == "Global" ||
-                      group.name == "Prime" ||
-                      group.name == "Pride") &&
+                    (group.name == 'Global' ||
+                      group.name == 'Prime' ||
+                      group.name == 'Pride') &&
                     emoteMenuSelected == 3 && (
                       <div className="emoteMenuGroup" key={group.name}>
                         <p className="emoteMenuHeader">Twitch {group.name}</p>
                         {Object.keys(emotes).map(
                           (emote) =>
-                            emotes[emote].provider === "twitch" &&
+                            emotes[emote].provider === 'twitch' &&
                             group.sets.indexOf(+emotes[emote].set) != -1 && (
                               <img
                                 src={emotes[emote].src}
                                 alt=""
                                 className="emote"
-                                key={"t" + group.name + emote}
+                                key={'t' + group.name + emote}
                                 onClick={() => this.addEmote(emote)}
                               />
                             )
@@ -528,7 +533,7 @@ class Chat extends React.Component<Props, State> {
               <div className="emoteProviders">
                 <div
                   className={`emoteProvider${
-                    emoteMenuSelected == 0 ? " active" : ""
+                    emoteMenuSelected == 0 ? ' active' : ''
                   }`}
                   onClick={() => this.setState({ emoteMenuSelected: 0 })}
                 >
@@ -539,7 +544,7 @@ class Chat extends React.Component<Props, State> {
                 </div>
                 <div
                   className={`emoteProvider${
-                    emoteMenuSelected == 1 ? " active" : ""
+                    emoteMenuSelected == 1 ? ' active' : ''
                   }`}
                   onClick={() => this.setState({ emoteMenuSelected: 1 })}
                 >
@@ -550,7 +555,7 @@ class Chat extends React.Component<Props, State> {
                 </div>
                 <div
                   className={`emoteProvider${
-                    emoteMenuSelected == 2 ? " active" : ""
+                    emoteMenuSelected == 2 ? ' active' : ''
                   }`}
                   onClick={() => this.setState({ emoteMenuSelected: 2 })}
                 >
@@ -561,7 +566,7 @@ class Chat extends React.Component<Props, State> {
                 </div>
                 <div
                   className={`emoteProvider${
-                    emoteMenuSelected == 3 ? " active" : ""
+                    emoteMenuSelected == 3 ? ' active' : ''
                   }`}
                   onClick={() => this.setState({ emoteMenuSelected: 3 })}
                 >
@@ -575,7 +580,7 @@ class Chat extends React.Component<Props, State> {
           </>
         )}
         <img
-          className={`emoteMenuButton ${emoteMenuOpen ? "active" : ""}`}
+          className={`emoteMenuButton ${emoteMenuOpen ? 'active' : ''}`}
           onClick={() => this.setState({ emoteMenuOpen: !emoteMenuOpen })}
           src="https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ebf60cd72f7aa600-24x18.png"
           alt="Emotes"
