@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Notify returns socialblade search results for modesttim
+// Notify returns the channel object for my channel on notify.me
 func Notify(w http.ResponseWriter, r *http.Request) {
 	url := "https://api.notify.me/secret/channel/username/tim"
 
