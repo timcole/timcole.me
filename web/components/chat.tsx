@@ -561,7 +561,7 @@ class Chat extends React.Component<Props, State> {
                 >
                   <img
                     className="emoteProviderLogo"
-                    src="https://manage.betterttv.net/img/favicon.png"
+                    src="https://betterttv.com/favicon.png"
                   />
                 </div>
                 <div
