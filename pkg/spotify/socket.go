@@ -48,11 +48,16 @@ func (ss *spotifySocket) updatePlayback(i *s.Instance) {
 			artists = append(artists, artist.Name)
 		}
 
+		art := ""
+		if len(player.Item.Album.Images) > 0 {
+			art = player.Item.Album.Images[0].URL
+		}
+
 		song := spotifyResponse{
 			IsPlaying:  player.IsPlaying,
 			Song:       player.Item.Name,
 			Artists:    artists,
-			Art:        player.Item.Album.Images[0].URL,
+			Art:        art,
 			Link:       player.Item.ExternalUrls.Spotify,
 			DurationMS: player.Item.DurationMS,
 			ProgressMS: player.ProgressMS,
