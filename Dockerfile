@@ -1,10 +1,13 @@
 # Builder
-FROM golang:1.11.1-alpine AS builder
+FROM golang:1.14.2-alpine AS builder
 
 RUN apk update && apk add git
+RUN apk add build-base
 
 WORKDIR /go/src/app
 ADD . /go/src/app
+
+ENV GO111MODULE=on
 
 # Build Backend
 RUN go get ./...
