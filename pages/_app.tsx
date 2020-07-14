@@ -22,6 +22,13 @@ const GlobalStyle = createGlobalStyle`
     background: var(--background);
     color: var(--text);
   }
+
+  img[src^='https://emojipedia-us'] {
+    height: 1.25em;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {

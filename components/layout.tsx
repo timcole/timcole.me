@@ -13,7 +13,6 @@ export const Layout: FunctionComponent = ({ children }) => {
           href="https://cdn.tcole.me/logo.png"
           type="image/x-icon"
         />
-
         <meta
           name="keywords"
           content="Software Engineer, Full Stack Developer, Web Developer, Programmer"
@@ -25,7 +24,6 @@ export const Layout: FunctionComponent = ({ children }) => {
         <meta name="url" content="https://timcole.me" />
         <meta name="twitter:creator" content="@ModestTim" />
         <meta name="twitter:site" content="@ModestTim" />
-
         <link rel="dns-prefetch" href="https://cdn.tcole.me/" />
         <link rel="preload" href="https://cdn.tcole.me/logo.png" as="image" />
       </Head>
