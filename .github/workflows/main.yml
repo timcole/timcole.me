@@ -14,5 +14,5 @@ jobs:
         registry: docker.pkg.github.com
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: TimothyCole/timcole.me/timcole.me
+        repository: timothycole/timcole.me/timcole.me
         tags: latest
