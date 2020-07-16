@@ -1,27 +1,19 @@
-# Builder
-FROM golang:1.14.2-alpine AS builder
+FROM node:13-alpine
 
-RUN apk update && apk add git
-RUN apk add build-base
+ENV PORT 3000
 
-WORKDIR /go/src/app
-ADD . /go/src/app
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-ENV GO111MODULE=on
+# Install app dependencies
+COPY package*.json /usr/src/app/
+RUN npm install
 
-# Build Backend
-RUN go get ./...
-RUN GIT_COMMIT=$(git rev-list -1 HEAD) && go build -ldflags "-X main.Version=$GIT_COMMIT" -o website
+# Bundle app source
+COPY . /usr/src/app
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+RUN npm run build
+EXPOSE 3000
 
-# Runner
-FROM alpine
-
-RUN apk add --no-cache ca-certificates
-
-WORKDIR /app
-COPY --from=builder /go/src/app/website /app/website
-
-EXPOSE 6969
-ENTRYPOINT [ "./website" ]
+CMD [ "npm", "start" ]
