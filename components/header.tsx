@@ -48,9 +48,11 @@ export const Header: FunctionComponent = () => {
         </Container>
       </Head>
       <Nav>
-        <a href="/">
-          /uses <Emoji name="man-technologist" />
-        </a>
+        <Link href="/" as="/">
+          <a className="active">
+            /uses <Emoji name="man-technologist" />
+          </a>
+        </Link>
         <a data-disabled title="Coming Soon" style={{ opacity: 0.5 }}>
           Articles <Emoji name="memo" />
         </a>
@@ -147,6 +149,16 @@ const Nav = styled.div`
 
     &[data-disabled] {
       cursor: not-allowed;
+    }
+
+    &.active {
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 550px) {
+      img {
+        display: none;
+      }
     }
   }
 `;

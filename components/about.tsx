@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import Emoji from 'react-apple-emojis';
 
@@ -6,8 +6,6 @@ import { rainDown } from '../lib/rain';
 
 export const About: FunctionComponent = () => {
   const [showNotice, setNotice] = useState(false);
-
-  useEffect(() => console.log(showNotice), [showNotice]);
 
   return (
     <AboutBanner>
@@ -71,7 +69,7 @@ const AboutBanner = styled.div`
   height: 525px;
 
   @media (max-width: 650px) {
-    height: 350px;
+    height: 450px;
   }
 `;
 

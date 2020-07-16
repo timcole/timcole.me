@@ -59,12 +59,17 @@ const Content = styled.div`
 `;
 
 const Footer = styled.div`
-  color: ${(props) => props.theme.grey};
+  padding: 25px 0;
   text-align: center;
+  opacity: 0.8;
+
   a {
     text-decoration: none;
-    color: ${(props) => props.theme.accent};
-    opacity: 0.75;
+    color: var(--text);
+    font-style: italic;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--accent);
+
     &:hover {
       opacity: 1;
     }
