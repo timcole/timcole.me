@@ -162,7 +162,7 @@ const Left = styled.div`
 `;
 
 const Background = styled.div`
-  background-image: url('/IMG_0022.JPG');
+  background-image: url('/IMG_0022.jpg');
   background-repeat: no-repeat;
   background-position: center 25%;
   background-size: 100%;
