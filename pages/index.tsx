@@ -15,7 +15,7 @@ const Index: NextPage = () => {
       <Header />
       <Setup>
         <Container>
-          <img src="/IMG_2173.jpeg" />
+          <img src="https://cdn.t.pics/setup.jpg" />
           <div>
             <h2>Desk Setup</h2>
             <p>
@@ -33,7 +33,7 @@ const Index: NextPage = () => {
       </Setup>
       <Setup style={{ background: 'var(--background_200)' }}>
         <Container>
-          <img src="/neofetch.png" />
+          <img src="https://cdn.t.pics/dotfiles/floating-screenshot.jpg" />
           <div>
             <h2>Programming Setup</h2>
             <p>I’m a Vim user, or more specifically, NeoVim.</p>

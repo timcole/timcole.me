@@ -9,9 +9,8 @@ export const Layout: FunctionComponent = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
         <link
-          rel="shortcut icon"
-          href="https://cdn.tcole.me/logo.png"
-          type="image/x-icon"
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦄</text></svg>"
         />
         <meta
           name="keywords"
@@ -25,7 +24,7 @@ export const Layout: FunctionComponent = ({ children }) => {
         <meta name="twitter:creator" content="@ModestTim" />
         <meta name="twitter:site" content="@ModestTim" />
         <link rel="dns-prefetch" href="https://cdn.tcole.me/" />
-        <link rel="preload" href="https://cdn.tcole.me/logo.png" as="image" />
+        <link rel="preload" href="https://cdn.t.pics/logo.png" as="image" />
       </Head>
       <Content>
         {children}

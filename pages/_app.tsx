@@ -8,9 +8,9 @@ import '../public/dank-mono.css';
 
 const GlobalStyle = createGlobalStyle`
   :root {
-    --background: #252830;
-    --background_100: #292D39;
-    --background_200: #21232B;
+    --background: #161D25;
+    --background_100: #0F1219; // Header
+    --background_200: #1D2631;
     --text: #fff;
     --accent: #1C94EB
   }

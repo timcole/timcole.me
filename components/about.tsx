@@ -58,7 +58,7 @@ export const About: FunctionComponent = () => {
             </span>
           </p>
         </Left>
-        <img className="me" src="/IMG_0063.jpg" />
+        <img className="me" src="https://cdn.t.pics/nyc-tim.jpg" />
       </Topper>
     </AboutBanner>
   );
@@ -162,7 +162,7 @@ const Left = styled.div`
 `;
 
 const Background = styled.div`
-  background-image: url('/IMG_0022.jpg');
+  background-image: url('https://cdn.t.pics/nyc.jpg');
   background-repeat: no-repeat;
   background-position: center 25%;
   background-size: 100%;

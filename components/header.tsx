@@ -18,7 +18,8 @@ export const Header: FunctionComponent = () => {
           <Brand className="image">
             <Link href="/">
               <a>
-                <img src="https://cdn.tcole.me/logo.png" title="tim" />
+                {/* <img src="https://cdn.t.pics/logo.png" title="tim" /> */}
+                <Emoji name="unicorn" />
               </a>
             </Link>
           </Brand>
