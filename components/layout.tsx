@@ -31,7 +31,7 @@ export const Layout: FunctionComponent = ({ children }) => {
         <Footer>
           Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All
           Rights Reserved. —{' '}
-          <a href="https://github.com/TimothyCole/timcole.me" target="_blank">
+          <a href="https://github.com/timcole/timcole.me" target="_blank">
             Star on GitHub
           </a>
         </Footer>

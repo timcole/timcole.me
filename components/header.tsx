@@ -24,7 +24,7 @@ export const Header: FunctionComponent = () => {
             </Link>
           </Brand>
           <Socials>
-            <a href="https://github.com/TimothyCole" target="_blank">
+            <a href="https://github.com/timcole" target="_blank">
               <GitHub />
             </a>
             <a href="https://twitter.com/modesttim" target="_blank">
