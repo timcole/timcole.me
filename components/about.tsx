@@ -19,12 +19,6 @@ export const About: FunctionComponent = () => {
             <b>Behind the egg:</b> I originally created this on Social Blade for
             when Loserfruit hit 1.5m subs on YouTube
           </p>
-          <a
-            href="https://clips.twitch.tv/RealFurtiveCarrotYouDontSay"
-            target="_blank"
-          >
-            Watch the clip
-          </a>
         </RainNotice>
       )}
       <Topper>
@@ -33,18 +27,19 @@ export const About: FunctionComponent = () => {
           <p>
             My name is Timothy Cole <Emoji name="unicorn" />. I'm a 23 year old,
             self-taught, software engineer. American{' '}
-            <Emoji name="flag-united-states" /> but currently living in
-            Vancouver, BC. <Emoji name="flag-canada" />
+            <Emoji name="flag-united-states" /> living on the coastal side of
+            North Carolina.
           </p>
           <p>
             <span>
-              Full-time Sr Software Engineer at Notify Technology, Inc.{' '}
-              <Emoji name="bell" />
-            </span>
-            <span>
-              Free-time Developer at Social Blade LLC{' '}
+              Full-time Software Engineer at Social Blade LLC{' '}
               <Emoji name="chart-increasing" />
             </span>
+            <span>
+              Free-time at Notify Technology, Inc. <Emoji name="bell" />
+            </span>
+          </p>
+          <p>
             <span>
               Volunteer Admin for the TwitchDev Community{' '}
               <Emoji
