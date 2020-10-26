@@ -19,13 +19,14 @@ const Index: NextPage = () => {
           <div>
             <h2>Desk Setup</h2>
             <p>
-              Desk is made up using 2 IKEA counter tops
-              <br />I sit in an IKEA Markus chair
+              <i>TBD</i>: I moved back to America recently after living in
+              Vancouver, BC for a year.
             </p>
+            <p>Setup is incomplete at this time.</p>
             <p>
               Find the tech on my{' '}
               <a href="https://amazon.com/shop/modesttim" target="_blank">
-                Amazon Page
+                Amazon Page <sup>ad</sup>
               </a>
             </p>
           </div>
