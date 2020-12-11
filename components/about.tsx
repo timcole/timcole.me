@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
-import Emoji from 'react-apple-emojis';
+import Emoji from '../components/emoji';
+import Image from 'next/image';
 
 import { rainDown } from '../lib/rain';
 
@@ -13,11 +14,11 @@ export const About: FunctionComponent = () => {
       {showNotice && (
         <RainNotice>
           <h4>
-            You found an <Emoji name="egg" />!
+            You found an <Emoji name="egg" hex="1f95a" />!
           </h4>
           <p>
-            <b>Behind the egg:</b> I originally created this on Social Blade for
-            when Loserfruit hit 1.5m subs on YouTube
+            <b>Behind the egg:</b> I originally created this on Social Blade for when Loserfruit hit 1.5m subs on
+            YouTube
           </p>
         </RainNotice>
       )}
@@ -25,18 +26,14 @@ export const About: FunctionComponent = () => {
         <Left>
           <h2>Timothy Cole</h2>
           <p>
-            My name is Timothy Cole <Emoji name="unicorn" />. I'm a 23 year old,
-            self-taught, software engineer. American{' '}
-            <Emoji name="flag-united-states" /> living on the coastal side of
-            North Carolina.
+            My name is Timothy Cole <Emoji name="unicorn-face" hex="1f984" />. I'm a 23 year old, self-taught, software
+            engineer. American <Emoji name="flag-for-united-states" hex={['1f1fa', '1f1f8']} /> living on the coastal
+            side of North Carolina.
           </p>
           <p>
             <span>
               Full-time Software Engineer at Social Blade LLC{' '}
-              <Emoji name="chart-increasing" />
-            </span>
-            <span>
-              Free-time at Notify Technology, Inc. <Emoji name="bell" />
+              <Emoji name="chart-with-upwards-trend" hex="1f4c8" size={18} />
             </span>
           </p>
           <p>
@@ -47,13 +44,16 @@ export const About: FunctionComponent = () => {
                   setNotice(true);
                   rainDown(() => setNotice(false));
                 }}
-                style={{ cursor: 'help' }}
                 name="purple-heart"
+                hex="1f49c"
+                size={18}
               />
             </span>
           </p>
         </Left>
-        <img className="me" src="https://cdn.t.pics/nyc-tim.jpg" />
+        <Me>
+          <Image src="https://cdn.t.pics/nyc-tim.jpg" height={375} width={281.25} />
+        </Me>
       </Topper>
     </AboutBanner>
   );
@@ -110,15 +110,14 @@ const Topper = styled.div`
   margin: 0 auto;
   align-items: center;
   justify-content: center;
+`;
 
-  img.me {
-    height: calc(525px - 150px);
-    box-shadow: 0 4px 4px 0 rgba(37, 40, 48, 0.5);
-    margin-right: 25px;
+const Me = styled.div`
+  box-shadow: 0 4px 4px 0 rgba(37, 40, 48, 0.5);
+  margin-right: 25px;
 
-    @media (max-width: 1035px) {
-      display: none;
-    }
+  @media (max-width: 1035px) {
+    display: none;
   }
 `;
 
@@ -145,6 +144,10 @@ const Left = styled.div`
   p {
     font-size: 1.3em;
 
+    div {
+      vertical-align: middle;
+    }
+
     span {
       font-size: 0.8em;
       display: block;
@@ -152,7 +155,7 @@ const Left = styled.div`
   }
 
   @media (max-width: 1035px) {
-    margin 0 25px;
+    margin: 0 25px;
   }
 `;
 

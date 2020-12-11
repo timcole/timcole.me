@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    font-family: 'dm';
+    font-family: 'Operator Mono', 'dm';
     padding: 0;
     margin: 0;
     background: var(--background);

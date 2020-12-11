@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Emoji from 'react-apple-emojis';
+import Emoji from '../components/emoji';
 
 import GitHub from '../public/brands/github.svg';
 import Twitter from '../public/brands/twitter.svg';
@@ -19,7 +19,7 @@ export const Header: FunctionComponent = () => {
             <Link href="/">
               <a>
                 {/* <img src="https://cdn.t.pics/logo.png" title="tim" /> */}
-                <Emoji name="unicorn" />
+                <Emoji name="unicorn-face" hex="1f984" size={35} />
               </a>
             </Link>
           </Brand>
@@ -33,10 +33,7 @@ export const Header: FunctionComponent = () => {
             <a href="https://t.pics" target="_blank">
               <Instagram />
             </a>
-            <a
-              href="https://www.youtube.com/user/EatTim?sub_confirmation=1"
-              target="_blank"
-            >
+            <a href="https://www.youtube.com/user/EatTim?sub_confirmation=1" target="_blank">
               <YouTube />
             </a>
             <a href="https://www.twitch.tv/modesttim" target="_blank">
@@ -51,14 +48,14 @@ export const Header: FunctionComponent = () => {
       <Nav>
         <Link href="/" as="/">
           <a className="active">
-            /uses <Emoji name="man-technologist" />
+            /uses <Emoji name="male-technologist" hex={['1f468', '200d', '1f4bb']} size={20} />
           </a>
         </Link>
         <a data-disabled title="Coming Soon" style={{ opacity: 0.5 }}>
-          Articles <Emoji name="memo" />
+          Articles <Emoji name="memo" hex="1f4dd" size={20} />
         </a>
         <a href="mailto:website@timcole.me">
-          Contact <Emoji name="incoming-envelope" />
+          Contact <Emoji name="incoming-envelope" hex="1f4e8" size={20} />
         </a>
       </Nav>
     </>
@@ -84,9 +81,8 @@ const Brand = styled.h3`
   flex: 1;
   line-height: 50px;
 
-  a img {
+  a div {
     vertical-align: middle;
-    height: 35px;
   }
 `;
 
@@ -143,6 +139,10 @@ const Nav = styled.div`
     color: var(--text);
     border-bottom: 1px solid transparent;
     outline: none;
+
+    div {
+      vertical-align: middle;
+    }
 
     &:not([data-disabled]):hover {
       border-color: var(--accent);
