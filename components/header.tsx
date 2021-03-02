@@ -8,7 +8,6 @@ import Twitter from '../public/brands/twitter.svg';
 import YouTube from '../public/brands/youtube.svg';
 import Instagram from '../public/brands/instagram.svg';
 import Twitch from '../public/brands/twitch.svg';
-import Notify from '../public/brands/notify.svg';
 
 export const Header: FunctionComponent = () => {
   return (
@@ -38,9 +37,6 @@ export const Header: FunctionComponent = () => {
             </a>
             <a href="https://www.twitch.tv/modesttim" target="_blank">
               <Twitch />
-            </a>
-            <a href="https://notify.me/r/tim" target="_blank">
-              <Notify />
             </a>
           </Socials>
         </Container>
