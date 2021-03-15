@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Presence, Activity } from '../types/lanyard';
+import { Presence } from '../types/lanyard';
 import Image from 'next/image';
 
 import Spotify from '../public/brands/spotify.svg';
@@ -31,7 +31,6 @@ type Props = {
 const Lanyard: FC<Props> = ({ url = 'wss://api.lanyard.rest/socket', id }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [doing, setDoing] = useState<Presence>();
-  const [spotify, setSpotify] = useState<Activity>();
   const [progress, setProgress] = useState<number>(0);
 
   const send = (op: Operation, d?: unknown): void => {
@@ -40,17 +39,13 @@ const Lanyard: FC<Props> = ({ url = 'wss://api.lanyard.rest/socket', id }) => {
 
   useEffect(() => {
     const progresUpdate = setInterval(() => {
-      if (!doing || !doing.listening_to_spotify || !spotify) return;
+      if (!doing || !doing.listening_to_spotify) return;
 
       const total = doing.spotify.timestamps.end - doing.spotify.timestamps.start;
       setProgress(100 - (100 * (doing.spotify.timestamps.end - new Date().getTime())) / total);
     }, 250);
 
     return () => clearInterval(progresUpdate);
-  }, [spotify]);
-
-  useEffect(() => {
-    if (doing) setSpotify(doing.activities.find((activity) => activity.type === 2));
   }, [doing]);
 
   useEffect(() => {
@@ -71,7 +66,7 @@ const Lanyard: FC<Props> = ({ url = 'wss://api.lanyard.rest/socket', id }) => {
     setSocket(new WebSocket(url));
   }, []);
 
-  if (!doing || !doing.listening_to_spotify || !spotify) return <></>;
+  if (!doing || !doing.listening_to_spotify) return <></>;
 
   return (
     <Doing>
@@ -84,7 +79,7 @@ const Lanyard: FC<Props> = ({ url = 'wss://api.lanyard.rest/socket', id }) => {
           <Artist>{doing.spotify.artist}</Artist>
         </Details>
         <Live />
-        <a href={`https://open.spotify.com/track/${spotify.sync_id}`} target="_blank" rel="noopener">
+        <a href={`https://open.spotify.com/track/${doing.spotify.track_id}`} target="_blank" rel="noopener">
           <Logo />
         </a>
       </Flex>
