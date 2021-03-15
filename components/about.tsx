@@ -1,9 +1,13 @@
 import { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
-import Emoji from '../components/emoji';
 import Image from 'next/image';
+import Dynamic from 'next/dynamic';
+
+import Emoji from '../components/emoji';
 
 import { rainDown } from '../lib/rain';
+
+const Lanyard = Dynamic(() => import('../components/lanyard'), { ssr: false });
 
 export const About: FunctionComponent = () => {
   const [showNotice, setNotice] = useState(false);
@@ -50,6 +54,8 @@ export const About: FunctionComponent = () => {
               />
             </span>
           </p>
+
+          <Lanyard id="83281345949728768" />
         </Left>
         <Me>
           <Image src="https://cdn.t.pics/nyc-tim.jpg" height={375} width={281.25} />
@@ -113,6 +119,7 @@ const Topper = styled.div`
 `;
 
 const Me = styled.div`
+  display: flex;
   box-shadow: 0 4px 4px 0 rgba(37, 40, 48, 0.5);
   margin-right: 25px;
 
