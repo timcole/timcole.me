@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import { Layout } from '../components/layout';
+import LanyardProvider from '../components/lanyard';
 
 import '../public/dank-mono.css';
 
@@ -34,8 +35,10 @@ const GlobalStyle = createGlobalStyle`
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   return (
     <Layout>
-      <GlobalStyle />
-      <Component {...pageProps} />
+      <LanyardProvider>
+        <GlobalStyle />
+        <Component {...pageProps} />
+      </LanyardProvider>
     </Layout>
   );
 };

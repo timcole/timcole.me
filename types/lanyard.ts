@@ -17,12 +17,17 @@ export interface Activity {
   party?: Party;
   name: string;
   id: string;
+  emoji?: Emoji;
   flags?: number;
   details: string;
   created_at: number;
   assets: Assets;
   application_id?: number;
 }
+
+export interface Emoji {
+  name: string;
+};
 
 export interface Assets {
   large_text: string;

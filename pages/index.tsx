@@ -1,12 +1,17 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import styled from 'styled-components';
 import Head from 'next/head';
 import Image from 'next/image';
 
 import { About } from '../components/about';
 import { Header } from '../components/header';
+import Launch, { Props as LaunchProps } from '../components/launch';
 
-const Index: NextPage = () => {
+type Props = {
+  nextLaunch?: LaunchProps;
+};
+
+const Index: NextPage<Props> = ({ nextLaunch }) => {
   return (
     <div>
       <Head>
@@ -41,13 +46,17 @@ const Index: NextPage = () => {
             </p>
             <p>
               Find the tech on my{' '}
-              <a href="https://amazon.com/shop/modesttim" target="_blank">
-                Amazon Page <sup>ad</sup>
+              <a
+                href="https://www.amazon.com/ideas/amzn1.account.AGCTFSXJPHS6PNR5DH573SDR2GLA/1Q0UPDVESE0UE"
+                target="_blank"
+              >
+                Amazon Page.
               </a>
             </p>
           </div>
         </Container>
       </Setup>
+      {nextLaunch ? <Launch {...nextLaunch} /> : ''}
       <Setup style={{ background: 'var(--background_200)' }}>
         <Container>
           <ContainerImage>
@@ -69,6 +78,41 @@ const Index: NextPage = () => {
       </Setup>
     </div>
   );
+};
+
+const nextLaunchQuery = `
+query {
+  launches(
+    limit: 1
+    orderBy: {field: net, direction: ASC}
+    filters: [{field: net, operation: greaterThan, value: "NOW()"}]
+  ) {
+    id
+    net
+    status
+  }
+}
+`;
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  let nextLaunch = null;
+  try {
+    const {
+      data: { launches },
+    } = await fetch(`https://booster.spaceflight.live`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ query: nextLaunchQuery }),
+    }).then((data) => data.json());
+
+    nextLaunch = launches[0];
+  } catch (e) {
+    console.error(e);
+  }
+
+  return { props: { nextLaunch } };
 };
 
 export default Index;

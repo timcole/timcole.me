@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Emoji from '../components/emoji';
 
 import GitHub from '../public/brands/github.svg';
+import LinkedIn from '../public/brands/linkedin.svg';
 import Twitter from '../public/brands/twitter.svg';
 import YouTube from '../public/brands/youtube.svg';
 import Instagram from '../public/brands/instagram.svg';
@@ -26,6 +27,9 @@ export const Header: FunctionComponent = () => {
             <a href="https://github.com/timcole" target="_blank">
               <GitHub />
             </a>
+            <a href="https://www.linkedin.com/in/modesttim" target="_blank">
+              <LinkedIn />
+            </a>
             <a href="https://twitter.com/modesttim" target="_blank">
               <Twitter />
             </a>
@@ -47,9 +51,9 @@ export const Header: FunctionComponent = () => {
             /uses <Emoji name="male-technologist" hex={['1f468', '200d', '1f4bb']} size={20} />
           </a>
         </Link>
-        <a data-disabled title="Coming Soon" style={{ opacity: 0.5 }}>
+        {/* <a data-disabled title="Coming Soon" style={{ opacity: 0.5 }}>
           Articles <Emoji name="memo" hex="1f4dd" size={20} />
-        </a>
+        </a> */}
         <a href="mailto:website@timcole.me">
           Contact <Emoji name="incoming-envelope" hex="1f4e8" size={20} />
         </a>
@@ -104,6 +108,9 @@ const Socials = styled.div`
         &[data-icon='twitter'] {
           color: #1da1f2;
         }
+        &[data-icon='linkedin-in'] {
+          color: #0a66c2;
+        }
         &[data-icon='instagram'] {
           color: #e1306c;
         }
@@ -112,9 +119,6 @@ const Socials = styled.div`
         }
         &[data-icon='twitch'] {
           color: #9146ff;
-        }
-        &[data-icon='notify'] {
-          color: #3b60ff;
         }
       }
     }
