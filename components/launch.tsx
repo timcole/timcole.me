@@ -6,16 +6,16 @@ import Emoji from '../components/emoji';
 export type Props = {
   id: string;
   net: string;
-  status: string;
+  status: 'Success' | 'Failure' | 'Partial Failure' | 'TBD' | 'TBC' | 'Go' | 'In Flight' | 'Hold';
 };
 
 type FormattedTime = {
   abs: boolean;
   diff: {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
   };
 };
 
@@ -32,10 +32,10 @@ function formatTime(time: number): FormattedTime {
   return {
     abs,
     diff: {
-      days: (String(days).padStart(2, '0') as unknown) as number,
-      hours: (String(hours).padStart(2, '0') as unknown) as number,
-      minutes: (String(minutes).padStart(2, '0') as unknown) as number,
-      seconds: (String(seconds).padStart(2, '0') as unknown) as number,
+      days: String(days).padStart(2, '0'),
+      hours: String(hours).padStart(2, '0'),
+      minutes: String(minutes).padStart(2, '0'),
+      seconds: String(seconds).padStart(2, '0'),
     },
   };
 }
@@ -57,12 +57,12 @@ const Launch: FC<Props> = ({ net, status }) => {
     <Notice href="https://spaceflight.live" target="_blank">
       <div>
         <p>
-          <Emoji name="rocket" hex="1f680" /> There{status === 'GO' ? "'s going to" : ' might'} be a rocket launch in T
+          <Emoji name="rocket" hex="1f680" /> There{status === 'Go' ? "'s going to" : ' might'} be a rocket launch in T
           {time.abs ? '-' : '+'}
           {Object.keys(time.diff)
             .map((key) => time.diff[key])
-            .join(':')};{' '}
-          head on over to Spaceflight Live to see.
+            .join(':')}
+          ; head on over to Spaceflight Live to see.
         </p>
       </div>
     </Notice>
@@ -77,7 +77,6 @@ const Notice = styled.a`
 
   div {
     background: var(--background_100);
-    box-shadow: 0 4px 4px 0 rgba(37, 40, 48, 0.5);
 
     p {
       text-align: center;
