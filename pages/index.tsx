@@ -91,7 +91,7 @@ const Index: NextPage<Props> = ({ nextLaunch }) => {
                     height="18"
                     src={`https://cdn.discordapp.com/app-assets/${VIM}/${vim.assets.large_image}`}
                   />{' '}
-                  {vim.details.split(': ')[1]}
+                  {vim.details.split(': ')[1] || 'an unsaved file'}
                 </span>{' '}
                 in a directory called <span>{vim.state}</span>
               </p>
