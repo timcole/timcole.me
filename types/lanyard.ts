@@ -22,7 +22,7 @@ export interface Activity {
   details: string;
   created_at: number;
   assets: Assets;
-  application_id?: number;
+  application_id?: string;
 }
 
 export interface Emoji {

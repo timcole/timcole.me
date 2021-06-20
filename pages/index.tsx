@@ -6,12 +6,18 @@ import Image from 'next/image';
 import { About } from '../components/about';
 import { Header } from '../components/header';
 import Launch, { Props as LaunchProps } from '../components/launch';
+import { useLanyard } from '../components/lanyard';
 
 type Props = {
   nextLaunch?: LaunchProps;
 };
 
+const VIM = '439476230543245312';
+
 const Index: NextPage<Props> = ({ nextLaunch }) => {
+  const { activities } = useLanyard();
+  const vim = activities?.find(({ application_id }) => application_id === VIM) || null;
+
   return (
     <div>
       <Head>
@@ -65,7 +71,10 @@ const Index: NextPage<Props> = ({ nextLaunch }) => {
           <div className="desc">
             <h2>Programming Setup</h2>
             <p>I’m a Vim user, or more specifically, NeoVim.</p>
-            <p>I’ve been using Vim as my main editor for the last 2 years and have been loving every second of it!</p>
+            <p>
+              I’ve been using Vim as my main editor for the last{' '}
+              {new Date().getUTCFullYear() - new Date('Feb 3, 2019, 1:44 PM EST').getUTCFullYear()} years!
+            </p>
             <p>
               Checkout my{' '}
               <a href="https://github.com/timcole/dotfiles" target="_blank">
@@ -73,6 +82,22 @@ const Index: NextPage<Props> = ({ nextLaunch }) => {
               </a>{' '}
               if you’re interested in my config.
             </p>
+            {vim ? (
+              <p>
+                I'm currently editing{' '}
+                <span>
+                  <Image
+                    width="18"
+                    height="18"
+                    src={`https://cdn.discordapp.com/app-assets/${VIM}/${vim.assets.large_image}`}
+                  />{' '}
+                  {vim.details.split(': ')[1]}
+                </span>{' '}
+                in a directory called <span>{vim.state}</span>
+              </p>
+            ) : (
+              ''
+            )}
           </div>
         </Container>
       </Setup>
@@ -130,6 +155,9 @@ const ContainerImage = styled.div`
   margin-right: 75px;
   flex: 1;
 
+  height: 100%;
+  vertical-align: middle;
+
   @media (max-width: 900px) {
     height: auto;
     margin: 0;
@@ -156,6 +184,18 @@ const Container = styled.div`
       color: var(--text);
       text-decoration: none;
       font-style: italic;
+    }
+
+    span {
+      background: var(--background);
+      font-style: italic;
+      padding: 4px 8px;
+      border-radius: 4px;
+
+      div,
+      img {
+        vertical-align: top;
+      }
     }
   }
 
