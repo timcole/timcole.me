@@ -17,7 +17,8 @@ const Status: FC = () => {
   return (
     <Orb color={statuses[doing.discord_status][0]}>
       <p>
-        {statuses[doing.discord_status][1]} {doing.active_on_discord_mobile ? 'on mobile' : ''}
+        {statuses[doing.discord_status][1]}{' '}
+        {doing.active_on_discord_mobile ? 'on mobile' : ''}
       </p>
     </Orb>
   );
@@ -25,11 +26,11 @@ const Status: FC = () => {
 
 export default Status;
 
-const Orb = styled.div<{ color: string }>`
+export const Orb = styled.div<{ color: string }>`
   p {
     display: flex;
     margin: 0 0 0 -15px;
-    background: var(--background);
+    background: var(--background_100);
     position: absolute;
     bottom: -12px;
     left: 15px;
@@ -39,11 +40,12 @@ const Orb = styled.div<{ color: string }>`
     padding-right: 8px;
     align-items: center;
     font-size: 0.85em;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px;
 
     &:before {
       width: 20px;
       height: 20px;
-      border: 4px solid var(--background);
+      border: 4px solid var(--background_100);
       background: ${(props) => props.color};
       border-radius: 50%;
       position: absolute;

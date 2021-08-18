@@ -12,10 +12,7 @@ export const Layout: FunctionComponent = ({ children }) => {
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦄</text></svg>"
         />
-        <meta
-          name="keywords"
-          content="Software Engineer, Full Stack Developer, Web Developer, Programmer"
-        />
+        <meta name="keywords" content="Software Engineer, Full Stack Developer, Web Developer, Programmer" />
         <meta name="description" content="Timothy Cole - Software Engineer" />
         <meta name="author" content="Timothy Cole" />
         <meta name="copyright" content="Timothy Cole" />
@@ -29,8 +26,7 @@ export const Layout: FunctionComponent = ({ children }) => {
       <Content>
         {children}
         <Footer>
-          Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All
-          Rights Reserved. —{' '}
+          Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All Rights Reserved. —{' '}
           <a href="https://github.com/timcole/timcole.me" target="_blank">
             Star on GitHub
           </a>
@@ -42,8 +38,8 @@ export const Layout: FunctionComponent = ({ children }) => {
 
 const Body = styled.div`
   display: flex;
-  background: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.color};
+  background: var(--background_200);
+  color: var(--text);
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -72,5 +68,9 @@ const Footer = styled.div`
     &:hover {
       opacity: 1;
     }
+  }
+
+  @media only screen and (max-width: 1300px) {
+    padding-bottom: 140px;
   }
 `;

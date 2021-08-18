@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import { Layout } from '../components/layout';
@@ -9,9 +9,9 @@ import '../public/dank-mono.css';
 
 const GlobalStyle = createGlobalStyle`
   :root {
-    --background: #161D25;
-    --background_100: #0F1219; // Header
-    --background_200: #1D2631;
+    --background_100: #161D25;
+    --background_200: #0F1219;
+    --background_300: #1D2631;
     --text: #fff;
     --accent: #1C94EB
   }
@@ -20,8 +20,9 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Operator Mono', 'dm', monospace;
     padding: 0;
     margin: 0;
-    background: var(--background);
+    background: var(--background_100);
     color: var(--text);
+    overscroll-behavior-y: none;
   }
 
   img[src^='https://emojipedia-us'] {
@@ -32,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
+const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <Layout>
       <LanyardProvider>

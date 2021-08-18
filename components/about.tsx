@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Emoji from '../components/emoji';
 
 import { rainDown } from '../lib/rain';
-import NowPlaying from '../components/playing';
 import Status from './status';
+import { Header } from './header';
 
 export const About: FunctionComponent = () => {
   const [showNotice, setNotice] = useState(false);
@@ -20,8 +20,8 @@ export const About: FunctionComponent = () => {
             You found an <Emoji name="egg" hex="1f95a" />!
           </h4>
           <p>
-            <b>Behind the egg:</b> I originally created this on Social Blade for when Loserfruit hit 1.5m subs on
-            YouTube
+            <b>Behind the egg:</b> I originally created this on Social Blade for
+            when Loserfruit hit 1.5m subs on YouTube
           </p>
         </RainNotice>
       )}
@@ -29,9 +29,10 @@ export const About: FunctionComponent = () => {
         <Left>
           <h2>Timothy Cole</h2>
           <p>
-            My name is Timothy Cole <Emoji name="unicorn-face" hex="1f984" />. I'm a 24 year old, self-taught, software
-            engineer. American <Emoji name="flag-for-united-states" hex={['1f1fa', '1f1f8']} /> living on the coastal
-            side of North Carolina.
+            My name is Timothy Cole <Emoji name="unicorn-face" hex="1f984" />.
+            I'm a 24 year old, self-taught, software engineer. American{' '}
+            <Emoji name="flag-for-united-states" hex={['1f1fa', '1f1f8']} />{' '}
+            living on the coastal side of North Carolina.
           </p>
           <p>
             <span>
@@ -53,11 +54,14 @@ export const About: FunctionComponent = () => {
               />
             </span>
           </p>
-
-          <NowPlaying />
+          <Header />
         </Left>
         <Me>
-          <Image src="https://cdn.t.pics/nyc-tim.jpg" height={375} width={281.25} />
+          <Image
+            src="https://cdn.t.pics/nyc-tim.jpg"
+            height={375}
+            width={281.25}
+          />
           <Status />
         </Me>
       </Topper>
@@ -79,10 +83,10 @@ const RainNotice = styled.div`
   z-index: 69;
   top: 25px;
   left: 25px;
-  background: var(--background_200);
+  background: var(--background_300);
   padding: 20px 25px;
   max-width: 460px;
-  box-shadow: 0 4px 4px 0 var(--background_100);
+  box-shadow: 0 4px 4px 0 var(--background_200);
 
   h4 {
     font-size: 1.4em;
@@ -93,7 +97,7 @@ const RainNotice = styled.div`
   a {
     display: block;
     text-decoration: none;
-    color: var(--background);
+    color: var(--background_100);
     background: var(--accent);
     padding: 10px 0;
     text-align: center;
