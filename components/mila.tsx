@@ -38,8 +38,8 @@ const Mila: FC = () => {
           Hi, I'm <Name>Mila</Name>!
         </h2>
         <p>
-          I am <span>{timeSince(new Date('14 July 2021'))} old</span>, born on
-          14th July 2021. Ball Python, <i>Half Het Albino/Het Piebald</i>.
+          I am <span>{timeSince(new Date('5 July 2021'))} old</span>, born on
+          5th July 2021. Ball Python, <i>Half Het Albino/Het Piebald</i>.
         </p>
         <p>
           It is currently <span>{degree}°F</span>, with a humidity of{' '}
