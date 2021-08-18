@@ -20,13 +20,16 @@
   "homepage": "https://github.com/TimothyCole/timcole.me#readme",
   "dependencies": {
     "next": "^11.1.0",
+    "node-fetch": "^2.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hls-player": "^2.0.0",
     "sharp": "^0.28.3",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@types/node": "^16.6.1",
+    "@types/node-fetch": "^2.5.12",
     "@types/react": "^17.0.17",
     "@types/styled-components": "^5.1.12",
     "babel-plugin-inline-react-svg": "^2.0.1",

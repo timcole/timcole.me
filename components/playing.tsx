@@ -36,7 +36,7 @@ const NowPlaying: FC = () => {
         </Details>
         <Live />
         <a href={`https://open.spotify.com/track/${doing.spotify.track_id}`} target="_blank" rel="noopener">
-          <Logo />
+          <Logo data-icon="spotify" />
         </a>
       </Flex>
       <Progress>
@@ -53,11 +53,23 @@ const Flex = styled.div`
 `;
 
 const Doing = styled(Flex)`
-  background: var(--background);
+  background: var(--background_200);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px;
+  border-radius: 10px;
   flex-direction: column;
-  box-shadow: 0 4px 4px 0 rgba(37, 40, 48, 0.5);
   font-size: 0.8rem;
-  position: relative;
+  position: fixed;
+  width: 450px;
+  max-width: 100%;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1;
+  overflow: hidden;
+
+  @media only screen and (max-width: 600px) {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+  }
 `;
 
 const Live = styled.div`
@@ -82,6 +94,10 @@ const Live = styled.div`
 
 const AlbumArt = styled(Flex)`
   padding: 6px;
+
+  img {
+    border-radius: 8px;
+  }
 `;
 
 const Details = styled(Flex)`
@@ -89,17 +105,24 @@ const Details = styled(Flex)`
   flex: 1;
   flex-direction: column;
   justify-content: center;
+  max-width: 300px;
 `;
 
 const Song = styled.h4`
   margin: 0;
-  font-size: 1.6em;
+  font-size: 1.4em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Artist = styled(Song)`
   font-weight: normal;
   margin: 0;
-  font-size: 1.3em;
+  font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Logo = styled(Spotify)`

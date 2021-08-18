@@ -76,7 +76,7 @@ const Notice = styled.a`
   color: var(--text);
 
   div {
-    background: var(--background_100);
+    background: var(--background_200);
 
     p {
       text-align: center;
@@ -87,11 +87,11 @@ const Notice = styled.a`
 
       div {
         vertical-align: middle;
+        background: transparent;
       }
 
       &:hover {
-        border-left: 5px solid var(--accent);
-        padding-left: 10px;
+        background: var(--background_100);
       }
     }
   }
