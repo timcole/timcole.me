@@ -1,8 +1,52 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import ReactHlsPlayer from 'react-hls-player';
+import {
+  FC,
+  forwardRef,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+  VideoHTMLAttributes,
+} from 'react';
+import ReactHlsPlayer, { HlsPlayerProps } from 'react-hls-player';
 import { Orb } from './status';
 
 type Props = { stream: string; image: string };
+
+const Player = forwardRef<
+  HTMLVideoElement,
+  VideoHTMLAttributes<HTMLVideoElement>
+>((props, ref) => {
+  const [hlsSupport, setHlsSupport] = useState<boolean>(false);
+  useEffect(() => {
+    const video = document.createElement('video');
+    setHlsSupport(Boolean(video.canPlayType('application/vnd.apple.mpegurl')));
+  }, []);
+
+  if (hlsSupport)
+    return (
+      <video
+        ref={ref}
+        onLoadedMetadata={async () => {
+          (ref as RefObject<HTMLVideoElement>).current.play();
+        }}
+        {...props}
+      ></video>
+    );
+
+  return (
+    <ReactHlsPlayer
+      playerRef={ref as RefObject<HTMLVideoElement>}
+      hlsConfig={{
+        maxLatency: 30,
+        maxLoadingDelay: 10,
+        minAutoBitrate: 0,
+        lowLatencyMode: true,
+        progressive: false,
+      }}
+      {...(props as HlsPlayerProps)}
+    />
+  );
+});
 
 const Stream: FC<Props> = ({ stream, image }) => {
   const ref = useRef<HTMLVideoElement>();
@@ -28,8 +72,8 @@ const Stream: FC<Props> = ({ stream, image }) => {
 
   return (
     <div>
-      <ReactHlsPlayer
-        playerRef={ref}
+      <Player
+        ref={ref}
         src={stream}
         poster={image}
         muted
@@ -40,13 +84,7 @@ const Stream: FC<Props> = ({ stream, image }) => {
           else (target as HTMLVideoElement)?.requestFullscreen();
         }}
         autoPlay
-        hlsConfig={{
-          maxLatency: 30,
-          maxLoadingDelay: 10,
-          minAutoBitrate: 0,
-          lowLatencyMode: true,
-          progressive: false,
-        }}
+        playsInline
       />
       <Orb
         color={

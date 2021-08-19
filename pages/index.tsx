@@ -1,15 +1,12 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
 
 import { About } from '../components/about';
 import Launch, { Props as LaunchProps } from '../components/launch';
 import NowPlaying from '../components/playing';
 import Setup from '../components/setup';
 import Programming from '../components/programming';
-// import Mila from '../components/mila';
-
-const Mila = dynamic(() => import('../components/mila'), { ssr: false });
+import Mila from '../components/mila';
 
 type Props = {
   nextLaunch?: LaunchProps;

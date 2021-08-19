@@ -12,7 +12,10 @@ export const Layout: FunctionComponent = ({ children }) => {
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦄</text></svg>"
         />
-        <meta name="keywords" content="Software Engineer, Full Stack Developer, Web Developer, Programmer" />
+        <meta
+          name="keywords"
+          content="Software Engineer, Full Stack Developer, Web Developer, Programmer"
+        />
         <meta name="description" content="Timothy Cole - Software Engineer" />
         <meta name="author" content="Timothy Cole" />
         <meta name="copyright" content="Timothy Cole" />
@@ -20,13 +23,14 @@ export const Layout: FunctionComponent = ({ children }) => {
         <meta name="url" content="https://timcole.me" />
         <meta name="twitter:creator" content="@ModestTim" />
         <meta name="twitter:site" content="@ModestTim" />
-        <link rel="dns-prefetch" href="https://cdn.tcole.me/" />
-        <link rel="preload" href="https://cdn.t.pics/logo.png" as="image" />
+        <link rel="dns-prefetch" href="https://cdn.t.pics/" />
+        <link rel="dns-prefetch" href="https://mila-is-the-best.tim.rip/" />
       </Head>
       <Content>
         {children}
         <Footer>
-          Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All Rights Reserved. —{' '}
+          Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All
+          Rights Reserved. —{' '}
           <a href="https://github.com/timcole/timcole.me" target="_blank">
             Star on GitHub
           </a>
