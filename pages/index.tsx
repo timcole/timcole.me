@@ -33,7 +33,7 @@ query {
   launches(
     limit: 1
     orderBy: {field: net, direction: ASC}
-    filters: [{field: net, operation: greaterThan, value: "NOW()"}]
+    filters: [{field: net, operation: gt, date: "NOW()"}]
   ) {
     id
     net
