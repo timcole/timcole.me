@@ -2,6 +2,7 @@ export interface Presence {
   active_on_discord_mobile: boolean;
   active_on_discord_desktop: boolean;
   listening_to_spotify: boolean;
+  kv: Record<string, string>;
   spotify: Spotify;
   discord_user: DiscordUser;
   discord_status: string;
@@ -27,7 +28,7 @@ export interface Activity {
 
 export interface Emoji {
   name: string;
-};
+}
 
 export interface Assets {
   large_text: string;

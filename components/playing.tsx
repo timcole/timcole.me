@@ -7,16 +7,19 @@ import { useLanyard } from './lanyard';
 import Spotify from '../public/brands/spotify.svg';
 
 const NowPlaying: FC = () => {
-  const doing = useLanyard();
-
+  const [doing] = useLanyard();
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const progressUpdate = setInterval(() => {
       if (!doing || !doing.listening_to_spotify) return;
 
-      const total = doing.spotify.timestamps.end - doing.spotify.timestamps.start;
-      setProgress(100 - (100 * (doing.spotify.timestamps.end - new Date().getTime())) / total);
+      const total =
+        doing.spotify.timestamps.end - doing.spotify.timestamps.start;
+      setProgress(
+        100 -
+          (100 * (doing.spotify.timestamps.end - new Date().getTime())) / total,
+      );
     }, 250);
 
     return () => clearInterval(progressUpdate);
@@ -35,7 +38,11 @@ const NowPlaying: FC = () => {
           <Artist>{doing.spotify.artist}</Artist>
         </Details>
         <Live />
-        <a href={`https://open.spotify.com/track/${doing.spotify.track_id}`} target="_blank" rel="noopener">
+        <a
+          href={`https://open.spotify.com/track/${doing.spotify.track_id}`}
+          target="_blank"
+          rel="noopener"
+        >
           <Logo data-icon="spotify" />
         </a>
       </Flex>

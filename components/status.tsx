@@ -10,7 +10,7 @@ const statuses = {
 };
 
 const Status: FC = () => {
-  const doing = useLanyard();
+  const [doing] = useLanyard();
 
   if (!doing || !statuses[doing.discord_status]) return <></>;
 

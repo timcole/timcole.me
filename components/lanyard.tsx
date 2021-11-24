@@ -1,4 +1,13 @@
-import { FC, useEffect, useState, createContext, useContext, ReactNode } from 'react';
+import {
+  FC,
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { Presence } from '../types/lanyard';
 
 enum Operation {
@@ -19,7 +28,8 @@ type SocketEvent = {
   d: Presence | unknown;
 };
 
-export const LanyardContext = createContext<Presence | null>(null);
+export const LanyardContext =
+  createContext<[Presence | null, Dispatch<SetStateAction<Presence>>]>(null);
 export const useLanyard = () => useContext(LanyardContext);
 
 const LanyardProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -36,10 +46,14 @@ const LanyardProvider: FC<{ children: ReactNode }> = ({ children }) => {
       const { op, t, d }: SocketEvent = JSON.parse(data);
 
       if (op === Operation.Hello) {
-        setInterval(() => send(Operation.Heartbeat), (d as { heartbeat_interval: number }).heartbeat_interval);
+        setInterval(
+          () => send(Operation.Heartbeat),
+          (d as { heartbeat_interval: number }).heartbeat_interval,
+        );
         send(Operation.Initialize, { subscribe_to_id: '83281345949728768' });
       } else if (op === Operation.Event)
-        if ([EventType.INIT_STATE, EventType.PRESENCE_UPDATE].includes(t)) setDoing(d as Presence);
+        if ([EventType.INIT_STATE, EventType.PRESENCE_UPDATE].includes(t))
+          setDoing(d as Presence);
     };
   }, [socket]);
 
@@ -48,7 +62,11 @@ const LanyardProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setSocket(new WebSocket('wss://api.lanyard.rest/socket'));
   }, []);
 
-  return <LanyardContext.Provider value={{ ...doing }}>{children}</LanyardContext.Provider>;
+  return (
+    <LanyardContext.Provider value={[doing, setDoing]}>
+      {children}
+    </LanyardContext.Provider>
+  );
 };
 
 export default LanyardProvider;

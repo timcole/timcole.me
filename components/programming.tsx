@@ -6,9 +6,10 @@ import { useLanyard } from './lanyard';
 const VIM = '439476230543245312';
 
 const Programming: FC = () => {
-  const { activities } = useLanyard();
+  const [doing] = useLanyard();
   const vim =
-    activities?.find(({ application_id }) => application_id === VIM) || null;
+    doing?.activities?.find(({ application_id }) => application_id === VIM) ||
+    null;
 
   return (
     <Article image="https://cdn.t.pics/dotfiles/floating-screenshot.jpg">

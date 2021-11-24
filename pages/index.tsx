@@ -7,12 +7,22 @@ import NowPlaying from '../components/playing';
 import Setup from '../components/setup';
 import Programming from '../components/programming';
 import Mila from '../components/mila';
+import { Presence } from '../types/lanyard';
+import { useLanyard } from '../components/lanyard';
+import { useEffect } from 'react';
 
 type Props = {
   nextLaunch?: LaunchProps;
+  lanyard?: Presence;
 };
 
-const Index: NextPage<Props> = ({ nextLaunch }) => {
+const Index: NextPage<Props> = ({ nextLaunch, lanyard }) => {
+  const [, setDoing] = useLanyard();
+
+  useEffect(() => {
+    setDoing(lanyard);
+  }, [lanyard]);
+
   return (
     <div>
       <Head>
@@ -60,7 +70,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
     console.error(e);
   }
 
-  return { props: { nextLaunch } };
+  const lanyard: Presence = (
+    await fetch('https://api.lanyard.rest/v1/users/83281345949728768').then(
+      (data) => data.json(),
+    )
+  ).data;
+
+  return { props: { nextLaunch, lanyard } };
 };
 
 export default Index;
