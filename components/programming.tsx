@@ -3,7 +3,7 @@ import { FC } from 'react';
 import Article from './article';
 import { useLanyard } from './lanyard';
 
-const VIM = '439476230543245312';
+const VIM = '793271441293967371';
 
 const Programming: FC = () => {
   const [doing] = useLanyard();
@@ -28,18 +28,20 @@ const Programming: FC = () => {
         </a>{' '}
         if you’re interested in my config.
       </p>
-      {vim ? (
+      {vim && vim.details ? (
         <p>
-          I'm currently editing{' '}
+          I'm currently{' '}
+          {vim.state.includes('Reading') ? 'reading ' : 'editing '}
           <span>
             <Image
               width="18"
               height="18"
               src={`https://cdn.discordapp.com/app-assets/${VIM}/${vim.assets.large_image}`}
             />{' '}
-            {vim.details.split(': ')[1] || 'an unsaved file'}
+            {vim.state.replace(/(Editing|Reading) /g, '') || 'an unsaved file'}
           </span>{' '}
-          in a directory called <span>{vim.state}</span>
+          in a directory called{' '}
+          <span>{vim.details.replace('Workspace ', '')}</span>
         </p>
       ) : (
         ''
