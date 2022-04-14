@@ -30,7 +30,7 @@ export const About: FunctionComponent = () => {
           <h2>Timothy Cole</h2>
           <p>
             My name is Timothy Cole <Emoji name="unicorn-face" hex="1f984" />.
-            I'm a 24 year old, self-taught, software engineer. American{' '}
+            I'm a 25 year old, self-taught, software engineer. American{' '}
             <Emoji name="flag-for-united-states" hex={['1f1fa', '1f1f8']} />{' '}
             located in Raleigh, North Carolina.
           </p>
