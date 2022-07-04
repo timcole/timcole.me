@@ -47,7 +47,7 @@ const Positions = () => {
       company: "Social Blade LLC",
       website: "https://socialblade.com",
       role: "Sr Software Engineer",
-      date: "Oct 2021 - Present",
+      date: "Mar 2016 - Present",
       description: (
         <div class={tw`md:flex-grow`}>
           <p class={tw`text-gray-600 dark:text-gray-400`}>
