@@ -1,19 +1,12 @@
-FROM node:13-alpine
+FROM denoland/deno:1.23.1
+ARG GITHUB_HASH
 
-ENV PORT 3000
+WORKDIR /app
+ADD . .
 
-# Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+ENV DENO_DEPLOYMENT_ID $GIT_HASH
 
-# Install app dependencies
-COPY package*.json /usr/src/app/
-RUN npm install
+RUN deno cache main.ts
 
-# Bundle app source
-COPY . /usr/src/app
-
-RUN npm run build
-EXPOSE 3000
-
-CMD [ "npm", "start" ]
+EXPOSE 8000
+CMD ["run","-A", "--allow-net","--allow-read","--allow-env","--allow-write","--allow-run","main.ts"]
