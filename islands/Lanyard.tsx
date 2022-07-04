@@ -73,7 +73,7 @@ const Lanyard = () => {
   return (
     <div
       class={tw
-        `fixed sm:bottom-5 sm:right-5 bottom-0 right-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md`}
+        `fixed sm:bottom-5 sm:right-5 bottom-0 right-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20`}
     >
       <div
         class={tw`flex items-center space-x-3.5 p-2`}

@@ -3,12 +3,14 @@ import { Head } from "$fresh/runtime.ts";
 import { Fragment, h } from "preact";
 import { apply, tw } from "@twind";
 import { css } from "twind/css";
+import { Handlers, PageProps } from "$fresh/server.ts";
 
 import AboutMe from "../components/about.tsx";
 import Positions from "../components/positions.tsx";
 import Footer from "../components/footer.tsx";
 
 import Lanyard from "../islands/Lanyard.tsx";
+import { Props } from "../islands/Launch.tsx";
 
 const a = css({
   ":global": {
@@ -16,7 +18,7 @@ const a = css({
   },
 });
 
-export default function Home() {
+export default function Home({ data }: PageProps<Props>) {
   return (
     <Fragment>
       <Head>
@@ -47,7 +49,7 @@ export default function Home() {
       <div
         class={tw`min-h-screen flex flex-col sm:pb-0 pb-[100px] ${a}`}
       >
-        <AboutMe />
+        <AboutMe {...data} />
         <Positions />
         <Footer />
       </div>
@@ -55,3 +57,36 @@ export default function Home() {
     </Fragment>
   );
 }
+
+const nextLaunchQuery = `
+query {
+  launches(
+    limit: 1
+    orderBy: {field: net, direction: ASC}
+    filters: [{field: net, operation: gt, date: "NOW()"}]
+  ) {
+    id
+    net
+    status
+    vehicle {
+      image
+    }
+  }
+}
+`;
+
+export const handler: Handlers<Props> = {
+  async GET(_, ctx) {
+    const {
+      data: { launches },
+    } = await fetch(`http://booster.spaceflight:3000`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ query: nextLaunchQuery }),
+    }).then((data) => data.json());
+
+    return ctx.render(launches.shift());
+  },
+};

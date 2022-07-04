@@ -2,7 +2,9 @@
 import { h } from "preact";
 import { tw } from "@twind";
 
-const AboutMe = () => (
+import Launch, { Props } from "../islands/Launch.tsx";
+
+const AboutMe = (props: Props) => (
   <div class={tw`container mx-auto p-4 sm:p-12`}>
     <div
       class={tw
@@ -15,15 +17,15 @@ const AboutMe = () => (
           Timothy Cole
         </h2>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-400`}>
+        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
           A 25 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-400`}>
+        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
           I prefer to write back-end code (Rust, TypeScript, Go), but do
           front-end as needed (React/NextJS TypeScript).
         </p>
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-400`}>
+        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
           NeoVim is my editor of choice.{" "}
           <a
             href="https://github.com/timcole/dotfiles"
@@ -34,11 +36,11 @@ const AboutMe = () => (
           </a>
         </p>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-400`}>
+        <p class={tw`mt-4 text-gray-500 dark:text-gray-400 font-italic`}>
           I have a pet ball python named Mila 🐍 but I don't program in python.
         </p>
 
-        <div class={tw`flex items-center mt-4 -mx-2 flex-col sm:flex-row`}>
+        <div class={tw`flex items-center mt-4 -mx-2 flex-col md:flex-row`}>
           <a
             class={tw`m-2 shadow`}
             href="https://twitter.com/modesttim"
@@ -81,6 +83,7 @@ const AboutMe = () => (
         </div>
       </div>
     </div>
+    <Launch {...props} />
   </div>
 );
 
