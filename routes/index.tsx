@@ -79,7 +79,7 @@ export const handler: Handlers<Props> = {
   async GET(_, ctx) {
     const {
       data: { launches },
-    } = await fetch(`http://booster.spaceflight:3000`, {
+    } = await fetch(`http://booster-external-service.ix-booster`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
