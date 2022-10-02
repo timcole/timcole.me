@@ -1,7 +1,4 @@
-/** @jsx h */
-import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { tw } from "@twind";
 
 export type Props = {
   id: string;
@@ -68,18 +65,12 @@ const Launch = ({ net, status, vehicle }: Props) => {
   }, [net]);
 
   return (
-    <div
-      class={tw
-        `items-center relative p-2 -mx-3 -mt-3 flex rounded-lg text-gray-800 dark:text-gray-100 shadow-lg bg-gray-100 dark:bg-gray-900 overflow-hidden`}
-    >
-      <div
-        class={tw
-          `z-10 flex flex-col md:flex-row w-full items-center text-center md:text-left`}
-      >
-        <p class={tw`flex-1 pl-4`}>
+    <div class="items-center relative p-2 -mx-3 -mt-3 flex rounded-lg text-gray-800 dark:text-gray-100 shadow-lg bg-gray-100 dark:bg-gray-900 overflow-hidden">
+      <div class="z-10 flex flex-col md:flex-row w-full items-center text-center md:text-left">
+        <p class="flex-1 pl-4">
           There{status === "Go" ? "'s going to" : " might"}{" "}
           be a rocket launch in{" "}
-          <span class={tw`tabular-nums px-1 font-semibold`}>
+          <span class="tabular-nums px-1 font-semibold">
             T
             {time.abs ? "-" : "+"}
             {Object.keys(time.diff)
@@ -90,8 +81,7 @@ const Launch = ({ net, status, vehicle }: Props) => {
           head on over to Spaceflight Live to see.
         </p>
         <a
-          class={tw
-            `shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700`}
+          class="shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700"
           href="https://spaceflight.live"
           target="_blank"
         >
@@ -100,8 +90,7 @@ const Launch = ({ net, status, vehicle }: Props) => {
       </div>
       <div
         style={`background-image: url('https://constellation.spaceflight.live/${vehicle.image}')`}
-        class={tw
-          `left-0 opacity-30 absolute select-none h-full w-full bg-center bg-cover`}
+        class="left-0 opacity-30 absolute select-none h-full w-full bg-center bg-cover"
       >
       </div>
     </div>

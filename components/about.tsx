@@ -1,48 +1,39 @@
-/** @jsx h */
-import { h } from "preact";
-import { tw } from "@twind";
-
 import Launch, { Props } from "../islands/Launch.tsx";
 
 const AboutMe = (props: Props) => (
-  <div class={tw`container mx-auto p-4 sm:p-12`}>
-    <div
-      class={tw
-        `items-center p-8 rounded-lg shadow-md lg:flex bg-white dark:bg-gray-700`}
-    >
-      <div class={tw`lg:w-3/4`}>
-        <h2
-          class={tw`text-3xl font-bold text-gray-800 dark:text-gray-100`}
-        >
+  <div class="container mx-auto p-4 sm:p-12">
+    <div class="items-center p-8 rounded-lg shadow-md lg:flex bg-white dark:bg-primary-700">
+      <div class="lg:w-3/4">
+        <h2 class="text-3xl font-bold text-primary-800 dark:text-primary-100">
           Timothy Cole
         </h2>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
+        <p class="mt-4 text-primary-500 dark:text-primary-300">
           A 25 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
+        <p class="mt-4 text-primary-500 dark:text-primary-300">
           I prefer to write back-end code (Rust, TypeScript, Go), but do
           front-end as needed (React/NextJS TypeScript).
         </p>
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-300`}>
+        <p class="mt-4 text-primary-500 dark:text-primary-300">
           NeoVim is my editor of choice.{" "}
           <a
             href="https://github.com/timcole/dotfiles"
             target="_blank"
-            class={tw`border-b-2 border-double`}
+            class="border-b-2 border-double"
           >
             dotfiles
           </a>
         </p>
 
-        <p class={tw`mt-4 text-gray-500 dark:text-gray-400 font-italic`}>
+        <p class="mt-4 text-primary-500 dark:text-primary-400 font-italic">
           I have a pet ball python named Mila 🐍 but I don't program in python.
         </p>
 
-        <div class={tw`flex items-center mt-4 -mx-2 flex-col md:flex-row`}>
+        <div class="flex items-center mt-4 -mx-2 flex-col md:flex-row">
           <a
-            class={tw`m-2 shadow`}
+            class="m-2 shadow"
             href="https://twitter.com/modesttim"
             target="_blank"
             aria-label="Twitter"
@@ -51,7 +42,7 @@ const AboutMe = (props: Props) => (
           </a>
 
           <a
-            class={tw`m-2 shadow`}
+            class="m-2 shadow"
             href="https://github.com/timcole"
             target="_blank"
             aria-label="Github"
@@ -60,7 +51,7 @@ const AboutMe = (props: Props) => (
           </a>
 
           <a
-            class={tw`m-2 shadow`}
+            class="m-2 shadow"
             href="https://discord.gg/modest"
             target="_blank"
             aria-label="Discord"
@@ -70,14 +61,13 @@ const AboutMe = (props: Props) => (
         </div>
       </div>
 
-      <div class={tw`mt-8 lg:mt-0 lg:w-1/2`}>
-        <div class={tw`flex items-center justify-center lg:justify-end`}>
-          <div class={tw`max-w-lg`}>
+      <div class="mt-8 lg:mt-0 lg:w-1/2">
+        <div class="flex items-center justify-center lg:justify-end">
+          <div class="max-w-lg">
             <img
-              class={tw
-                `object-cover object-center w-full h-64 rounded-md shadow shadow`}
+              class="object-cover object-center w-auto h-64 rounded-md shadow shadow"
               src="https://tim.rip/me.jpg"
-              alt=""
+              alt="Picture of me"
             />
           </div>
         </div>

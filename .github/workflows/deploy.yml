@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+    branches: [ 🦄 ]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://timcole.me
+    steps:
+      - uses: twingate/github-action@v1
+        with:
+          service-key: ${{ secrets.TWINGATE_SERVICE_ACCOUNT }}
+      - name: Download nomad
+        run: |
+          curl -sLO https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+          sudo install -o root -g root -m 0755 jq-linux64 /usr/local/bin/jq
+          echo "Installed jq"
+          NOMAD_VERSION="$(curl -L -s https://checkpoint-api.hashicorp.com/v1/check/nomad | jq -r .current_version)"
+          curl -sLO "https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip"
+          unzip nomad_${NOMAD_VERSION}_linux_amd64.zip
+          sudo install -o root -g root -m 0755 nomad /usr/local/bin/nomad
+          echo "Installed latest nomad"
+      - uses: actions/checkout@v2
+      - name: Run job
+        env:
+          NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
+        run: sed "s/\[\[\.version\]\]/${{ github.sha }}/" "$GITHUB_WORKSPACE/deploy.hcl" | nomad job run -

@@ -1,7 +1,5 @@
-/** @jsx h */
-import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { tw } from "@twind";
+import { tw } from "twind";
 import type { Presence } from "../types/lanyard.ts";
 
 enum Operation {
@@ -71,39 +69,28 @@ const Lanyard = () => {
   if (!doing || !doing.listening_to_spotify) return <div></div>;
 
   return (
-    <div
-      class={tw
-        `fixed sm:bottom-5 sm:right-5 bottom-0 right-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20`}
-    >
-      <div
-        class={tw`flex items-center space-x-3.5 p-2`}
-      >
+    <div class="fixed sm:bottom-5 sm:right-5 bottom-0 right-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
+      <div class="flex items-center space-x-3.5 p-2">
         <img
           src={doing.spotify.album_art_url}
           alt={`${doing.spotify.song} Album Art`}
           width="160"
           height="160"
-          class={tw`flex-none w-20 h-20 bg-gray-100 rounded-sm`}
+          class="flex-none w-20 h-20 bg-gray-100 rounded-sm"
         />
-        <div class={tw`min-w-0 flex-auto`}>
-          <p
-            class={tw`text-blue-400 text-sm font-semibold uppercase`}
-          >
+        <div class="min-w-0 flex-auto">
+          <p class="text-blue-400 text-sm font-semibold uppercase">
             I'm currently listening to
           </p>
-          <h2
-            class={tw`text-white text-xl font-semibold truncate`}
-          >
+          <h2 class="text-white text-xl font-semibold truncate">
             {doing.spotify.song}
           </h2>
-          <p
-            class={tw`text-gray-400 text-base font-medium`}
-          >
+          <p class="text-gray-400 text-base font-medium">
             {doing.spotify.artist}
           </p>
         </div>
       </div>
-      <div class={tw`bg-gray-700 overflow-hidden`}>
+      <div class="bg-gray-700 overflow-hidden">
         <div
           class={tw`bg-blue-400 w-[${progress}%] h-1.5 transition duration-150`}
           role="progressbar"

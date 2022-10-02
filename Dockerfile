@@ -1,4 +1,4 @@
-FROM denoland/deno:1.23.1
+FROM denoland/deno:1.26.0
 ARG GITHUB_HASH
 
 WORKDIR /app
@@ -8,5 +8,4 @@ ENV DENO_DEPLOYMENT_ID $GIT_HASH
 
 RUN deno cache main.ts
 
-EXPOSE 8000
-CMD ["run","-A", "--allow-net","--allow-read","--allow-env","--allow-write","--allow-run","main.ts"]
+CMD ["run", "-A", "--allow-net", "--allow-read", "--allow-env", "--allow-write", "--allow-run", "main.ts"]

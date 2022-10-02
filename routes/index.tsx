@@ -1,7 +1,5 @@
-/** @jsx h */
 import { Head } from "$fresh/runtime.ts";
-import { Fragment, h } from "preact";
-import { apply, tw } from "@twind";
+import { apply, tw } from "twind";
 import { css } from "twind/css";
 import { Handlers, PageProps } from "$fresh/server.ts";
 
@@ -14,13 +12,13 @@ import { Props } from "../islands/Launch.tsx";
 
 const a = css({
   ":global": {
-    "html": apply`bg-gray-200 dark:bg-gray-800`,
+    "html": apply`bg-primary-200 dark:bg-primary-800`,
   },
 });
 
 export default function Home({ data }: PageProps<Props>) {
   return (
-    <Fragment>
+    <>
       <Head>
         <title>Timothy Cole - Software Engineer</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,7 +39,6 @@ export default function Home({ data }: PageProps<Props>) {
         <meta name="twitter:creator" content="@ModestTim" />
         <meta name="twitter:site" content="@ModestTim" />
 
-        <link rel="dns-prefetch" href="https://tim.rip/" />
         <link rel="dns-prefetch" href="https://api.lanyard.rest/" />
         <link rel="dns-prefetch" href="https://i.scdn.co/" />
         <link rel="dns-prefetch" href="https://img.shields.io" />
@@ -54,7 +51,7 @@ export default function Home({ data }: PageProps<Props>) {
         <Footer />
       </div>
       <Lanyard />
-    </Fragment>
+    </>
   );
 }
 
@@ -79,7 +76,7 @@ export const handler: Handlers<Props> = {
   async GET(_, ctx) {
     const {
       data: { launches },
-    } = await fetch(`http://booster`, {
+    } = await fetch(Deno.env.get("BOOSTER_HOST") || `http://booster`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
