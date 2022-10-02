@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ 🦄 ]
+    branches: [main]
 
 jobs:
   build:
