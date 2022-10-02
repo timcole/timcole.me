@@ -1,9 +1,8 @@
 name: Deploy
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
 
 on:
   workflow_run:
-    workflows: ["Build Update"]
+    workflows: [build]
     types: [completed]
     branches: [ 🦄 ]
 

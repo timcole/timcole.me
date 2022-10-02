@@ -1,4 +1,4 @@
-name: Build Update
+name: build
 
 on:
   push:
