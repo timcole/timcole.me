@@ -28,7 +28,7 @@ const AboutMe = (props: Props) => (
         </p>
 
         <p class="mt-4 text-primary-500 dark:text-primary-400 font-italic">
-          I have a pet ball python named Mila 🐍 but I don't program in python.
+          I have two pet ball pythons named <a className="border-b-2 border-dotted border-blue-400 pb-1" href="https://tim.rip/snakes">Mila and Oleg 🐍</a> but I don't program in python.
         </p>
 
         <div class="flex items-center mt-4 -mx-2 flex-col md:flex-row">
