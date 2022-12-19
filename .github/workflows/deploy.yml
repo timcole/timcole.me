@@ -14,21 +14,30 @@ jobs:
       name: production
       url: https://timcole.me
     steps:
-      - uses: twingate/github-action@v1
+      - name: Set up WireGuard
+        uses: egor-tensin/setup-wireguard@v1
         with:
-          service-key: ${{ secrets.TWINGATE_SERVICE_ACCOUNT }}
-      - name: Download nomad
+          endpoint: 66.57.183.138:13231
+          endpoint_public_key: ${{ secrets.WIREGUARD_PEER_KEY }}
+          ips: 10.69.4.112/32
+          allowed_ips: 10.69.0.0/21
+          private_key: ${{ secrets.WIREGUARD_PRIVATE_KEY }}
+      - name: Add WG route
         run: |
-          curl -sLO https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-          sudo install -o root -g root -m 0755 jq-linux64 /usr/local/bin/jq
-          echo "Installed jq"
-          NOMAD_VERSION="$(curl -L -s https://checkpoint-api.hashicorp.com/v1/check/nomad | jq -r .current_version)"
-          curl -sLO "https://releases.hashicorp.com/nomad/${NOMAD_VERSION}/nomad_${NOMAD_VERSION}_linux_amd64.zip"
-          unzip nomad_${NOMAD_VERSION}_linux_amd64.zip
-          sudo install -o root -g root -m 0755 nomad /usr/local/bin/nomad
-          echo "Installed latest nomad"
-      - uses: actions/checkout@v2
-      - name: Run job
+          ifname=$(ls /sys/class/net/ | grep '^wg')
+          sudo ip route add 10.69.0.0/21 dev $ifname
+      - name: Check gateway
+        run: ping -W 10 -c 5 -- '10.69.0.1'
+      - name: Setup kubectl
         env:
-          NOMAD_ADDR: ${{ secrets.NOMAD_ADDR }}
-        run: sed "s/\[\[\.version\]\]/${{ github.sha }}/" "$GITHUB_WORKSPACE/deploy.hcl" | nomad job run -
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          curl -sLO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          echo "Installed kubectl"
+          mkdir -p ~/.kube
+          echo $KUBECONFIG | base64 -d > ~/.kube/config
+      - name: Set image
+        run: kubectl set image deploy/timcole-me timcole-me=ghcr.io/timcole/timcole.me:${{ github.sha }}
+      - name: Wait for deployment
+        run: kubectl rollout status deploy/timcole-me
