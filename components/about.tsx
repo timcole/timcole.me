@@ -38,7 +38,11 @@ const AboutMe = (props: Props) => (
             target="_blank"
             aria-label="Twitter"
           >
-            <img src="https://img.shields.io/twitter/follow/ModestTim?color=00acee&label=@ModestTim&logo=twitter&logoColor=fff&style=flat-square" />
+            <img
+              className="min-h-[20px]"
+              src="https://img.shields.io/twitter/follow/ModestTim?color=00acee&label=@ModestTim&logo=twitter&logoColor=fff&style=flat-square"
+              alt="Link to Twitter"
+            />
           </a>
 
           <a
@@ -47,7 +51,11 @@ const AboutMe = (props: Props) => (
             target="_blank"
             aria-label="Github"
           >
-            <img src="https://img.shields.io/github/followers/timcole?color=161b22&label=Github&logo=github&logoColor=fff&style=flat-square" />
+            <img
+              className="min-h-[20px]"
+              src="https://img.shields.io/github/followers/timcole?color=161b22&label=Github&logo=github&logoColor=fff&style=flat-square"
+              alt="Link to Github"
+            />
           </a>
 
           <a
@@ -56,7 +64,11 @@ const AboutMe = (props: Props) => (
             target="_blank"
             aria-label="Discord"
           >
-            <img src="https://img.shields.io/discord/313591755180081153?color=5865F2&label=Modest%20Labs%20Discord&logo=discord&logoColor=fff&style=flat-square" />
+            <img
+              className="min-h-[20px]"
+              src="https://img.shields.io/discord/313591755180081153?color=5865F2&label=Modest%20Labs%20Discord&logo=discord&logoColor=fff&style=flat-square"
+              alt="Link to Discord"
+            />
           </a>
         </div>
       </div>
