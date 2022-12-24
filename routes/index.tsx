@@ -16,7 +16,7 @@ const a = css({
   },
 });
 
-export default function Home({ data }: PageProps<Props>) {
+export default function Home({ data }: PageProps<Props | null>) {
   return (
     <>
       <Head>
@@ -46,7 +46,7 @@ export default function Home({ data }: PageProps<Props>) {
       <div
         class={tw`min-h-screen flex flex-col sm:pb-0 pb-[100px] ${a}`}
       >
-        <AboutMe {...data} />
+        <AboutMe launch={data} />
         <Positions />
         <Footer />
       </div>
@@ -72,18 +72,25 @@ query {
 }
 `;
 
-export const handler: Handlers<Props> = {
+export const handler: Handlers<Props | null> = {
   async GET(_, ctx) {
-    const {
-      data: { launches },
-    } = await fetch(Deno.env.get("BOOSTER_HOST") || `http://booster`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ query: nextLaunchQuery }),
-    }).then((data) => data.json());
-
-    return ctx.render(launches.shift());
+    try {
+      const {
+        data: { launches },
+      } = await fetch(
+        Deno.env.get("BOOSTER_HOST") || `https://booster.spaceflight.live`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ query: nextLaunchQuery }),
+        },
+      ).then((data) => data.json());
+      return ctx.render(launches.shift());
+    } catch (e) {
+      console.error(e);
+      return ctx.render(null);
+    }
   },
 };

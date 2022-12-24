@@ -1,6 +1,6 @@
 import Launch, { Props } from "../islands/Launch.tsx";
 
-const AboutMe = (props: Props) => (
+const AboutMe = ({ launch }: { launch: Props | null }) => (
   <div class="container mx-auto p-4 sm:p-12">
     <div class="items-center p-8 rounded-lg shadow-md lg:flex bg-white dark:bg-primary-700">
       <div class="lg:w-3/4">
@@ -28,7 +28,14 @@ const AboutMe = (props: Props) => (
         </p>
 
         <p class="mt-4 text-primary-500 dark:text-primary-400 font-italic">
-          I have two pet ball pythons named <a className="border-b-2 border-dotted border-blue-400 pb-1" href="https://tim.rip/snakes">Mila and Oleg 🐍</a> but I don't program in python.
+          I have two pet ball pythons named{" "}
+          <a
+            className="border-b-2 border-dotted border-blue-400 pb-1"
+            href="https://tim.rip/snakes"
+          >
+            Mila and Oleg 🐍
+          </a>{" "}
+          but I don't program in python.
         </p>
 
         <div class="flex items-center mt-4 -mx-2 flex-col md:flex-row">
@@ -85,7 +92,7 @@ const AboutMe = (props: Props) => (
         </div>
       </div>
     </div>
-    <Launch {...props} />
+    {launch && <Launch {...launch} />}
   </div>
 );
 
