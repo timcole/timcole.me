@@ -54,6 +54,20 @@ const AboutMe = ({ launch }: { launch: Props | null }) => (
 
           <a
             class="m-2 shadow"
+            href="https://fosstodon.org/@modesttim"
+            target="_blank"
+            aria-label="Mastodon"
+            rel="me"
+          >
+            <img
+              className="min-h-[20px]"
+              src="https://img.shields.io/mastodon/follow/109536545701324051?color=%235c4fe6&domain=https%3A%2F%2Ffosstodon.org&label=%40ModestTim&logo=mastodon&logoColor=fff&style=flat-square"
+              alt="Link to Mastodon"
+            />
+          </a>
+
+          <a
+            class="m-2 shadow"
             href="https://github.com/timcole"
             target="_blank"
             aria-label="Github"
