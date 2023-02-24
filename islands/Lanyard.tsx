@@ -69,7 +69,7 @@ const Lanyard = () => {
   if (!doing || !doing.listening_to_spotify) return <div></div>;
 
   return (
-    <div class="fixed sm:bottom-5 sm:right-5 bottom-0 right-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
+    <div class="fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
       <div class="flex items-center space-x-3.5 p-2">
         <img
           src={doing.spotify.album_art_url}

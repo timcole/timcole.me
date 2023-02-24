@@ -49,6 +49,11 @@ const Positions = () => {
       description: (
         <div class="md:flex-grow">
           <p class="text-primary-600 dark:text-primary-400">
+            Leading our engineering team working on building out our new tech
+            stack and Kubernetes infrastructure. Making and implementing
+            technical decisions, writing code and delegating tasks to others.
+          </p>
+          <p class="mt-4 text-primary-600 dark:text-primary-400">
             Currently leading the transition of our very legacy PHP, MySQL,
             Redis infrastructure to our new upcoming Rust, tRPC, PostgreSQL,
             Cassandra, Redis, NextJS infrastructure.
