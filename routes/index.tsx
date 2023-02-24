@@ -1,14 +1,13 @@
 import { Head } from "$fresh/runtime.ts";
 import { apply, tw } from "twind";
 import { css } from "twind/css";
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { PageProps } from "$fresh/server.ts";
 
 import AboutMe from "../components/about.tsx";
 import Positions from "../components/positions.tsx";
 import Footer from "../components/footer.tsx";
 
 import Lanyard from "../islands/Lanyard.tsx";
-import { Props } from "../islands/Launch.tsx";
 
 const a = css({
   ":global": {
@@ -16,7 +15,7 @@ const a = css({
   },
 });
 
-export default function Home({ data }: PageProps<Props | null>) {
+export default function Home(_: PageProps) {
   return (
     <>
       <Head>
@@ -46,7 +45,7 @@ export default function Home({ data }: PageProps<Props | null>) {
       <div
         class={tw`min-h-screen flex flex-col sm:pb-0 pb-[100px] ${a}`}
       >
-        <AboutMe launch={data} />
+        <AboutMe />
         <Positions />
         <Footer />
       </div>
@@ -54,43 +53,3 @@ export default function Home({ data }: PageProps<Props | null>) {
     </>
   );
 }
-
-const nextLaunchQuery = `
-query {
-  launches(
-    limit: 1
-    orderBy: {field: net, direction: ASC}
-    filters: [{field: net, operation: gt, date: "NOW()"}]
-  ) {
-    id
-    net
-    status
-    vehicle {
-      image
-    }
-  }
-}
-`;
-
-export const handler: Handlers<Props | null> = {
-  async GET(_, ctx) {
-    try {
-      const {
-        data: { launches },
-      } = await fetch(
-        Deno.env.get("BOOSTER_HOST") || `https://booster.spaceflight.live`,
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ query: nextLaunchQuery }),
-        },
-      ).then((data) => data.json());
-      return ctx.render(launches.shift());
-    } catch (e) {
-      console.error(e);
-      return ctx.render(null);
-    }
-  },
-};

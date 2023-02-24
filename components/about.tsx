@@ -1,6 +1,6 @@
-import Launch, { Props } from "../islands/Launch.tsx";
+import Launch from "../islands/Launch.tsx";
 
-const AboutMe = ({ launch }: { launch: Props | null }) => (
+const AboutMe = () => (
   <div class="container mx-auto p-4 sm:p-12">
     <div class="items-center p-8 rounded-lg shadow-md lg:flex bg-white dark:bg-primary-700">
       <div class="lg:w-3/4">
@@ -106,7 +106,7 @@ const AboutMe = ({ launch }: { launch: Props | null }) => (
         </div>
       </div>
     </div>
-    {launch && <Launch {...launch} />}
+    <Launch />
   </div>
 );
 

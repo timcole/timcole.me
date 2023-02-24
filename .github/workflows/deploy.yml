@@ -22,12 +22,6 @@ jobs:
           ips: 10.69.4.112/32
           allowed_ips: 10.69.0.0/21
           private_key: ${{ secrets.WIREGUARD_PRIVATE_KEY }}
-      - name: Add WG route
-        run: |
-          ifname=$(ls /sys/class/net/ | grep '^wg')
-          sudo ip route add 10.69.0.0/21 dev $ifname
-      - name: Check gateway
-        run: ping -W 10 -c 5 -- '10.69.0.1'
       - name: Setup kubectl
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
