@@ -9,7 +9,7 @@ const AboutMe = () => (
         </h2>
 
         <p class="mt-4 text-primary-500 dark:text-primary-300">
-          A 25 year old, self-taught, software engineer from Raleigh, NC.
+          A 26 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
         <p class="mt-4 text-primary-500 dark:text-primary-300">
