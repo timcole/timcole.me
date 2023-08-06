@@ -35,7 +35,7 @@ const Positions = () => {
           </p>
           <p class="mt-4 text-primary-500 dark:text-primary-400 font-italic">
             Modest Labs operates <b>AS992</b>{" "}
-            for all network inquires please use the contact email listed on
+            for all network inquiries please use the contact email listed on
             whois.
           </p>
         </div>
