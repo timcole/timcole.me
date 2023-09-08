@@ -1,6 +1,7 @@
-import { useEffect, useState } from "preact/hooks";
-import { tw } from "twind";
-import type { Presence } from "../types/lanyard.ts";
+'use client';
+
+import { FC, useEffect, useState } from 'react';
+import type { Presence } from '@/types/lanyard';
 
 enum Operation {
   Event,
@@ -10,8 +11,8 @@ enum Operation {
 }
 
 enum EventType {
-  INIT_STATE = "INIT_STATE",
-  PRESENCE_UPDATE = "PRESENCE_UPDATE",
+  INIT_STATE = 'INIT_STATE',
+  PRESENCE_UPDATE = 'PRESENCE_UPDATE',
 }
 
 type SocketEvent = {
@@ -20,9 +21,9 @@ type SocketEvent = {
   d: Presence | unknown;
 };
 
-const Lanyard = () => {
-  const [socket] = useState<WebSocket | null>(() =>
-    new WebSocket("wss://api.lanyard.rest/socket")
+const Lanyard: FC = () => {
+  const [socket] = useState<WebSocket | null>(
+    () => new WebSocket('wss://api.lanyard.rest/socket'),
   );
   const [doing, setDoing] = useState<Presence>();
   const [progress, setProgress] = useState<number>(0);
@@ -41,7 +42,7 @@ const Lanyard = () => {
           () => send(Operation.Heartbeat),
           (d as { heartbeat_interval: number }).heartbeat_interval,
         );
-        send(Operation.Initialize, { subscribe_to_id: "83281345949728768" });
+        send(Operation.Initialize, { subscribe_to_id: '83281345949728768' });
       } else if (op === Operation.Event) {
         if ([EventType.INIT_STATE, EventType.PRESENCE_UPDATE].includes(t)) {
           setDoing(d as Presence);
@@ -54,8 +55,8 @@ const Lanyard = () => {
     const progressUpdate = setInterval(() => {
       if (!doing || !doing.listening_to_spotify) return;
 
-      const total = doing.spotify.timestamps.end! -
-        doing.spotify.timestamps.start;
+      const total =
+        doing.spotify.timestamps.end! - doing.spotify.timestamps.start;
       setProgress(
         100 -
           (100 * (doing.spotify.timestamps.end! - new Date().getTime())) /
@@ -69,37 +70,37 @@ const Lanyard = () => {
   if (!doing || !doing.listening_to_spotify) return <div></div>;
 
   return (
-    <div class="fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
-      <div class="flex items-center space-x-3.5 p-2">
+    <div className="fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
+      <div className="flex items-center space-x-3.5 p-2">
         <img
           src={doing.spotify.album_art_url}
           alt={`${doing.spotify.song} Album Art`}
           width="160"
           height="160"
-          class="flex-none w-20 h-20 bg-gray-100 rounded-sm"
+          className="flex-none w-20 h-20 bg-gray-100 rounded-sm"
         />
-        <div class="min-w-0 flex-auto">
-          <p class="text-blue-400 text-sm font-semibold uppercase">
+        <div className="min-w-0 flex-auto">
+          <p className="text-blue-400 text-sm font-semibold uppercase">
             I'm currently listening to
           </p>
-          <h2 class="text-white text-xl font-semibold truncate">
+          <h2 className="text-white text-xl font-semibold truncate">
             {doing.spotify.song}
           </h2>
-          <p class="text-gray-400 text-base font-medium">
+          <p className="text-gray-400 text-base font-medium">
             {doing.spotify.artist}
           </p>
         </div>
       </div>
-      <div class="bg-gray-700 overflow-hidden">
+      <div className="bg-gray-700 overflow-hidden">
         <div
-          class={tw`bg-blue-400 w-[${progress}%] h-1.5 transition duration-150`}
+          className="bg-blue-400 h-1.5 transition-width duration-150"
+          style={{ width: `${progress}%` }}
           role="progressbar"
           aria-label="Progress in song"
           aria-valuenow={progress}
           aria-valuemin={0}
           aria-valuemax={100}
-        >
-        </div>
+        ></div>
       </div>
     </div>
   );

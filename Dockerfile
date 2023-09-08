@@ -1,11 +1,28 @@
-FROM denoland/deno:1.26.0
-ARG GITHUB_HASH
+FROM node:lts-alpine AS deps
+WORKDIR /usr/src/app
 
-WORKDIR /app
-ADD . .
+COPY package*.json .
+RUN npm i
 
-ENV DENO_DEPLOYMENT_ID $GIT_HASH
+# ---
 
-RUN deno cache main.ts
+FROM node:lts-alpine AS builder
 
-CMD ["run", "-A", "--allow-net", "--allow-read", "--allow-env", "--allow-write", "--allow-run", "main.ts"]
+WORKDIR /usr/src/app
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY . .
+
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build
+
+# ---
+
+FROM node:lts-alpine
+
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/.next/standalone .
+COPY --from=builder /usr/src/app/.next/static ./.next/static
+
+ENV NODE_ENV=production
+
+ENTRYPOINT ["node", "server.js"]
