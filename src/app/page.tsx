@@ -4,7 +4,7 @@ import Positions from '@/components/positions';
 
 export default function Home() {
   return (
-    <div className="h-full flex flex-col sm:pb-0 pb-[100px] ${a}">
+    <div className="h-full flex flex-col sm:pb-0 pb-[100px]">
       <AboutMe />
       <Positions />
       <Footer />

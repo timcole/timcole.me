@@ -21,6 +21,7 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/.next/standalone .
+COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/.next/static ./.next/static
 
 ENV NODE_ENV=production

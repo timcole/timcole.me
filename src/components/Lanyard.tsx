@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useState } from 'react';
 import type { Presence } from '@/types/lanyard';
+import { twMerge } from 'tailwind-merge';
 
 enum Operation {
   Event,
@@ -52,9 +53,16 @@ const Lanyard: FC = () => {
   }, [socket]);
 
   useEffect(() => {
-    const progressUpdate = setInterval(() => {
-      if (!doing || !doing.listening_to_spotify) return;
+    if (!doing || !doing.listening_to_spotify) {
+      document.getElementsByTagName('html')[0].classList.remove('olivia');
+      return;
+    }
 
+    if (doing.spotify.artist === 'Olivia Rodrigo')
+      document.getElementsByTagName('html')[0].classList.add('olivia');
+    else document.getElementsByTagName('html')[0].classList.remove('olivia');
+
+    const progressUpdate = setInterval(() => {
       const total =
         doing.spotify.timestamps.end! - doing.spotify.timestamps.start;
       setProgress(
@@ -70,7 +78,16 @@ const Lanyard: FC = () => {
   if (!doing || !doing.listening_to_spotify) return <div></div>;
 
   return (
-    <div className="fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20">
+    <div
+      className={twMerge(
+        'fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20',
+        'group-[.olivia]:bg-olivia-500',
+      )}
+    >
+      <p className="p-2 text-center bg-olivia-300/30">
+        i'm <b>OBSESSED</b> with olivia rodrigo, while actively listening to her
+        music this site is olivia themed
+      </p>
       <div className="flex items-center space-x-3.5 p-2">
         <img
           src={doing.spotify.album_art_url}
@@ -80,20 +97,33 @@ const Lanyard: FC = () => {
           className="flex-none w-20 h-20 bg-gray-100 rounded-sm"
         />
         <div className="min-w-0 flex-auto">
-          <p className="text-blue-400 text-sm font-semibold uppercase">
+          <p
+            className={twMerge(
+              'text-blue-400 text-sm font-semibold uppercase',
+              'group-[.olivia]:text-white group-[.olivia]:bg-olivia-300 group-[.olivia]:inline group-[.olivia]:lowercase group-[.olivia]:px-2 group-[.olivia]:rotate-12',
+            )}
+          >
             I'm currently listening to
           </p>
           <h2 className="text-white text-xl font-semibold truncate">
             {doing.spotify.song}
           </h2>
-          <p className="text-gray-400 text-base font-medium">
+          <p
+            className={twMerge(
+              'text-gray-400 text-base font-medium',
+              'group-[.olivia]:text-gray-200 group-[.olivia]:lowercase',
+            )}
+          >
             {doing.spotify.artist}
           </p>
         </div>
       </div>
       <div className="bg-gray-700 overflow-hidden">
         <div
-          className="bg-blue-400 h-1.5 transition-width duration-150"
+          className={twMerge(
+            'bg-blue-400 h-1.5 transition-width duration-150',
+            'group-[.olivia]:bg-violet-500',
+          )}
           style={{ width: `${progress}%` }}
           role="progressbar"
           aria-label="Progress in song"

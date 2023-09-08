@@ -8,7 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        olivia: ['var(--olivia-font)'],
+      },
       colors: {
+        olivia: {
+          100: '#783f92',
+          300: '#38255d',
+          500: '#684883',
+        },
         primary: {
           50: '#f9fafb',
           100: '#f3f4f6',

@@ -4,6 +4,13 @@ import type { Metadata } from 'next';
 import { PT_Sans } from 'next/font/google';
 import { twMerge } from 'tailwind-merge';
 
+import localFont from 'next/font/local';
+
+const olivia = localFont({
+  variable: '--olivia-font',
+  src: [{ path: './olivia.woff' }],
+});
+
 const ptsans = PT_Sans({
   subsets: ['latin'],
   weight: ['400'],
@@ -43,8 +50,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-primary-200 dark:bg-primary-800">
-      <body className={twMerge(ptsans.className, 'h-full')}>
+    <html lang="en" className="h-full group">
+      <body
+        className={twMerge(
+          ptsans.className,
+          olivia.variable,
+          'h-full bg-primary-800 bg-center bg-no-repeat bg-cover',
+          'group-[.olivia]:bg-[url("/olivia.webp")]',
+          `group-[.olivia]:font-olivia`,
+        )}
+      >
         {children}
         <Lanyard />
       </body>

@@ -1,23 +1,27 @@
 import { FC } from 'react';
 import Launch from '@/components/Launch';
+import { twMerge } from 'tailwind-merge';
 
 const AboutMe: FC = () => (
   <div className="container mx-auto p-4 sm:p-12">
-    <div className="items-center p-8 rounded-lg shadow-md lg:flex bg-white dark:bg-primary-700">
+    <div
+      className={twMerge(
+        'items-center p-8 rounded-lg shadow-md lg:flex bg-primary-700',
+        'group-[.olivia]:bg-olivia-500',
+      )}
+    >
       <div className="lg:w-3/4">
-        <h2 className="text-3xl font-bold text-primary-800 dark:text-primary-100">
-          Timothy Cole
-        </h2>
+        <h2 className="text-3xl font-bold text-primary-100">Timothy Cole</h2>
 
-        <p className="mt-4 text-primary-500 dark:text-primary-300">
+        <p className="mt-4 text-primary-300">
           A 26 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
-        <p className="mt-4 text-primary-500 dark:text-primary-300">
+        <p className="mt-4 text-primary-300">
           I prefer to write back-end code (Rust, TypeScript, Go), but do
           front-end as needed (React/NextJS TypeScript).
         </p>
-        <p className="mt-4 text-primary-500 dark:text-primary-300">
+        <p className="mt-4 text-primary-300">
           NeoVim is my editor of choice.{' '}
           <a
             href="https://github.com/timcole/dotfiles"
@@ -26,17 +30,6 @@ const AboutMe: FC = () => (
           >
             dotfiles
           </a>
-        </p>
-
-        <p className="mt-4 text-primary-500 dark:text-primary-400 font-italic">
-          I have two pet ball pythons named{' '}
-          <a
-            className="border-b-2 border-dotted border-blue-400 pb-1"
-            href="https://tim.rip/snakes"
-          >
-            Mila and Oleg 🐍
-          </a>{' '}
-          but I don't program in python.
         </p>
 
         <div className="flex items-center mt-4 -mx-2 flex-col md:flex-row">
