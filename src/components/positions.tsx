@@ -70,26 +70,56 @@ const Positions: FC = () => {
 
   return (
     <div className="container px-6 sm:px-12 py-6 mx-auto flex-1">
-      <div className="-my-8 divide-y-2 divide-primary-700 group-[.olivia]:divide-transparent">
+      <div
+        className={twMerge(
+          '-my-8 divide-y-2 divide-primary-700',
+          'group-data-olivia:divide-transparent group-data-taylor:divide-transparent',
+        )}
+      >
         {positions.map(({ company, website, role, date, description }) => (
           <div
+            key={company}
             className={twMerge(
               'py-8 px-4 flex flex-wrap md:flex-nowrap rounded-lg',
-              'group-[.olivia]:bg-olivia-300 group-[.olivia]:py-6 group-[.olivia]:my-2',
+              'group-data-olivia:bg-olivia-300 group-data-olivia:py-6 group-data-olivia:my-2',
+              'group-data-taylor:bg-taylor-100 group-data-taylor:py-6 group-data-taylor:my-2',
             )}
           >
             <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-              <h2 className="text-xl font-bold text-primary-200">
+              <h2
+                className={twMerge(
+                  'text-xl font-bold text-primary-200',
+                  'group-data-taylor:text-taylor-900',
+                )}
+              >
                 <a href={website} target="_blank" className="underline">
                   {company}
                 </a>
               </h2>
-              <span className="font-semibold mt-1 text-primary-300">
+              <span
+                className={twMerge(
+                  'font-semibold mt-1 text-primary-300',
+                  'group-data-taylor:text-taylor-900/90',
+                )}
+              >
                 {role}
               </span>
-              <span className="mt-1 text-primary-400 text-sm">{date}</span>
+              <span
+                className={twMerge(
+                  'mt-1 text-primary-400 text-sm',
+                  'group-data-taylor:text-taylor-900/50',
+                )}
+              >
+                {date}
+              </span>
             </div>
-            <div className="text-gray-300 md:flex-grow flex-col gap-3 flex group-[.olivia]:text-sm group-[.olivia]:leading-6">
+            <div
+              className={twMerge(
+                'text-gray-300 md:flex-grow flex-col gap-3 flex',
+                'group-data-olivia:text-sm group-data-olivia:leading-6',
+                'group-data-taylor:text-sm group-data-taylor:leading-6 group-data-taylor:text-taylor-900',
+              )}
+            >
               {description}
             </div>
           </div>
@@ -99,7 +129,7 @@ const Positions: FC = () => {
         <a
           className={twMerge(
             'shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700',
-            'group-[.olivia]:bg-olivia-500 group-[.olivia]:border-olivia-300 hover:group-[.olivia]:bg-olivia-300',
+            'group-data-olivia:bg-olivia-500 group-data-olivia:border-olivia-300 hover:group-data-olivia:bg-olivia-300',
           )}
           href="https://www.linkedin.com/in/modesttim/"
           target="_blank"

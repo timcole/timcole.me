@@ -54,13 +54,13 @@ const Lanyard: FC = () => {
 
   useEffect(() => {
     if (!doing || !doing.listening_to_spotify) {
-      document.getElementsByTagName('html')[0].classList.remove('olivia');
+      document.getElementsByTagName('html')[0].setAttribute('data-artist', '');
       return;
     }
 
-    if (doing.spotify.artist === 'Olivia Rodrigo')
-      document.getElementsByTagName('html')[0].classList.add('olivia');
-    else document.getElementsByTagName('html')[0].classList.remove('olivia');
+    document
+      .getElementsByTagName('html')[0]
+      .setAttribute('data-artist', doing.spotify.artist);
 
     const progressUpdate = setInterval(() => {
       const total =
@@ -81,12 +81,17 @@ const Lanyard: FC = () => {
     <div
       className={twMerge(
         'fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20',
-        'group-[.olivia]:bg-olivia-500',
+        'group-data-olivia:bg-olivia-500',
+        'group-data-taylor:bg-taylor-600',
       )}
     >
-      <p className="p-2 text-center bg-olivia-300/30">
+      <p className="p-2 text-center bg-olivia-300/30 group-data-olivia:block hidden">
         i'm <b>OBSESSED</b> with olivia rodrigo, while actively listening to her
         music this site is olivia themed
+      </p>
+      <p className="p-2 text-center bg-taylor-500/30 group-data-taylor:block hidden">
+        I'm a Swiftie, while actively listening to Taylor Swift this site is
+        1989 themed
       </p>
       <div className="flex items-center space-x-3.5 p-2">
         <img
@@ -100,7 +105,8 @@ const Lanyard: FC = () => {
           <p
             className={twMerge(
               'text-blue-400 text-sm font-semibold uppercase',
-              'group-[.olivia]:text-white group-[.olivia]:bg-olivia-300 group-[.olivia]:inline group-[.olivia]:lowercase group-[.olivia]:px-2 group-[.olivia]:rotate-12',
+              'group-data-olivia:text-white group-data-olivia:bg-olivia-300 group-data-olivia:inline group-data-olivia:lowercase group-data-olivia:px-2 group-data-olivia:rotate-12',
+              'group-data-taylor:text-taylor-100',
             )}
           >
             I'm currently listening to
@@ -111,7 +117,8 @@ const Lanyard: FC = () => {
           <p
             className={twMerge(
               'text-gray-400 text-base font-medium',
-              'group-[.olivia]:text-gray-200 group-[.olivia]:lowercase',
+              'group-data-olivia:text-gray-200 group-data-olivia:lowercase',
+              'group-data-taylor:text-taylor-100',
             )}
           >
             {doing.spotify.artist}
@@ -122,7 +129,7 @@ const Lanyard: FC = () => {
         <div
           className={twMerge(
             'bg-blue-400 h-1.5 transition-width duration-150',
-            'group-[.olivia]:bg-violet-500',
+            'group-data-olivia:bg-violet-500',
           )}
           style={{ width: `${progress}%` }}
           role="progressbar"

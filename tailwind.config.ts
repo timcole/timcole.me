@@ -7,15 +7,27 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    data: {
+      olivia: 'artist*="Olivia Rodrigo"',
+      taylor: 'artist*="Taylor Swift"',
+    },
     extend: {
       fontFamily: {
         olivia: ['var(--olivia-font)'],
+        taylor: ['var(--taylor-font)'],
       },
       colors: {
         olivia: {
           100: '#783f92',
           300: '#38255d',
           500: '#684883',
+        },
+        taylor: {
+          50: '#c7c7ca',
+          100: '#d8d4c9',
+          500: '#6c98b7',
+          600: '#577b99',
+          900: '#19313e',
         },
         primary: {
           50: '#f9fafb',

@@ -106,7 +106,7 @@ const Launch: FC = () => {
     <div
       className={twMerge(
         'items-center relative p-2 -mx-3 -mt-3 flex rounded-lg text-gray-100 shadow-lg bg-gray-900 overflow-hidden',
-        'group-[.olivia]:bg-olivia-300',
+        'group-data-olivia:bg-olivia-300',
       )}
     >
       <div className="z-10 flex flex-col md:flex-row w-full items-center md:text-left">
@@ -125,7 +125,7 @@ const Launch: FC = () => {
         <a
           className={twMerge(
             'shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700',
-            'group-[.olivia]:bg-olivia-500 group-[.olivia]:border-olivia-300 hover:group-[.olivia]:bg-olivia-300',
+            'group-data-olivia:bg-olivia-500 group-data-olivia:border-olivia-300 hover:group-data-olivia:bg-olivia-300',
           )}
           href="https://spaceflight.live"
           target="_blank"

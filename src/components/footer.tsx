@@ -5,7 +5,8 @@ const Footer: FC = () => (
   <footer
     className={twMerge(
       'text-center text-gray-500 py-6',
-      'group-[.olivia]:text-gray-100',
+      'group-data-olivia:text-gray-100',
+      'group-data-taylor:text-taylor-900',
     )}
   >
     Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All Rights

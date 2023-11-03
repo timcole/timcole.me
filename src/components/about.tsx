@@ -7,21 +7,24 @@ const AboutMe: FC = () => (
     <div
       className={twMerge(
         'items-center p-8 rounded-lg shadow-md lg:flex bg-primary-700',
-        'group-[.olivia]:bg-olivia-500',
+        'group-data-olivia:bg-olivia-500',
+        'group-data-taylor:bg-taylor-100',
       )}
     >
       <div className="lg:w-3/4">
-        <h2 className="text-3xl font-bold text-primary-100">Timothy Cole</h2>
+        <h2 className="text-3xl font-bold text-primary-100 group-data-taylor:text-taylor-900">
+          Timothy Cole
+        </h2>
 
-        <p className="mt-4 text-primary-300">
+        <p className="mt-4 text-primary-300 group-data-taylor:text-taylor-900/80">
           A 26 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
-        <p className="mt-4 text-primary-300">
+        <p className="mt-4 text-primary-300 group-data-taylor:text-taylor-900/80">
           I prefer to write back-end code (Rust, TypeScript, Go), but do
           front-end as needed (React/NextJS TypeScript).
         </p>
-        <p className="mt-4 text-primary-300">
+        <p className="mt-4 text-primary-300 group-data-taylor:text-taylor-900/80">
           NeoVim is my editor of choice.{' '}
           <a
             href="https://github.com/timcole/dotfiles"
