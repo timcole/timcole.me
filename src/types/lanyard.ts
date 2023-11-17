@@ -3,7 +3,7 @@ export interface Presence {
   active_on_discord_desktop: boolean;
   listening_to_spotify: boolean;
   kv: Record<string, string>;
-  spotify: Spotify;
+  spotify?: Spotify;
   discord_user: DiscordUser;
   discord_status: string;
   activities: Activity[];
