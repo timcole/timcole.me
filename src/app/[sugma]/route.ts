@@ -5,7 +5,7 @@ export async function GET(
   { params }: { params: { sugma: string } },
 ) {
   const links: Record<string, string> = JSON.parse(
-    readFileSync('./links.json', 'utf-8'),
+    readFileSync('/local/links.json', 'utf-8'),
   );
 
   let link = links[params.sugma];
