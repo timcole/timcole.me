@@ -17,7 +17,7 @@ const AboutMe: FC = () => (
         </h2>
 
         <p className="mt-4 text-primary-300 group-data-taylor:text-taylor-900/80">
-          A 26 year old, self-taught, software engineer from Raleigh, NC.
+          A 27 year old, self-taught, software engineer from Raleigh, NC.
         </p>
 
         <p className="mt-4 text-primary-300 group-data-taylor:text-taylor-900/80">
