@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS deps
+FROM oven/bun:latest AS deps
 WORKDIR /usr/src/app
 
 COPY package*.json .
