@@ -1,27 +1,13 @@
-import Lanyard from '@/components/Lanyard';
 import './globals.css';
 import type { Metadata } from 'next';
-import { PT_Sans, Playpen_Sans } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import { twMerge } from 'tailwind-merge';
+import Footer from '@/components/footer';
 
-import localFont from 'next/font/local';
-
-const olivia = localFont({
-  variable: '--olivia-font',
-  src: [{ path: './olivia.woff' }],
-});
-
-const ptsans = PT_Sans({
+const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
   style: ['normal', 'italic'],
-});
-
-const playpen = Playpen_Sans({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal'],
-  variable: '--taylor-font',
 });
 
 export const viewport = {
@@ -62,22 +48,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full group" data-artist="">
+    <html lang="en" className="h-full font-mono" data-artist="">
       <body
         className={twMerge(
-          ptsans.className,
-          olivia.variable,
-          playpen.variable,
-          'h-full bg-primary-800 bg-center bg-no-repeat bg-cover',
-          'group-data-olivia:bg-[url("/olivia.webp")]',
-          'group-data-olivia:font-olivia',
-          'group-data-taylor:font-taylor',
-          'group-data-taylor:bg-taylor-500',
-          'group-data-taylor:bg-gradient-to-tl group-data-taylor:from-taylor-50 group-data-taylor:to-taylor-600',
+          mono.className,
+          'h-full flex flex-col bg-primary-950',
         )}
       >
         {children}
-        <Lanyard />
+        <Footer />
       </body>
     </html>
   );

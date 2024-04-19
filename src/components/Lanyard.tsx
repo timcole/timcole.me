@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useMemo, useState } from 'react';
 import type { Presence } from '@/types/lanyard';
-import { twMerge } from 'tailwind-merge';
 
 enum Operation {
   Event,
@@ -27,7 +26,6 @@ const Lanyard: FC = () => {
     () => new WebSocket('wss://api.lanyard.rest/socket'),
   );
   const [doing, setDoing] = useState<Presence>();
-  const [progress, setProgress] = useState<number>(0);
 
   const jellyfin = useMemo(
     () =>
@@ -60,49 +58,13 @@ const Lanyard: FC = () => {
     };
   }, [socket]);
 
-  useEffect(() => {
-    if (!doing?.spotify) {
-      document.getElementsByTagName('html')[0].setAttribute('data-artist', '');
-      return;
-    }
-
-    document
-      .getElementsByTagName('html')[0]
-      .setAttribute('data-artist', doing.spotify.artist);
-
-    const progressUpdate = setInterval(() => {
-      const total =
-        doing.spotify!.timestamps.end! - doing.spotify!.timestamps.start;
-      setProgress(
-        100 -
-          (100 * (doing.spotify!.timestamps.end! - new Date().getTime())) /
-            total,
-      );
-    }, 250);
-
-    return () => clearInterval(progressUpdate);
-  }, [doing]);
-
-  if (!doing || (!jellyfin && !doing.spotify)) return <div></div>;
+  if (!doing || (!jellyfin && !doing.spotify))
+    return <div className="min-h-16 my-1 sm:my-0 sm:min-h-20"></div>;
 
   return (
-    <div
-      className={twMerge(
-        'fixed sm:bottom-5 sm:right-5 bottom-0 bg-gray-900 rounded-md overflow-hidden sm:w-[500px] w-full shadow-md z-20',
-        'group-data-olivia:bg-olivia-500',
-        'group-data-taylor:bg-taylor-600',
-      )}
-    >
-      <p className="p-2 text-center bg-olivia-300/30 group-data-olivia:block hidden">
-        i'm <b>OBSESSED</b> with olivia rodrigo, while actively listening to her
-        music this site is olivia themed
-      </p>
-      <p className="p-2 text-center bg-taylor-500/30 group-data-taylor:block hidden">
-        I'm a Swiftie, while actively listening to Taylor Swift this site is
-        1989 themed
-      </p>
-      <div className="flex items-center space-x-3.5 p-2">
-        <div className="relative">
+    <div>
+      <div className="flex items-center gap-4">
+        <div className="relative sm:block hidden">
           {jellyfin?.assets.small_image && (
             <img
               src={jellyfin?.assets.small_image.replace(
@@ -123,49 +85,21 @@ const Lanyard: FC = () => {
               )
             }
             alt={`${doing.spotify?.song || jellyfin?.details} Cover Image`}
-            className="flex-none object-cover w-20 h-20 bg-gray-100 rounded-sm"
+            className="flex-none object-cover w-20 h-20 bg-gray-100 rounded-md"
           />
         </div>
         <div className="min-w-0 flex-auto">
-          <p
-            className={twMerge(
-              'text-blue-400 text-sm font-semibold uppercase',
-              'group-data-olivia:text-white group-data-olivia:bg-olivia-300 group-data-olivia:inline group-data-olivia:lowercase group-data-olivia:px-2 group-data-olivia:rotate-12',
-              'group-data-taylor:text-taylor-100',
-            )}
-          >
+          <p className="text-green-400 font-semibold">
             I'm currently {doing.spotify ? 'listening to' : `watching`}
           </p>
-          <h2 className="text-white text-xl font-semibold truncate">
+          <h2 className="text-white font-semibold truncate">
             {doing.spotify?.song || jellyfin?.details}
           </h2>
-          <p
-            className={twMerge(
-              'text-gray-400 text-base font-medium',
-              'group-data-olivia:text-gray-200 group-data-olivia:lowercase',
-              'group-data-taylor:text-taylor-100',
-            )}
-          >
+          <p className="text-gray-400 text-base font-medium">
             {doing.spotify?.artist || jellyfin?.state}
           </p>
         </div>
       </div>
-      {doing.spotify && (
-        <div className="bg-gray-700 overflow-hidden">
-          <div
-            className={twMerge(
-              'bg-blue-400 h-1.5 transition-width duration-150',
-              'group-data-olivia:bg-violet-500',
-            )}
-            style={{ width: `${progress}%` }}
-            role="progressbar"
-            aria-label="Progress in song"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          ></div>
-        </div>
-      )}
     </div>
   );
 };

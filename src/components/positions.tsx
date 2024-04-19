@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { twMerge } from 'tailwind-merge';
+import Launch from './Launch';
 
 type position = {
   company: string;
@@ -14,7 +14,7 @@ const Positions: FC = () => {
     {
       company: 'Modest Labs LLC',
       website: 'https://modest.so',
-      role: 'Founder CEO',
+      role: 'Founder',
       date: 'Oct 2021 - Present',
       description: (
         <>
@@ -22,18 +22,47 @@ const Positions: FC = () => {
             Modest Labs is a development company that partners with others to
             build custom solutions for difficult problems.
           </p>
-          <p>
-            Our main product is a service in collaboration with ByteDance called{' '}
-            <a
-              href="https://freshtok.bot"
-              target="_blank"
-              className="font-semibold"
-            >
-              FreshTok
-            </a>
-            . Providing TikTok creators with an easy and seamless way to share
-            their content cross-platform for better discoverability.
-          </p>
+          <p>Some of our products include:</p>
+          <ul className="pl-4 flex flex-col gap-2">
+            <li>
+              <a
+                href="https://freshtok.bot"
+                target="_blank"
+                className="font-semibold"
+              >
+                FreshTok.bot
+              </a>
+              ;
+              <p>
+                Providing TikTok creators with an easy and seamless way to share
+                their content cross-platform for better discoverability.
+              </p>
+            </li>
+            <li>
+              <a
+                href="https://www.banner.yt"
+                target="_blank"
+                className="font-semibold"
+              >
+                banner.yt
+              </a>
+              ;
+              <p>
+                A simple utility to quickly and easily hotlink banners from any
+                YouTube channels anywhere.
+              </p>
+            </li>
+            <li>
+              <a
+                href="https://spaceflight.live"
+                target="_blank"
+                className="font-semibold"
+              >
+                Spaceflight Live
+              </a>
+              ; <Launch />
+            </li>
+          </ul>
           <p>
             Modest Labs operates <b>AS992</b> for all network inquiries please
             use the contact email listed on whois.
@@ -56,7 +85,7 @@ const Positions: FC = () => {
           <p>
             Currently leading the transition of our very legacy PHP, MySQL,
             Redis infrastructure to our new upcoming Rust, tRPC, PostgreSQL,
-            Cassandra, Redis, NextJS infrastructure.
+            KeyDB, NextJS infrastructure.
           </p>
           <p>
             Our transition goal is to provide a more user-friendly and stable
@@ -69,74 +98,27 @@ const Positions: FC = () => {
   ];
 
   return (
-    <div className="container px-6 sm:px-12 py-6 mx-auto flex-1">
-      <div
-        className={twMerge(
-          '-my-8 divide-y-2 divide-primary-700',
-          'group-data-olivia:divide-transparent group-data-taylor:divide-transparent',
-        )}
-      >
-        {positions.map(({ company, website, role, date, description }) => (
-          <div
-            key={company}
-            className={twMerge(
-              'py-8 px-4 flex flex-wrap md:flex-nowrap rounded-lg',
-              'group-data-olivia:bg-olivia-300 group-data-olivia:py-6 group-data-olivia:my-2',
-              'group-data-taylor:bg-taylor-100 group-data-taylor:py-6 group-data-taylor:my-2',
-            )}
-          >
-            <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-              <h2
-                className={twMerge(
-                  'text-xl font-bold text-primary-200',
-                  'group-data-taylor:text-taylor-900',
-                )}
+    <div className="container max-w-5xl">
+      {positions.map(({ company, website, role, date, description }) => (
+        <div key={company} className="flex flex-col gap-4 py-3">
+          <div className="flex gap-0 items-start flex-col sm:flex-row sm:gap-6 sm:items-end">
+            <span className="font-semibold mt-1 text-primary-50">
+              {role} @{' '}
+              <a
+                href={website}
+                target="_blank"
+                className="text-cyan-300 hover:text-cyan-400"
               >
-                <a href={website} target="_blank" className="underline">
-                  {company}
-                </a>
-              </h2>
-              <span
-                className={twMerge(
-                  'font-semibold mt-1 text-primary-300',
-                  'group-data-taylor:text-taylor-900/90',
-                )}
-              >
-                {role}
-              </span>
-              <span
-                className={twMerge(
-                  'mt-1 text-primary-400 text-sm',
-                  'group-data-taylor:text-taylor-900/50',
-                )}
-              >
-                {date}
-              </span>
-            </div>
-            <div
-              className={twMerge(
-                'text-gray-300 md:flex-grow flex-col gap-3 flex',
-                'group-data-olivia:text-sm group-data-olivia:leading-6',
-                'group-data-taylor:text-sm group-data-taylor:leading-6 group-data-taylor:text-taylor-900',
-              )}
-            >
-              {description}
-            </div>
+                {company}
+              </a>
+            </span>
+            <span className="mt-1 text-primary-400">{date}</span>
           </div>
-        ))}
-      </div>
-      <div className="text-center py-12">
-        <a
-          className={twMerge(
-            'shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700',
-            'group-data-olivia:bg-olivia-500 group-data-olivia:border-olivia-300 hover:group-data-olivia:bg-olivia-300',
-          )}
-          href="https://www.linkedin.com/in/modesttim/"
-          target="_blank"
-        >
-          Past Experiences
-        </a>
-      </div>
+          <div className="text-gray-300 md:flex-grow flex-col gap-3 flex">
+            {description}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

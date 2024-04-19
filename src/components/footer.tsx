@@ -1,23 +1,17 @@
 import { FC } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 const Footer: FC = () => (
-  <footer
-    className={twMerge(
-      'text-center text-gray-500 py-6',
-      'group-data-olivia:text-gray-100',
-      'group-data-taylor:text-taylor-900',
-    )}
-  >
-    Copyright &copy; 1997-{new Date().getFullYear()} - Timothy Cole - All Rights
-    Reserved. —{' '}
-    <a
-      href="https://github.com/timcole/timcole.me"
-      target="_blank"
-      className="border-b-2 border-dashed border-gray-600"
-    >
-      Star on GitHub
-    </a>
+  <footer className="bg-primary-800 text-gray-500 px-3 my-2 flex">
+    <div className="flex-shrink px-2 flex gap-4">
+      <a
+        href="https://github.com/timcole/timcole.me"
+        target="_blank"
+        className="italic bg-teal-400 text-primary-950 px-2"
+      >
+        Star on GitHub
+      </a>
+      Copyright &copy; 1997-{new Date().getFullYear()} - MIT License
+    </div>
   </footer>
 );
 

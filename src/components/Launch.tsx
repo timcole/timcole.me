@@ -1,7 +1,8 @@
 'use client';
 
+import { exclude } from '@/utils/exclude';
+import { FormattedTime, FormattedTimeDiff, formatTime } from '@/utils/time';
 import { FC, useEffect, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 export type Props = {
   id: string;
@@ -20,18 +21,6 @@ export type Props = {
   };
 };
 
-type FormattedTime = {
-  abs: boolean;
-  diff: FormattedTimeDiff;
-};
-
-type FormattedTimeDiff = {
-  days: string;
-  hours: string;
-  minutes: string;
-  seconds: string;
-};
-
 const nextLaunchQuery = `
 query {
   launches(
@@ -48,26 +37,6 @@ query {
   }
 }
 `;
-
-function formatTime(time: number): FormattedTime {
-  const abs = time >= 0;
-  if (!abs) time = Math.abs(time);
-
-  const days = Math.floor(time / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((time % (1000 * 60)) / 1000);
-
-  return {
-    abs,
-    diff: {
-      days: String(days).padStart(2, '0'),
-      hours: String(hours).padStart(2, '0'),
-      minutes: String(minutes).padStart(2, '0'),
-      seconds: String(seconds).padStart(2, '0'),
-    },
-  };
-}
 
 const Launch: FC = () => {
   const [time, setTime] = useState<FormattedTime>();
@@ -103,45 +72,20 @@ const Launch: FC = () => {
   }, [launch]);
 
   return launch && time ? (
-    <div
-      className={twMerge(
-        'items-center relative p-2 -mx-3 -mt-3 flex rounded-lg text-gray-100 shadow-lg bg-gray-900 overflow-hidden',
-        'group-data-olivia:bg-olivia-300',
-      )}
-    >
-      <div className="z-10 flex flex-col md:flex-row w-full items-center md:text-left">
-        <p className="flex-1 pl-4">
-          There{launch?.status === 'Go' ? "'s going to" : ' might'} be a rocket
-          launch in{' '}
-          <span className="tabular-nums px-1 font-semibold">
-            T{time?.abs ? '-' : '+'}
-            {Object.keys(time.diff)
-              .map((key) => time.diff[key as keyof FormattedTimeDiff])
-              .join(':')}
-            ;
-          </span>{' '}
-          head on over to Spaceflight Live to see.
-        </p>{' '}
-        <a
-          className={twMerge(
-            'shadow border border-gray-700 bg-gray-700 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-800 focus:ring-2 ring-blue-700',
-            'group-data-olivia:bg-olivia-500 group-data-olivia:border-olivia-300 hover:group-data-olivia:bg-olivia-300',
-          )}
-          href="https://spaceflight.live"
-          target="_blank"
-        >
-          Continue to Spaceflight.live
-        </a>
-      </div>
-      <div
-        style={{
-          backgroundImage: `url(https://constellation.spaceflight.live/${launch?.vehicle.image})`,
-        }}
-        className="left-0 opacity-30 absolute select-none h-full w-full bg-center bg-cover"
-      ></div>
-    </div>
+    <p>
+      There{launch?.status === 'Go' ? "'s going to" : ' might'} be a rocket
+      launch in{' '}
+      <span className="tabular-nums italic">
+        T{time?.abs ? '-' : '+'}
+        {Object.keys(exclude(time.diff, 'years'))
+          .map((key) =>
+            String(time.diff[key as keyof FormattedTimeDiff]).padStart(2, '0'),
+          )
+          .join(':')}
+      </span>
+    </p>
   ) : (
-    /* This is only here to prevent a layout shift when the data loads lol */ <div className="h-[74px] -mt-3"></div>
+    <p className="whitespace-pre"> </p>
   );
 };
 
