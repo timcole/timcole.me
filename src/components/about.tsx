@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Age } from '@/components/age';
 import { FC, Fragment } from 'react';
 
@@ -50,12 +49,11 @@ const AboutMe: FC = () => (
   <div className="flex flex-col gap-2 whitespace-pre text-gray-300 py-2">
     <div className="flex gap-4">
       <div className="sm:flex items-center hidden">
-        <Image
+        <img
           className="object-cover object-center w-44 h-44 rounded-md shadow min-w-32"
           width={176}
           height={176}
-          src="https://tim.rip/me.jpg"
-          alt="Picture of me"
+          src="https://t.pics/me.webp"
         />
       </div>
       <div>

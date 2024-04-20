@@ -49,6 +49,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full font-mono" data-artist="">
+      <link rel="dns-prefetch" href="i.scdn.co" />
+      <link rel="dns-prefetch" href="t.pics" />
+      <link rel="dns-prefetch" href="booster.spaceflight.live" />
+      <link rel="dns-prefetch" href="api.lanyard.rest" />
+      <link rel="preload" href="https://t.pics/me.webp" as="image" />
       <body
         className={twMerge(
           mono.className,
