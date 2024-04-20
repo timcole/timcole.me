@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useMemo, useState } from 'react';
 import type { Presence } from '@/types/lanyard';
+import { twMerge } from 'tailwind-merge';
 
 enum Operation {
   Event,
@@ -89,7 +90,13 @@ const Lanyard: FC = () => {
           />
         </div>
         <div className="min-w-0 flex-auto">
-          <p className="text-green-400 font-semibold">
+          <p
+            className={twMerge(
+              'text-green-400 font-semibold',
+              jellyfin &&
+                'text-transparent bg-clip-text inline-block bg-gradient-to-br from-purple-500 to-sky-500 drop-shadow-md',
+            )}
+          >
             I'm currently {doing.spotify ? 'listening to' : `watching`}
           </p>
           <h2 className="text-white font-semibold truncate">
