@@ -48,7 +48,7 @@ const Positions: FC = () => {
               </a>
               ;
               <p>
-                A simple utility to quickly and easily hotlink banners from any
+                A simple utility to quickly and easily hotlink banners from any
                 YouTube channels anywhere.
               </p>
             </li>
