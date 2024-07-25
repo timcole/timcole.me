@@ -10,9 +10,9 @@ const socials = [
 
 const Lines: Record<string, FC> = {
   Uptime: Age,
-  Location: () => 'Raleigh, NC',
-  'Goto Language': () => 'Rust, TypeScript',
-  'Goto Editor': () => (
+  Location: () => 'Orlando, FL',
+  'Go to Language': () => 'Rust, TypeScript',
+  'Go to Editor': () => (
     <>
       <a
         href="https://github.com/timcole/dotfiles/tree/%F0%9F%A6%84/nvim/.config/nvim"
