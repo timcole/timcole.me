@@ -40,20 +40,6 @@ const Positions: FC = () => {
             </li>
             <li>
               <a
-                href="https://www.banner.yt"
-                target="_blank"
-                className="font-semibold"
-              >
-                banner.yt
-              </a>
-              ;
-              <p>
-                A simple utility to quickly and easily hotlink banners from any
-                YouTube channels anywhere.
-              </p>
-            </li>
-            <li>
-              <a
                 href="https://spaceflight.live"
                 target="_blank"
                 className="font-semibold"
