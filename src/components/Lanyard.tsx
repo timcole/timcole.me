@@ -93,7 +93,7 @@ const Lanyard: FC = () => {
           className={twMerge(
             'text-green-400 font-semibold',
             jellyfin &&
-              'text-transparent bg-clip-text inline-block bg-gradient-to-br from-purple-500 to-sky-500 drop-shadow-md',
+              'text-transparent bg-clip-text inline-block bg-linear-to-br from-purple-500 to-sky-500 drop-shadow-md',
           )}
         >
           I'm currently {doing.spotify ? 'listening to' : `watching`}

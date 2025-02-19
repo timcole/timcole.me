@@ -50,7 +50,7 @@ const AboutMe: FC = () => (
     <div className="flex gap-4">
       <div className="sm:flex items-center hidden">
         <img
-          className="object-cover object-center w-44 h-44 rounded-md shadow min-w-32"
+          className="object-cover object-center w-44 h-44 rounded-md shadow-sm min-w-32"
           width={176}
           height={176}
           src="https://t.pics/me.webp"

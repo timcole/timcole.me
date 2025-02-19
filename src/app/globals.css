@@ -1,6 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-primary-50: #6993a5;
+  --color-primary-100: #618ca0;
+  --color-primary-200: #577c91;
+  --color-primary-300: #4d6c81;
+  --color-primary-400: #445c71;
+  --color-primary-500: #3a4d61;
+  --color-primary-600: #303f51;
+  --color-primary-700: #273241;
+  --color-primary-800: #1d2531;
+  --color-primary-900: #141821;
+  --color-primary-950: #0f1219;
+}
 
 :root {
   color-scheme: only dark;

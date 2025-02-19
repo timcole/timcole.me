@@ -100,7 +100,7 @@ const Positions: FC = () => {
             </span>
             <span className="mt-1 text-primary-400">{date}</span>
           </div>
-          <div className="text-gray-300 md:flex-grow flex-col gap-3 flex">
+          <div className="text-gray-300 md:grow flex-col gap-3 flex">
             {description}
           </div>
         </div>
