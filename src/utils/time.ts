@@ -11,28 +11,23 @@ export type FormattedTimeDiff = {
   seconds: number;
 };
 
-const isLeapYear = (year: number): boolean =>
-  (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-
-const getDaysInYear = (year: number): number => (isLeapYear(year) ? 366 : 365);
-
 export function formatTime(time: number): FormattedTime {
   const abs = time >= 0;
   if (!abs) time = Math.abs(time);
 
-  let years = Math.floor(time / (1000 * 60 * 60 * 24 * 365));
+  const start = new Date(0);
+  const target = new Date(time);
+
+  let years = target.getUTCFullYear() - start.getUTCFullYear();
   let days = Math.floor(
-    (time % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24),
+    (target.getTime() -
+      new Date(start.getUTCFullYear() + years, 0, 1).getTime()) /
+      (1000 * 60 * 60 * 24),
   );
 
-  while (days >= getDaysInYear(years)) {
-    days -= getDaysInYear(years);
-    years++;
-  }
-
-  const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((time % (1000 * 60)) / 1000);
+  const hours = target.getUTCHours();
+  const minutes = target.getUTCMinutes();
+  const seconds = target.getUTCSeconds();
 
   return {
     abs,
