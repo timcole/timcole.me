@@ -77,7 +77,7 @@ export default async function Album({ params }: Props) {
           />
         </div>
       </div>
-      <div className="bg-primary-800 w-full lg:w-xl h-full min-h-fit p-4 flex flex-col gap-8">
+      <div className="bg-primary-800 w-full lg:w-lg h-full min-h-fit p-4 flex flex-col gap-8">
         <div className="flex justify-between">
           <h1>{file}</h1>
           <Link href={`/${album}`} className="text-primary-50">

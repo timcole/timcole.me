@@ -31,6 +31,7 @@ export default function Home() {
                       src={`${base_url}/${slug}/${photos.at(0)?.file}`}
                       fill
                       alt={description}
+                      sizes="200px"
                       style={{ objectFit: 'cover' }}
                     />
                   </div>

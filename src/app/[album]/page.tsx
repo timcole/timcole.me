@@ -75,6 +75,7 @@ export default async function Album({ params }: Props) {
                     src={`${base_url}/${album.slug}/${file}`}
                     fill
                     alt={file}
+                    sizes="200px"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
