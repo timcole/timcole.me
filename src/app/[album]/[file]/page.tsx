@@ -56,6 +56,7 @@ export default async function Album({ params }: Props) {
           <Link
             href={`/${album}/${photo.prevFile}`}
             className="absolute z-20 opacity-60 hover:opacity-100 transition-opacity left-2 top-1/2 -translate-y-1/2 bg-primary-900 p-2 rounded-full text-primary-50"
+            prefetch={true}
           >
             <ChevronLeft />
           </Link>
@@ -64,11 +65,12 @@ export default async function Album({ params }: Props) {
           <Link
             href={`/${album}/${photo.nextFile}`}
             className="absolute z-20 opacity-60 hover:opacity-100 transition-opacity right-2 top-1/2 -translate-y-1/2 bg-primary-900 p-2 rounded-full text-primary-50"
+            prefetch={true}
           >
             <ChevronLeft className="rotate-180" />
           </Link>
         )}
-        <div key={`img-${album}-${file}`} className="relative">
+        <div key={`img-${album}-${file}`} className="relative h-full w-full">
           <img
             src={`${base_url}/${album}/${file}`}
             alt={file}

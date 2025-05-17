@@ -20,7 +20,7 @@ export default function Home() {
         <h2 className="font-semibold text-primary-50">Amateur Photography</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-4 justify-center">
           {albums.map(({ slug, name, photos, description }) => (
-            <Link key={slug} href={{ pathname: `/${slug}` }}>
+            <Link key={slug} href={{ pathname: `/${slug}` }} prefetch={true}>
               <div
                 key={`album-${slug}`}
                 className="border border-primary-700 divide-y divide-primary-700 hover:border-cyan-500 hover:divide-cyan-500 hover:bg-cyan-900"
