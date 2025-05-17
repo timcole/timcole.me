@@ -3,5 +3,9 @@
  */
 export default {
   output: 'standalone',
-  experimental: { reactCompiler: true },
+  experimental: {
+    reactCompiler: true,
+    viewTransition: true,
+  },
+  images: { domains: ['t.pics'] },
 };

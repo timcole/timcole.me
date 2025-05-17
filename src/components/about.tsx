@@ -13,23 +13,13 @@ const Lines: Record<string, FC> = {
   Location: () => 'Orlando, FL',
   'Go to Language': () => 'Rust, TypeScript',
   'Go to Editor': () => (
-    <>
-      <a
-        href="https://github.com/timcole/dotfiles/tree/%F0%9F%A6%84/nvim/.config/nvim"
-        target="_blank"
-        className="italic"
-      >
-        NeoVim
-      </a>
-      ,{' '}
-      <a
-        href="https://github.com/timcole/dotfiles/tree/%F0%9F%A6%84/zed"
-        target="_blank"
-        className="italic"
-      >
-        Zed
-      </a>
-    </>
+    <a
+      href="https://github.com/timcole/dotfiles/tree/%F0%9F%A6%84/zed"
+      target="_blank"
+      className="italic"
+    >
+      Zed
+    </a>
   ),
   Socials: () =>
     socials.map((l, i) => {

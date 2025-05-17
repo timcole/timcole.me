@@ -2,6 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import { twMerge } from 'tailwind-merge';
+import { unstable_ViewTransition as ViewTransition } from 'react';
+
 import Footer from '@/components/footer';
 
 const mono = JetBrains_Mono({
@@ -60,7 +62,7 @@ export default function RootLayout({
           'h-full flex flex-col bg-primary-950',
         )}
       >
-        {children}
+        <ViewTransition>{children}</ViewTransition>
         <Footer />
       </body>
     </html>

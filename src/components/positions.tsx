@@ -1,5 +1,4 @@
 import { FC, ReactElement } from 'react';
-import Launch from './Launch';
 
 type position = {
   company: string;
@@ -46,7 +45,7 @@ const Positions: FC = () => {
               >
                 Spaceflight Live
               </a>
-              ; <Launch />
+              ;
             </li>
           </ul>
           <p>
@@ -62,23 +61,11 @@ const Positions: FC = () => {
       role: 'Engineering Lead',
       date: 'Mar 2016 - Present',
       description: (
-        <>
-          <p>
-            Leading our engineering team working on building out our new tech
-            stack and Kubernetes infrastructure. Making and implementing
-            technical decisions, writing code and delegating tasks to others.
-          </p>
-          <p>
-            Currently leading the transition of our very legacy PHP, MySQL,
-            Redis infrastructure to our new upcoming Rust, tRPC, PostgreSQL,
-            KeyDB, NextJS infrastructure.
-          </p>
-          <p>
-            Our transition goal is to provide a more user-friendly and stable
-            service so everyone can continue to enjoy the stats they love
-            without interruption.
-          </p>
-        </>
+        <p>
+          Leading our engineering team working on building out our new tech
+          stack and Kubernetes infrastructure. Making and implementing technical
+          decisions, writing code and delegating tasks to others.
+        </p>
       ),
     },
   ];
