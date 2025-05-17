@@ -5,7 +5,7 @@ import Lanyard from '@/components/Lanyard';
 import AboutMe from '@/components/about';
 import Positions from '@/components/positions';
 import { albums, base_url } from '@/utils/images';
-import Image from 'next/image';
+import { Image } from '@/components/image';
 
 export const dynamic = 'force-dynamic';
 

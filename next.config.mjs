@@ -7,8 +7,4 @@ export default {
     reactCompiler: true,
     viewTransition: true,
   },
-  images: {
-    domains: ['t.pics'],
-    minimumCacheTTL: 2678400, // 31 days
-  },
 };

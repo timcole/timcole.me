@@ -1,13 +1,14 @@
 import { base_url, getAlbumBySlug } from '@/utils/images';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { unstable_ViewTransition as ViewTransition } from 'react';
 import exifr from 'exifr';
 import { Metadata, ResolvingMetadata } from 'next';
 import ReactDOM from 'react-dom';
-import ShareButton from '@/components/share';
 import { Instagram } from 'lucide-react';
+
+import ShareButton from '@/components/share';
+import { Image } from '@/components/image';
 
 type Props = { params: Promise<{ album: string }> };
 
