@@ -2,9 +2,7 @@ import { base_url, getAlbumBySlug } from '@/utils/images';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { unstable_ViewTransition as ViewTransition } from 'react';
-import exifr from 'exifr';
-import { Metadata, ResolvingMetadata } from 'next';
-import ReactDOM from 'react-dom';
+import { Metadata } from 'next';
 import { Instagram } from 'lucide-react';
 
 import ShareButton from '@/components/share';
@@ -12,10 +10,7 @@ import { Image } from '@/components/image';
 
 type Props = { params: Promise<{ album: string }> };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const album = getAlbumBySlug((await params).album);
   if (!album) throw 'not found';
 

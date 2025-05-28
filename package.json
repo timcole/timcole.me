@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.7",
+    "@tailwindcss/postcss": "^4.1.8",
     "babel-plugin-react-compiler": "^19.1.0-rc.2",
     "eslint": "9.27.0",
     "eslint-config-next": "15.3.2",
@@ -20,12 +20,12 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.0",
-    "tailwindcss": "^4.1.7",
+    "tailwindcss": "^4.1.8",
     "typescript": "5.8.3"
   },
   "devDependencies": {
-    "@types/node": "^22.15.18",
-    "@types/react": "19.1.4",
+    "@types/node": "^22.15.24",
+    "@types/react": "19.1.6",
     "@types/react-dom": "19.1.5",
     "prettier": "^3.5.3"
   },
