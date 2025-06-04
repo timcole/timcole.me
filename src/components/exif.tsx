@@ -1,16 +1,15 @@
 import exifr from 'exifr';
 import { Aperture, Camera, Clock } from 'lucide-react';
-import { cache, memo, use } from 'react';
+import { unstable_cache } from 'next/cache';
+import { memo } from 'react';
 
 const formatNumber = (num: number) =>
   Number.isInteger(num)
     ? num.toString()
     : parseFloat(num.toFixed(3)).toString();
 
-const getExifData = cache(async (url: string) => await exifr.parse(url));
-
-function ExifData({ url }: { url: string }) {
-  const exif = use(getExifData(url));
+async function ExifData({ url }: { url: string }) {
+  const exif = await unstable_cache(() => exifr.parse(url), [url])();
 
   return (
     <div>

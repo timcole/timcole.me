@@ -1,15 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Suspense, use } from 'react';
-import exifr from 'exifr';
-import {
-  Instagram,
-  Camera,
-  Clock,
-  Aperture,
-  ChevronLeft,
-  X,
-} from 'lucide-react';
+import { Suspense } from 'react';
+import { Instagram, ChevronLeft, X } from 'lucide-react';
 
 import { base_url, getPhotoByFilename } from '@/utils/images';
 import ShareButton from '@/components/share';
@@ -32,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Album({ params }: Props) {
+export default async function Photo({ params }: Props) {
   const { album, file } = await params;
   const photo = getPhotoByFilename(album, file);
   if (!album) return notFound();
