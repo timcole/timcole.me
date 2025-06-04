@@ -7,6 +7,7 @@ import { Instagram } from 'lucide-react';
 
 import ShareButton from '@/components/share';
 import { Image } from '@/components/image';
+import Hotkeys from '@/components/hotkeys';
 
 type Props = { params: Promise<{ album: string }> };
 
@@ -31,6 +32,7 @@ export default async function Album({ params }: Props) {
 
   return (
     <div className="flex-1 flex flex-col p-3 container mx-auto gap-4">
+      <Hotkeys esc="/" />
       <div className="flex justify-between">
         <Link href="/">
           <p>Go home</p>

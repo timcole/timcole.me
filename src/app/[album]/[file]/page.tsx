@@ -7,6 +7,7 @@ import { base_url, getPhotoByFilename } from '@/utils/images';
 import ShareButton from '@/components/share';
 import { Metadata } from 'next';
 import ExifData from '@/components/exif';
+import Hotkeys from '@/components/hotkeys';
 
 type Props = { params: Promise<{ album: string; file: string }> };
 
@@ -31,6 +32,11 @@ export default async function Photo({ params }: Props) {
 
   return (
     <div className="flex-1 overflow-auto flex flex-col lg:flex-row h-full justify-between divide-y divide-x-0 lg:divide-x lg:divide-y-0 divide-cyan-900">
+      <Hotkeys
+        esc={`/${album}`}
+        left={photo && photo.prevFile && `/${album}/${photo?.prevFile}`}
+        right={photo && photo.nextFile && `/${album}/${photo?.nextFile}`}
+      />
       <div className="w-full flex-1 justify-center align-middle flex relative">
         <Link
           href={`/${album}`}
