@@ -2,10 +2,28 @@ export const base_url = 'https://t.pics/photography';
 
 export const albums = [
   {
+    slug: 'cocoa-airshow-2025',
+    name: 'Cocoa Beach Airshow 2025',
+    description: 'Cocoa Beach Air Show',
+    instagram: 'https://www.instagram.com/p/DMG9qcTg9SS/',
+    photos: [
+      { file: 'DSC01608.jpg' },
+      { file: 'DSC01421.jpg' },
+      { file: 'DSC00612.jpg' },
+      { file: 'DSC01070.jpg' },
+      { file: 'DSC07103.jpg' },
+      { file: 'DSC08541.jpg' },
+      { file: 'DSC00768.jpg' },
+      { file: 'DSC06967.jpg' },
+      { file: 'DSC07861.jpg' },
+      { file: 'DSC09099.jpg' },
+    ],
+  },
+  {
     slug: 'brevard-zoo',
     name: 'Brevard Zoo',
     description: 'Went to the brevard zoo to test out my new a6700 camera body',
-    instagram: 'https://www.instagram.com/modesttim/p/DJhxSnzySOk/',
+    instagram: 'https://www.instagram.com/p/DJhxSnzySOk/',
     photos: [
       { file: 'DSC00386.jpeg' },
       { file: 'DSC00376.jpeg' },
@@ -45,7 +63,7 @@ export const albums = [
       `What an incredible honor to witness NASA astronauts Anne McClain and Nichole Ayers, JAXA astronaut Takuya Onishi, and Roscosmos cosmonaut Kirill Peskov launch off our home planet.`,
       `Going behind the scenes at NASA Kennedy with NASA Social has been an unforgettable experience. Thank you to all the teams at NASA who made this opportunity possible. I’m truly grateful for the chance to see history in the making.`,
     ].join('\n\n'),
-    instagram: 'https://www.instagram.com/modesttim/',
+    instagram: 'https://www.instagram.com/p/DHNO2r1AE7e/',
     photos: [
       { file: 'DSC00183.jpeg' },
       { file: 'DSC00189.jpeg' },
