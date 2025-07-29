@@ -10,7 +10,7 @@ const socials = [
 
 const Lines: Record<string, FC> = {
   Uptime: Age,
-  Location: () => 'Orlando, FL',
+  Location: () => 'Dallas, TX',
   'Go to Language': () => 'Rust, TypeScript',
   'Go to Editor': () => (
     <a
