@@ -5,6 +5,5 @@ export default {
   output: 'standalone',
   experimental: {
     reactCompiler: true,
-    viewTransition: true,
   },
 };

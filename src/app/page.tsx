@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { unstable_ViewTransition as ViewTransition } from 'react';
 
 import Lanyard from '@/components/Lanyard';
 import AboutMe from '@/components/about';
@@ -25,20 +24,16 @@ export default function Home() {
                 key={`album-${slug}`}
                 className="border border-primary-700 divide-y divide-primary-700 hover:border-cyan-500 hover:divide-cyan-500 hover:bg-cyan-900"
               >
-                <ViewTransition name={`photo-${photos.at(0)?.file}`}>
-                  <div className="relative aspect-square">
-                    <Image
-                      src={`${base_url}/${slug}/${photos.at(0)?.file}`}
-                      fill
-                      alt={description}
-                      sizes="200px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                </ViewTransition>
-                <ViewTransition name={`album-${slug}`}>
-                  <p className="px-3 py-2 text-sm">{name}</p>
-                </ViewTransition>
+                <div className="relative aspect-square">
+                  <Image
+                    src={`${base_url}/${slug}/${photos.at(0)?.file}`}
+                    fill
+                    alt={description}
+                    sizes="200px"
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+                <p className="px-3 py-2 text-sm">{name}</p>
               </div>
             </Link>
           ))}
