@@ -4,6 +4,7 @@
 export default {
   output: 'standalone',
   experimental: {
-    reactCompiler: true,
+    turbopackFileSystemCacheForDev: true,
   },
+  reactCompiler: true,
 };
