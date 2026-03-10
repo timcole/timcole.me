@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import type { FC, ReactElement } from 'react';
 
 type position = {
   company: string;
@@ -21,7 +21,7 @@ const Positions: FC = () => {
             Modest Labs is a development company that partners with others to
             build custom solutions for difficult problems.
           </p>
-          <p>Some of our products include:</p>
+          <p>Our leading service includes:</p>
           <ul className="pl-4 flex flex-col gap-2">
             <li>
               <a
@@ -36,16 +36,6 @@ const Positions: FC = () => {
                 Providing TikTok creators with an easy and seamless way to share
                 their content cross-platform for better discoverability.
               </p>
-            </li>
-            <li>
-              <a
-                href="https://spaceflight.live"
-                target="_blank"
-                className="font-semibold"
-              >
-                Spaceflight Live
-              </a>
-              ;
             </li>
           </ul>
           <p>
