@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { Instagram, ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
 
 import { base_url, getPhotoByFilename } from '@/utils/images';
 import ShareButton from '@/components/share';
 import { Metadata } from 'next';
 import ExifData from '@/components/exif';
 import Hotkeys from '@/components/hotkeys';
+import SimpleIcon from '@/components/simpleIcon';
+import { siInstagram } from 'simple-icons';
 
 type Props = { params: Promise<{ album: string; file: string }> };
 
@@ -67,11 +69,13 @@ export default async function Photo({ params }: Props) {
             src={`${base_url}/${album}/${file}`}
             alt={file}
             className="w-full h-full object-contain relative z-10 shadow-md"
+            loading="eager"
           />
           <img
             src={`${base_url}/${album}/${file}`}
             alt={file}
             className="w-full h-full absolute top-0 object-cover blur-lg opacity-20"
+            loading="eager"
           />
         </div>
       </div>
@@ -96,7 +100,7 @@ export default async function Photo({ params }: Props) {
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-cyan-500 font-mono text-sm hover:underline"
               >
-                <Instagram className="h-4 w-4" />
+                <SimpleIcon icon={siInstagram} className="h-4 w-4" />
                 View on Instagram
               </a>
             )}

@@ -3,7 +3,5 @@
  */
 export default {
   output: 'standalone',
-  experimental: {
-    reactCompiler: true,
-  },
+  reactCompiler: true,
 };

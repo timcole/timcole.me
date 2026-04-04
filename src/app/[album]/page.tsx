@@ -2,11 +2,12 @@ import { base_url, getAlbumBySlug } from '@/utils/images';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Instagram } from 'lucide-react';
 
 import ShareButton from '@/components/share';
 import { Image } from '@/components/image';
 import Hotkeys from '@/components/hotkeys';
+import { siInstagram } from 'simple-icons';
+import SimpleIcon from '@/components/simpleIcon';
 
 type Props = { params: Promise<{ album: string }> };
 
@@ -44,7 +45,7 @@ export default async function Album({ params }: Props) {
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-cyan-500 font-mono text-sm hover:underline"
             >
-              <Instagram className="h-4 w-4" />
+              <SimpleIcon icon={siInstagram} className="size-4" />
               View on Instagram
             </a>
           )}
@@ -68,6 +69,7 @@ export default async function Album({ params }: Props) {
                   alt={file}
                   sizes="200px"
                   style={{ objectFit: 'cover' }}
+                  loading="eager"
                 />
               </div>
               <p className="px-3 py-2 text-sm">{file}</p>
