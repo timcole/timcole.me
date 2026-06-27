@@ -31,6 +31,7 @@ export default function Home() {
                     alt={description}
                     sizes="200px"
                     style={{ objectFit: 'cover' }}
+                    priority
                   />
                 </div>
                 <p className="px-3 py-2 text-sm">{name}</p>
